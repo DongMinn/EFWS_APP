@@ -18,37 +18,8 @@ import Delete from 'material-ui/svg-icons/action/delete';
 import SweetAlert from 'sweetalert-react';
 import pizzaImg from '../images/pizza.jpg';
 
-import { styles, customerStyles } from '../common/styles';
+import { styles, customerStyles, gridStyles } from '../common/styles';
 import '../css/customerReserve.scss';
-
-const gridStyles = {
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-    },
-    gridList: {
-        width: 500,
-        height: 410,
-        overflowY: 'auto',
-    },
-    subtitleStyle: {
-        color: "white",
-        fontSize: 30,
-        textAlign: "right",
-        margin: "0px 10px",
-        fontWeight: "bold"
-    },
-    featuredTitleStyle: {
-        color: "white",
-        fontSize: 12
-    },
-    featuredSubtitleStyle: {
-        color: "white",
-        fontSize: 30,
-        fontWeight: "bold"
-    }
-};
 
 class CustomerReservationStateView extends Component {
     constructor(props) {
@@ -64,6 +35,7 @@ class CustomerReservationStateView extends Component {
         this.handleOpenDialog = this.handleOpenDialog.bind(this);
         this.handleChangeData = this.handleChangeData.bind(this);
         this.handleChangeReserve = this.handleChangeReserve.bind(this);
+        this.handleRefreshClick = this.handleRefreshClick.bind(this);
     }
     setCustomerData(customerData, state) {
         if (state === 'MODI') {
@@ -120,8 +92,9 @@ class CustomerReservationStateView extends Component {
         })
     }
 
-    onRefreshClick() {
+    handleRefreshClick() {
         console.log('onRefreshClick');
+        this.props.onGetReserveData(this.props.loginId , this.props.customerCellPhone) 
     }
 
     render() {
@@ -131,8 +104,8 @@ class CustomerReservationStateView extends Component {
                 img: pizzaImg,
                 title: now.toLocaleString() + ' 기준',
                 titleBackground: "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)",
-                subtitle: this.props.customerData.remainingWaitingTime+'분 후 입장가능합니다!',
-                icon: <IconButton><Autonew color="white" onClick={this.onRefreshClick.bind(this)}/></IconButton>,
+                subtitle: this.props.customerData.remainingWaitingTime + '분 후 입장가능!',
+                icon: <IconButton><Autonew color="white" onClick={this.handleRefreshClick} /></IconButton>,
                 featured: true,
                 cols: 2,
                 rows: 30
@@ -146,20 +119,20 @@ class CustomerReservationStateView extends Component {
             {
                 title: '현재 대기팀 수',
                 // icon: <IconButton><StarBorder color="black" /></IconButton>,
-                subtitle: this.props.customerData.tableType, //TODO: 대기팀데이터
+                subtitle: this.props.customerData.remainingWaitingTeamCount, //TODO: 대기팀데이터
                 cols: 1,
                 rows: 6
             },
             {
-                title: this.props.customerData.tableType+'인석',
-                icon:  <IconButton><Settings color="white" /></IconButton>,
+                title: this.props.customerData.tableType + '인석',
+                icon: <IconButton><Settings color="white" onClick={() => { this.setCustomerData(this.props.customerData, 'MODI') }} /></IconButton>,
                 titleBackground: "green",
                 cols: 1,
                 rows: 5
             },
             {
                 title: '예약삭제',
-                icon: <IconButton><Delete color="white" /></IconButton>,
+                icon: <IconButton><Delete color="white" onClick={() => { this.setCustomerData(this.props.customerData, 'CANCEL') }} /></IconButton>,
                 titleBackground: "red",
                 cols: 1,
                 rows: 5
@@ -189,40 +162,14 @@ class CustomerReservationStateView extends Component {
                                     subtitle={tile.subtitle}
                                     subtitleStyle={tile.featured ? gridStyles.featuredSubtitleStyle : gridStyles.subtitleStyle}
                                 >
-                                    <img src={tile.img}/>
+                                    <img src={tile.img} />
                                 </GridTile>
                             ))}
                         </GridList>
                         <div>
                             피자몰 명동점에 방문해주셔서 감사합니다.
                         </div>
-                        <Card>
-                            <CardHeader
-                                title={'고객대기상태'}
-                                // subtitle="현재상태"
-                                actAsExpander={true}
-                                showExpandableButton={true}
-                            />
-                            <div>
-                                <CardActions>
-                                    <FlatButton label={'대기 번호:'} style={styles.reserveState} disabled={true}></FlatButton>
-                                    <FlatButton label={this.props.customerData.waitingNo + ''} style={styles.reserveState} disabled={true}></FlatButton>
-                                </CardActions>
-                            </div>
-                            <CardActions>
-                                <FlatButton label={'예약 타입:'} style={styles.reserveState} disabled={true}></FlatButton>
-                                <FlatButton label={this.props.customerData.tableType + ''} style={styles.reserveState} disabled={true}></FlatButton>
-                            </CardActions>
-                            <CardActions>
-                                <FlatButton label={'대기 시간:'} style={styles.reserveState} disabled={true}></FlatButton>
-                                <FlatButton label={this.props.customerData.remainingWaitingTime + ''} style={styles.reserveState} disabled={true}></FlatButton>
-                            </CardActions>
-                            <CardText expandable={true}>
-                                <RaisedButton style={styles.reserveButtonUpdate} onClick={() => { this.setCustomerData(this.props.customerData, 'MODI') }} >대기 예약 수정</RaisedButton>
-                                <span>  </span>
-                                <RaisedButton style={styles.reserveButtonDelete} onClick={() => { this.setCustomerData(this.props.customerData, 'CANCEL') }}>예약 삭제</RaisedButton>
-                            </CardText>
-                        </Card>
+                        
                     </div>
                     : '대기 데이터가 없습니다.'}
             </div>
@@ -322,3 +269,33 @@ class CustomerReservationStateView extends Component {
 }
 
 export default CustomerReservationStateView;
+
+
+
+// <Card>
+//                             <CardHeader
+//                                 title={'고객대기상태'}
+//                                 // subtitle="현재상태"
+//                                 actAsExpander={true}
+//                                 showExpandableButton={true}
+//                             />
+//                             <div>
+//                                 <CardActions>
+//                                     <FlatButton label={'대기 번호:'} style={styles.reserveState} disabled={true}></FlatButton>
+//                                     <FlatButton label={this.props.customerData.waitingNo + ''} style={styles.reserveState} disabled={true}></FlatButton>
+//                                 </CardActions>
+//                             </div>
+//                             <CardActions>
+//                                 <FlatButton label={'예약 타입:'} style={styles.reserveState} disabled={true}></FlatButton>
+//                                 <FlatButton label={this.props.customerData.tableType + ''} style={styles.reserveState} disabled={true}></FlatButton>
+//                             </CardActions>
+//                             <CardActions>
+//                                 <FlatButton label={'대기 시간:'} style={styles.reserveState} disabled={true}></FlatButton>
+//                                 <FlatButton label={this.props.customerData.remainingWaitingTime + ''} style={styles.reserveState} disabled={true}></FlatButton>
+//                             </CardActions>
+//                             <CardText expandable={true}>
+//                                 <RaisedButton style={styles.reserveButtonUpdate} onClick={() => { this.setCustomerData(this.props.customerData, 'MODI') }} >대기 예약 수정</RaisedButton>
+//                                 <span>  </span>
+//                                 <RaisedButton style={styles.reserveButtonDelete} onClick={() => { this.setCustomerData(this.props.customerData, 'CANCEL') }}>예약 삭제</RaisedButton>
+//                             </CardText>
+//                         </Card>

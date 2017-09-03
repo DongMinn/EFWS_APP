@@ -107,3 +107,32 @@ export const customerStyles={
         fontSize:30
     }
 }
+
+export const gridStyles = {
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+    },
+    gridList: {
+        width: 500,
+        height: 410,
+        overflowY: 'auto',
+    },
+    subtitleStyle: {
+        color: "white",
+        fontSize: 30,
+        textAlign: "right",
+        margin: "0px 10px",
+        fontWeight: "bold"
+    },
+    featuredTitleStyle: {
+        color: "white",
+        fontSize: 12
+    },
+    featuredSubtitleStyle: {
+        color: "white",
+        fontSize: 30,
+        fontWeight: "bold"
+    }
+};

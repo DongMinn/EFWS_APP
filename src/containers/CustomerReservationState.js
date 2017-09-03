@@ -156,6 +156,7 @@ class CustomerReservationState extends Component {
                         customerData={this.state.customerData}
                         onUpdateCustomerReservation={this.handleUpdateCustomerReserveData}
                         onDeleteReserveData={this.handleDeleteCustomerReserveData}
+                        onGetReserveData={this.handleGetCustomerReserveData}
                     />
                 </div>
 
