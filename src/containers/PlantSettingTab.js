@@ -140,7 +140,7 @@ class PlantSettingTab extends Component {
                         }
                     )
                 } else {
-                    console.log('DEBUG: 노쇼ㄴ 업데이트 실패');
+                    console.log('DEBUG: 노쇼 업데이트 실패');
                     return false;
                 }
             }

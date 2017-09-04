@@ -4,7 +4,13 @@ import { Field, FieldArray, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
 import { loadAlarm as loadData } from '../../actions/accountInform';
 
+import { Card, CardActions, CardHeader } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+
+import Add from 'material-ui/svg-icons/content/add';
+import Remove from 'material-ui/svg-icons/content/remove';
 
 
 // let data=[{firstName: 'john', lastName: 'Doe'},{firstName: 'john2', lastName: 'Doe2'}]
@@ -13,91 +19,110 @@ class PlantInformSettingAlarmView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            alarmTalkList:[{sequence:'1' , sendPoint:'-1'}]
+            alarmTalkList: [{ sequence: '1', sendPoint: '-1' }],
+            value: 1
         }
+        this.handleChangeAlarm = this.handleChangeAlarm.bind(this);
+        this.handleTest = this.handleTest.bind(this);
+    }
+    handleTest (input) {
+        console.log(input);
+        debugger;
+    }
+    handleChangeAlarm() {
+
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
-            alarmTalkList:nextProps.alarmTalkList
+            alarmTalkList: nextProps.alarmTalkList
         })
-        
+        this.props.load(this.state.alarmTalkList);
     }
     componentWillMount() {
-        
+
         this.setState({
-            alarmTalkList:this.props.alarmTalkList
+            alarmTalkList: this.props.alarmTalkList
         })
-        
     }
     render() {
-        const { handleSubmit,  load ,submitting } = this.props
+        const items = [];
+        for (let i = -1; i < 80; i++) {
+            items.push(<MenuItem value={i} key={i} primaryText={`입장 ${i} 번째 전`} />);
+        }
+        const { handleSubmit, load, submitting } = this.props
 
-        const renderField = ({ input, label, type, meta: { touched, error } }) =>(
+        const renderField = ({ input, label, type, meta: { touched, error } }) => (
             <div>
+            {this.handleTest(input)}
                 <label>
                     {label}
                 </label>
                 <div>
                     <input {...input} type={type} placeholder={label} />
-                    {touched &&
-                        error &&
-                        <span>
-                            {error}
-                        </span>}
                 </div>
             </div>
         )
-        const renderMembers = ({ fields, meta: { error, submitFailed } }) =>(
-            <ul>
-                <li>
-                    <button type="button" onClick={() => fields.push({})}>
-                        Add Member
-                    </button>
-                    {submitFailed &&
-                        error &&
-                        <span>
-                            {error}
-                        </span>}
-                </li>
-                {fields.map((member, index) =>
-                    <li key={index}>
-                        <button
-                            type="button"
-                            title="Remove Member"
-                            onClick={() => fields.remove(index)}
-                        >제거
-                        </button>
-                        <h4>
-                            Member #{index + 1}
-                        </h4>
-                        <Field
-                            name={`${member}.sequence`}
-                            type="text"
-                            component={renderField}
-                            label="sequence"
-                        />
-                        <Field
-                            name={`${member}.sendPoint`}
-                            type="text"
-                            component={renderField}
-                            label="sendPoint"
-                        />
-                    </li>
-                )}
-            </ul>
-        )   
-        const addView = (
-            <form onSubmit={handleSubmit}>
+        const renderCheckbox = ({ input, value }) => (
             <div>
-                <RaisedButton onClick={() => load(this.state.alarmTalkList)}>세팅불러오기</RaisedButton>
+            {this.handleTest(input)}
+            <DropDownMenu maxHeight={200} {...input} disabled={this.state.disabledCheck} value={parseInt(input, 10)} onChange={this.handleChangeTableTime}>
+                >{items}
+            </DropDownMenu>
             </div>
-                
-                <FieldArray name="members" component={renderMembers} />
+        )
+        const renderMembers = ({ fields, meta: { error, submitFailed } }) => (
+            <div>
                 <div>
-                    <button type="submit" disabled={submitting}>
-                        Submit
-                    </button>
+                    <RaisedButton
+                        onClick={() => fields.push({})}
+                        backgroundColor={'#FFEA00'} icon={<Add color="white" />}
+                    >
+                    추가</RaisedButton>
                 </div>
+                {fields.map((member, index) =>
+                    <p key={index}>
+                        <Card>
+                            <RaisedButton
+                                type="button"
+                                title="Remove Member"
+                                onClick={() => fields.remove(index)}
+                                disabled={index === 0 ? true : false}
+                                backgroundColor={'#FF3D00'} icon={<Remove color="white" />}
+                            >제거
+                            </RaisedButton>
+                            <h3>
+                                {index + 1}번째 알림
+                            </h3>
+                            <Field
+                                name={`${member}.sequence`}
+                                type="text"
+                                component={renderField}
+                                label="sequence"
+
+                            />
+                            <Field
+                                name={`${member}.sendPoint`}
+                                type="text"
+                                component={renderField}
+                                label="sendPoint"
+                                value={"dfdf"}
+                            />
+                           
+                        </Card>
+                    </p>
+                )}
+            </div>
+        )
+        const addView = (
+            <form onSubmit={handleSubmit(this.handleChangeAlarm)}>
+                <br />
+                <div>
+                    <RaisedButton primary={true} type="submit" disabled={submitting}>저장</RaisedButton>
+                    <br/>
+                </div>
+                <br/>
+                <FieldArray name="members" component={renderMembers} />
+
             </form>
         )
         return (
@@ -109,13 +134,13 @@ class PlantInformSettingAlarmView extends Component {
 }
 PlantInformSettingAlarmView = reduxForm({
     form: 'AlarmTalkSetting', // a unique identifier for this form
-    enableReinitialize :true
+    enableReinitialize: true
 })(PlantInformSettingAlarmView);
 
 const mapStateToProps = (state) => {
     return {
         // initialValues: {members:[{sequence:'1' , sendPoint:'-1'}]}
-        initialValues: {members:state.accountinform.alarmData}
+        initialValues: { members: state.accountinform.alarmData }
     };
 }
 const mapDispatchToProps = (dispatch) => {
@@ -124,3 +149,11 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PlantInformSettingAlarmView);
+
+
+// <Field
+// name={`${member}.sendPoint`}
+// type="text"
+// component={renderCheckbox}
+// value={member.sendPoint}
+// />

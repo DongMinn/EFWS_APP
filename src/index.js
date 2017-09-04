@@ -16,8 +16,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
 
-let middleware = [thunk , logger];
-// let middleware = [thunk];
+// let middleware = [thunk , logger];
+let middleware = [thunk];
 
 const store = createStore(reducers , applyMiddleware(...middleware));
 

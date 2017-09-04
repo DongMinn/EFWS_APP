@@ -132,7 +132,7 @@ export const gridStyles = {
     },
     featuredSubtitleStyle: {
         color: "white",
-        fontSize: 30,
+        fontSize: 23,
         fontWeight: "bold"
     }
 };

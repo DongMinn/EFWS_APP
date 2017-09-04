@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
 import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import { GridList, GridTile } from 'material-ui/GridList';
 
 import RaisedButton from 'material-ui/RaisedButton';
@@ -10,7 +8,6 @@ import Dialog from 'material-ui/Dialog';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
-import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import Settings from 'material-ui/svg-icons/action/settings';
 import Autonew from 'material-ui/svg-icons/action/autorenew';
 import Delete from 'material-ui/svg-icons/action/delete';
@@ -36,6 +33,12 @@ class CustomerReservationStateView extends Component {
         this.handleChangeData = this.handleChangeData.bind(this);
         this.handleChangeReserve = this.handleChangeReserve.bind(this);
         this.handleRefreshClick = this.handleRefreshClick.bind(this);
+        this.handleTitle = this.handleTitle.bind(this);
+    }
+    handleTitle() {
+        if (this.props.customerData.remainingWaitingTime === "0") return '지금 입장하세요!'
+        else if (this.props.customerData.remainingWaitingTime === undefined) return '대기정보가 없습니다!'
+        return this.props.customerData.remainingWaitingTime + '분 후 입장가능!'
     }
     setCustomerData(customerData, state) {
         if (state === 'MODI') {
@@ -45,9 +48,11 @@ class CustomerReservationStateView extends Component {
             })
         }
         else {
-            this.setState({
-                showPopUp: true,
-            })
+            if (this.props.customerData.tableType !== undefined) {
+                this.setState({
+                    showPopUp: true,
+                })
+            }
         }
 
     }
@@ -73,7 +78,7 @@ class CustomerReservationStateView extends Component {
     }
     handleOpenDialog() {
 
-        if (this.state.dialogOpen === false) {
+        if (this.state.dialogOpen === false && this.props.customerData.tableType !== undefined) {
             this.setState({ dialogOpen: true })
         }
         else {
@@ -94,17 +99,25 @@ class CustomerReservationStateView extends Component {
 
     handleRefreshClick() {
         console.log('onRefreshClick');
-        this.props.onGetReserveData(this.props.loginId , this.props.customerCellPhone) 
+        this.props.onGetReserveData(this.props.loginId, this.props.customerCellPhone)
     }
 
     render() {
+        const customerTitleView = (
+            <AppBar
+                // title={<span onTouchTap={this.handleLinkToHome}>Home</span>}
+                title={<span style={styles.title}>대기정보</span>}
+                showMenuIconButton={false}
+            // iconElementRight={logoutButton}
+            />
+        )
         const now = new Date();
         const tilesData = [
             {
                 img: pizzaImg,
                 title: now.toLocaleString() + ' 기준',
                 titleBackground: "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)",
-                subtitle: this.props.customerData.remainingWaitingTime + '분 후 입장가능!',
+                subtitle: this.handleTitle(),
                 icon: <IconButton><Autonew color="white" onClick={this.handleRefreshClick} /></IconButton>,
                 featured: true,
                 cols: 2,
@@ -124,7 +137,7 @@ class CustomerReservationStateView extends Component {
                 rows: 6
             },
             {
-                title: this.props.customerData.tableType + '인석',
+                title: this.props.customerData.tableType === undefined ? '정보수정' : this.props.customerData.tableType + '인석',
                 icon: <IconButton><Settings color="white" onClick={() => { this.setCustomerData(this.props.customerData, 'MODI') }} /></IconButton>,
                 titleBackground: "green",
                 cols: 1,
@@ -137,51 +150,46 @@ class CustomerReservationStateView extends Component {
                 cols: 1,
                 rows: 5
             }];
+        const customerGridView = (
+            <div style={gridStyles.root}>
+                <GridList
+                    cols={2}
+                    cellHeight={10}
+                    padding={1}
+                    style={gridStyles.gridList}
+                >
+                    {tilesData.map((tile, index) => (
+                        <GridTile
+                            key={index}
+                            title={tile.title}
+                            titleStyle={tile.featured ? gridStyles.featuredTitleStyle : undefined}
+                            actionIcon={tile.icon}
+                            actionPosition="right"
+                            titlePosition="top"
+                            titleBackground={tile.titleBackground}
+                            cols={tile.cols}
+                            rows={tile.rows}
+                            subtitle={tile.subtitle}
+                            subtitleStyle={tile.featured ? gridStyles.featuredSubtitleStyle : gridStyles.subtitleStyle}
+                        >
+                            <img src={tile.img} />
+                        </GridTile>
+                    ))}
+                </GridList>
+                <div>
+                    피자몰 명동점에 방문해주셔서 감사합니다.
+                </div>
+
+            </div>
+        )
+
 
         const reservateView = (
             <div>
-                {this.props.availableCheck ?
-                    <div style={gridStyles.root}>
-                        <GridList
-                            cols={2}
-                            cellHeight={10}
-                            padding={1}
-                            style={gridStyles.gridList}
-                        >
-                            {tilesData.map((tile) => (
-                                <GridTile
-                                    key={tile.img}
-                                    title={tile.title}
-                                    titleStyle={tile.featured ? gridStyles.featuredTitleStyle : ''}
-                                    actionIcon={tile.icon}
-                                    actionPosition="right"
-                                    titlePosition="top"
-                                    titleBackground={tile.titleBackground}
-                                    cols={tile.cols}
-                                    rows={tile.rows}
-                                    subtitle={tile.subtitle}
-                                    subtitleStyle={tile.featured ? gridStyles.featuredSubtitleStyle : gridStyles.subtitleStyle}
-                                >
-                                    <img src={tile.img} />
-                                </GridTile>
-                            ))}
-                        </GridList>
-                        <div>
-                            피자몰 명동점에 방문해주셔서 감사합니다.
-                        </div>
-                        
-                    </div>
-                    : '대기 데이터가 없습니다.'}
+                {customerGridView}
             </div>
         )
-        const customerTitleView = (
-            <AppBar
-                // title={<span onTouchTap={this.handleLinkToHome}>Home</span>}
-                title={<span style={styles.title}>예약정보</span>}
-                showMenuIconButton={false}
-            // iconElementRight={logoutButton}
-            />
-        )
+
         const DialogView = (
             <div>
                 <Dialog

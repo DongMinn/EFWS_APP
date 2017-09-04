@@ -11,6 +11,8 @@ import { ChangeInfoField } from '../common/model';
 import { load as loadData } from '../actions/accountInform';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import NoteAdd from 'material-ui/svg-icons/action/system-update-alt';
+
 import { styles } from '../common/styles';
 import SweetAlert from 'sweetalert-react';
 import '../css/sweetalert.scss';
@@ -70,7 +72,7 @@ class ChangeInformationView extends Component {
             <form style={styles.form} onSubmit={handleSubmit(this.handleChangeInform)}>
                 <br />
                 <div>
-                    <RaisedButton onClick={() => load(this.state.loginValue)}>정보불러오기</RaisedButton>
+                    <RaisedButton backgroundColor={'#00E676'} icon={<NoteAdd color="white" />} onClick={() => load(this.state.loginValue)}>정보불러오기</RaisedButton>
                 </div>
 
                 <div>

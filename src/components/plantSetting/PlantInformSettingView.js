@@ -5,7 +5,7 @@ import Checkbox from 'material-ui/Checkbox';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { Card, CardActions, CardHeader } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+
 
 import { plantSettingStyles } from '../../common/styles';
 import '../../css/plantSetting.scss'
