@@ -52,7 +52,7 @@ export function getDefaultSettingValue(type) {
     }else if(type==='MOBILE'){
         
         clientId="EFWSadminMobile" + yyyy + mm + dd;
-        axios.defaults.headers.common['clientId'] = "Client test"
+        axios.defaults.headers.common['clientId'] = "Client "+ hasha(clientId)
     }
       
     

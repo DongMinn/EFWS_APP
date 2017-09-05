@@ -13,9 +13,12 @@ import PlantInformSettingView from './plantSetting/PlantInformSettingView';
 import PlantInformSettingNoShowView from './plantSetting/PlantInformSettingNoShowView';
 import PlantSettingSaveButtonView from './plantSetting/PlantSettingSaveButtonView';
 import PlantInformSettingAlarmView from './plantSetting/PlantInformSettingAlarmView';
+import PlantInformAlarmSaveButtonView from './plantSetting/PlantInformAlarmSaveButtonView';
+import PlantInformAlarmAddButtonView from './plantSetting/PlantInformAlarmAddButtonView';
 import SearchBarView from './reservation/SearchBarView';
 
 
 export { Header , LoginView ,  ReservationStateView , CustomerReservationStateView , ChangePasswordView , ChangeInformationView , PlantInformSettingView 
-        , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingNoShowView , PlantInformSettingAlarmView
+        , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingNoShowView , PlantInformSettingAlarmView 
+        , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView
     };

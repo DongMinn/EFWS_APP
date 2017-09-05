@@ -33,87 +33,7 @@ class ReservationState extends Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.checkJWT = this.checkJWT.bind(this);
     }
-    checkJWT() {
-        let loginData = getCookie('key');
-      
-        if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
-        axios.defaults.headers.common['authorization'] = loginData.token;
-        this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);
-        this.props.getStatusRequest().then(
-            response => {
-                if (!response) {
-
-                    this.handleLogin(loginData.id, loginData.password)
-                } else {
-                    this.handleGetData();
-                }
-            }
-        )
-    }
-    handleGetData() {
-        this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
-            response => {
-                if (response) {
-                    this.handleSetData();
-                }
-            }
-        )
-        this.props.reservationGetDataRequest(this.props.authData.currentId).then(
-            () => {
-                this.handleSetData();
-              
-            }
-        )
-    }
-    handleLogin(id, password) {
-        return this.props.loginRequest(id, password).then(
-            () => {
-                if (this.props.loginStatus.status === "SUCCESS") {
-                    //document.cookie = '';
-                    document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-
-                
-                    let loginData = {
-                        isLoggedIn: true,
-                        id: id,
-                        password: password,//비번도 암호화 해서 쿠키에 저장하도록 수정
-                        token: this.props.authData.token
-                    };
-                  
-                    axios.defaults.headers.common['authorization'] = loginData.token;
-                    //쿠키저장
-
-                    document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-                    this.handleGetData();
-                 
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        )
-    }
-
-    handleFilteredData(reserveData) {
-        reserveData.sort((a, b) => {
-            return a.tableType < b.tableType ? -1 : a.tableType > b.tableType ? 1 : 0;
-        });
-
-        reserveData = reserveData.filter(
-            (reserve) => {
-                if (this.state.searchType === 'cellPhone') {
-                    return reserve.customerCellphone.toLowerCase()
-                        .indexOf(this.state.cellPhone.toLowerCase()) > -1;
-                } else {
-                    return reserve.reservationNo.toLowerCase()
-                        .indexOf(this.state.reservationNo.toLowerCase()) > -1;
-                }
-
-            }
-        );
-        return reserveData;
-    }
+    
     handleSearchTypeChange(searchType) {
         this.setState({
             searchType: searchType
@@ -136,8 +56,89 @@ class ReservationState extends Component {
             })
         }
     }
+    checkJWT() {
+        let loginData = getCookie('key');
+      
+        if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
+        axios.defaults.headers.common['authorization'] = loginData.token;
+        this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);
+        this.props.getStatusRequest().then(
+            response => {
+                if (!response) {
+
+                    this.handleLogin(loginData.id, loginData.password)
+                } else {
+                    this.handleGetData();
+                }
+            }
+        )
+    }
+    handleLogin(id, password) {
+        return this.props.loginRequest(id, password).then(
+            () => {
+                if (this.props.loginStatus.status === "SUCCESS") {
+                    //document.cookie = '';
+                    document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });      
+                    let loginData = {
+                        isLoggedIn: true,
+                        id: id,
+                        password: password,//비번도 암호화 해서 쿠키에 저장하도록 수정
+                        token: this.props.authData.token
+                    };
+                    axios.defaults.headers.common['authorization'] = loginData.token;
+                    //쿠키저장
+                    document.cookie = 'key=' + btoa(JSON.stringify(loginData));
+                    this.handleGetData();
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        )
+    }
+    handleGetData() {
+        this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
+            response => {
+                
+                if (response===true) {
+                    this.handleSetData();
+                }else if(response===-1) this.checkJWT();
+                else{
+                    console.log('데이터불러오기 실패')
+                }
+            }
+        )
+        this.props.reservationGetDataRequest(this.props.authData.currentId).then(
+            response => {
+                if (response===true) {
+                    this.handleSetData();
+                }else if(response===-1) this.checkJWT();
+                else{
+                    console.log('데이터불러오기 실패')
+                }
+            }
+        )
+    }
+    handleFilteredData(reserveData) {
+        reserveData.sort((a, b) => {
+            return a.tableType < b.tableType ? -1 : a.tableType > b.tableType ? 1 : 0;
+        });
+
+        reserveData = reserveData.filter(
+            (reserve) => {
+                if (this.state.searchType === 'cellPhone') {
+                    return reserve.customerCellphone.toLowerCase()
+                        .indexOf(this.state.cellPhone.toLowerCase()) > -1;
+                } else {
+                    return reserve.reservationNo.toLowerCase()
+                        .indexOf(this.state.reservationNo.toLowerCase()) > -1;
+                }
+            }
+        );
+        return reserveData;
+    }
     handlePutData(reserveData) {
-        
         return this.props.reservationPutRequest(this.props.authData.currentId, reserveData).then(
             response => {
                 if (response === true) {
@@ -159,12 +160,10 @@ class ReservationState extends Component {
         )
     }
     handleSetData() {
-
         let getReserveData = this.props.reserveData;
         let getReserveTotalData = this.props.reserveTotalData;
         let tmpTotalTime = 0;
         let tmpTotalTeam = 0;
-
         if (getReserveData === undefined) {
             getReserveData = ''
         }
@@ -172,32 +171,21 @@ class ReservationState extends Component {
             getReserveTotalData = ''
         } else {
 
-
             for (let i = 0; i < getReserveTotalData.length; i++) {
-
                 tmpTotalTime = tmpTotalTime + Number(getReserveTotalData[i].remainingWaitingTime);
                 tmpTotalTeam = tmpTotalTeam + Number(getReserveTotalData[i].remainingWaitingTeamCount);
-
             }
-
-        }
-
-
-       
+        }  
         this.setState({
             reservedData: getReserveData,
             reserveTotalData: getReserveTotalData,
             reserveTotalTime: tmpTotalTime,
             reserveTotalTeam: tmpTotalTeam
-        })
-        
+        })    
     }
     handleUpdateData(reserveData, newState) {
-
         //if -1 ? 토큰먼저확인 
-
-        //reservationUpdateRequest
-
+        //reservationUpdateReques
         return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.customerCellphone, newState).then(
             response => {
                 //성공
@@ -207,10 +195,17 @@ class ReservationState extends Component {
                 } else if (response === -1) {
                     let loginData = getCookie('key');
                     return this.handleLogin(loginData.id, loginData.password).then(
-                        (reseponse) => {
-                            if (reseponse) {
-                                this.handleUpdateData(reserveData  , newState);
-                            }
+                        () => {
+                            return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.customerCellphone, newState).then(
+                                response => {
+                                    if (response === true) {
+                                        this.handleGetData();
+                                        return true;
+                                    }else{
+                                        return false;
+                                    }
+                                }
+                            )
                         }
                     )
                 } else {

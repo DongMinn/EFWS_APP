@@ -41,7 +41,6 @@ class ReservationStateTestView extends Component {
         this.handleOpenDialog();
         this.props.onUpdateReserveState(this.state.reserve, 'CANCEL').then(
             response => {
-
                 if (response) {
                     this.props.onPutReserveData(this.state.reserve).then(
                         response => {

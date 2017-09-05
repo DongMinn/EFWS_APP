@@ -36,7 +36,6 @@ export const reservationGetDataRequest = (plantCode) => {
             if (error.response.data.status === 500) {
 
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
-                        debugger;
                         return -1;
                     }
                 }
@@ -76,7 +75,6 @@ export const reservationUpdateRequest = (id, customerCellphone, state) => {
 
 export const reservationPutRequest = (id, reserveData) => {
     return (dispatch) => {
-
         dispatch(reservePutData());
         return axios.post('/table/reservation/store/save', {
             loginId: id,
