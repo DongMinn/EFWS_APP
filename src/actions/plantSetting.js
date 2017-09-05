@@ -148,6 +148,39 @@ export const plantSettingGetAlarmDataRequest = (loginId)=>{
         ).catch(
             error=>{
                 dispatch(plantSettingGetAlarmDataFailure());
+                if (error.response.data.status === 500) {
+                    if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
+                        return -1;
+                    }
+                }
+                return false;
+            }
+        )
+    }
+}
+export const plantSettingUpdateAlarmDataRequest = (loginId , alarmList)=>{
+    return (dispatch)=>{
+        dispatch(plantSettingUpdateAlarmData());
+
+        return axios.post('/plant/setting/alarmtalk/update' , {
+            loginId:loginId,
+            alarmTalkList:alarmList
+        }).then(
+            response=>{
+                if(response.status===200 && response.data.status===200){
+                    
+                    dispatch(plantSettingUpdateAlarmDataSuccess());
+                    return true;
+                }
+            }
+        ).catch(
+            error=>{
+                dispatch(plantSettingUpdateAlarmDataFailure());
+                if (error.response.data.status === 500) {
+                    if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
+                        return -1;
+                    }
+                }
                 return false;
             }
         )

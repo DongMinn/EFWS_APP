@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 
 import RaisedButton from 'material-ui/RaisedButton';
-import SweetAlert from 'sweetalert-react';
+import Add from 'material-ui/svg-icons/content/add';
+
 
 class PlantInformAlarmAddButtonView extends Component {
     constructor(props){
@@ -19,7 +20,7 @@ class PlantInformAlarmAddButtonView extends Component {
     render() {
         return (
             <div>
-                <RaisedButton primary={true} onClick={this.handleAddData}>추가</RaisedButton>
+                <RaisedButton icon={<Add color="white"/>}primary={true} onClick={this.handleAddData}>추가</RaisedButton>
             </div>
         );
     }

@@ -5,21 +5,20 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
-import Add from 'material-ui/svg-icons/content/add';
+
 import Remove from 'material-ui/svg-icons/content/remove';
 
 
-// let data=[{firstName: 'john', lastName: 'Doe'},{firstName: 'john2', lastName: 'Doe2'}]
 
 class PlantInformSettingAlarmView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            alarmTalkList: [{ sequence: '1', sendPoint: '-1' }],
             value: 1,
             sequence: '',
             sendPoint:'',
-            disabledCheck: false
+            disabledCheck: false,
+            showPopUp:false
         }
         this.handleChangeAlarm = this.handleChangeAlarm.bind(this);
         this.handleChangeSendPoint = this.handleChangeSendPoint.bind(this);
@@ -37,12 +36,13 @@ class PlantInformSettingAlarmView extends Component {
 
     }
     handleChangeSendPoint(event, index, value) {
-        // if (this.props.onChangeAlarmTime(this.props.plantSettingData, value)) {
+        
+        if (this.props.onChangeAlarmData(this.props.alarmTalkData, value)) {
 
-        //     this.setState({
-        //         value: parseInt(this.props.plantSettingData.tableWaitTime, 10)
-        //     })
-        // }
+            this.setState({
+                value: parseInt(this.props.alarmTalkData.sendPoint, 10),
+            })
+        }
     }
     handleChangeAlarm() {
 
@@ -99,8 +99,8 @@ class PlantInformSettingAlarmView extends Component {
 
             </Card>
 
-        )
-       
+        );
+    
         return (
             <div>
                 {settingView}

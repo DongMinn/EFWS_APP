@@ -20,11 +20,15 @@ class PlantSettingSaveButtonView extends Component {
         });
         this.props.onUpdatePlantSetting().then(
             response => {
-                response ? this.setState({ successStatus: true }) : this.setState({ failStatus: true })
-
+                
+                if(response===true){
+                    this.setState({ successStatus: true })
+                }else{
+                    this.setState({ failStatus: true })
+                    
+                }
             }
         )
-
     }
     handleClick() {
         this.setState({
@@ -67,7 +71,6 @@ class PlantSettingSaveButtonView extends Component {
                     title="매장세팅 변경 실패!"
                     text={this.props.returnMessage}
                     onConfirm={() => {
-                        
                         this.setState({ failStatus: false });
                         this.props.onGetPlantSetting();
                     }}

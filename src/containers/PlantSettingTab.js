@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 
-import { PlantInformSettingView, PlantSettingSaveButtonView, PlantInformSettingNoShowView, PlantInformSettingAlarmView
-        , PlantInformAlarmSaveButtonView, PlantInformAlarmAddButtonView } from '../components';
+import {
+    PlantInformSettingView, PlantSettingSaveButtonView, PlantInformSettingNoShowView, PlantInformSettingAlarmView
+    , PlantInformAlarmSaveButtonView, PlantInformAlarmAddButtonView
+} from '../components';
 import { connect } from 'react-redux';
 import {
     plantSettingGetDataRequest, plantSettingUpdateDataRequest, plantSettingGetNoShowDataRequest
-    , plantSettingUpdateNoShowDataRequest, plantSettingGetAlarmDataRequest
+    , plantSettingUpdateNoShowDataRequest, plantSettingGetAlarmDataRequest, plantSettingUpdateAlarmDataRequest
 } from '../actions/plantSetting';
 import { getStatusRequest, setCurrentInform, loginRequest } from '../actions/authentication'
 import { plantSettingStyles } from '../common/styles';
@@ -36,6 +38,8 @@ class PlantSettingTab extends Component {
         this.handleAddAlarm = this.handleAddAlarm.bind(this);
         this.handleRemoveAlarm = this.handleRemoveAlarm.bind(this);
         this.handleChangeAlarm = this.handleChangeAlarm.bind(this);
+        this.handleUpdateAlarm = this.handleUpdateAlarm.bind(this);
+        this.handleCheckAlarmData = this.handleCheckAlarmData.bind(this);
 
         this.handleGetPlantSettingNoShow = this.handleGetPlantSettingNoShow.bind(this);
         this.handleUpdateNoshowTime = this.handleUpdateNoshowTime.bind(this);
@@ -106,52 +110,98 @@ class PlantSettingTab extends Component {
             alarmTalkList: tmpalarmTalkList
         })
     }
-    handleAddAlarm(){
+    handleAddAlarm() {
         let tmpList = this.state.alarmTalkList;
-        let lastNo = (parseInt(tmpList[tmpList.length-1].sequence , 10)+1).toString();
-        let lastPoint = (parseInt(tmpList[tmpList.length-1].sendPoint , 10)-1).toString();
-        tmpList.push({sequence:lastNo , sendPoint:lastPoint});
+        let lastPoint = 0;
+        let lastNo = (parseInt(tmpList[tmpList.length - 1].sequence, 10) + 1).toString();
+        if (parseInt(tmpList[tmpList.length - 1].sendPoint, 10) - 1 < 0) lastPoint = "0"
+        else {
+            lastPoint = (parseInt(tmpList[tmpList.length - 1].sendPoint, 10) - 1).toString();
+        }
+
+        tmpList.push({ sequence: lastNo, sendPoint: lastPoint });
 
         this.setState({
-            alarmTalkList:tmpList
+            alarmTalkList: tmpList
         })
     }
-    handleRemoveAlarm(index){
-        
-        let tmpList = this.state.alarmTalkList;
-        tmpList.splice(index , 1);
+    handleRemoveAlarm(index) {
 
-        for(let i = 1 ; i<tmpList.length; i++){
-            tmpList[i].sequence=(i+1).toString();
+        let tmpList = this.state.alarmTalkList;
+        tmpList.splice(index, 1);
+
+        for (let i = 1; i < tmpList.length; i++) {
+            tmpList[i].sequence = (i + 1).toString();
         }
         this.setState({
-            alarmTalkList:tmpList
-        })  
+            alarmTalkList: tmpList
+        })
         return true;
-        
-    }
-    handleChangeAlarm(alarmTalkData , value){
-        // let newTime = value.toString();
-        // let newPlantSettingData = plantSettingData;
-        // let tmpPlantSettingDataList = this.state.plantSettingList;
 
-        // newPlantSettingData = {
-        //     ...newPlantSettingData,
-        //     tableWaitTime: newTime
-        // }
-        // let newTableType = newPlantSettingData.tableType;
-        // for (let i = 0; i < tmpPlantSettingDataList.length; i++) {
-        //     if (newTableType === tmpPlantSettingDataList[i].tableType) {
-        //         tmpPlantSettingDataList[i] = newPlantSettingData;
-        //         this.setState({
-        //             plantSettingList: tmpPlantSettingDataList
-        //         })
-        //         return true;
-        //     }
-        // }
-        // return false;
     }
+    handleChangeAlarm(alarmTalkData, value) {
 
+        let tmpAlarmTalkList = this.state.alarmTalkList;
+        let newValue = value.toString();
+        let tmpAlarmTalkData = alarmTalkData;
+
+        tmpAlarmTalkData = {
+            ...tmpAlarmTalkData,
+            sendPoint: newValue
+        }
+        let tmpSequence = tmpAlarmTalkData.sequence;
+
+        for (let i = 1; i < tmpAlarmTalkList.length; i++) {
+            if (tmpSequence === tmpAlarmTalkList[i].sequence) {
+                tmpAlarmTalkList[i] = tmpAlarmTalkData;
+                this.setState({
+                    alarmTalkList: tmpAlarmTalkList
+                })
+                return true;
+            }
+        }
+        return false;
+    }
+    handleCheckAlarmData() {
+
+        for (let i = 1; i < this.state.alarmTalkList.length - 1; i++) {
+            for (let y = i + 1; y < this.state.alarmTalkList.length; y++) {
+                if (this.state.alarmTalkList[i].sendPoint === this.state.alarmTalkList[y].sendPoint) {
+                    console.log(this.state.alarmTalkList[i].sendPoint)
+                    console.log(this.state.alarmTalkList[y].sendPoint)
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    handleUpdateAlarm() {
+        debugger;
+        return this.props.plantSettingUpdateAlarmDataRequest(this.props.authData.currentId, this.state.alarmTalkList).then(
+            response => {
+                if (response === true) {
+                    this.handleGetPlantSettingAlarm();
+                    return true;
+                } else if (response === -1) {
+                    let loginData = getCookie('key');
+                    return this.handleLogin(loginData.id, loginData.password).then(
+                        (reseponse) => {
+                            if (reseponse) {
+                                return this.props.plantSettingUpdateAlarmDataRequest(this.props.authData.currentId, this.state.alarmTalkList).then(
+                                    response => {
+                                        if (response === true) { this.handleGetPlantSettingAlarm(); return true; }
+                                    }
+                                )
+                            }
+                        }
+                    )
+                } else {
+                    console.log('DEBUG: 알림톡 업데이트 실패');
+                    return false;
+                }
+            }
+        )
+    }
 
     handleGetPlantSettingNoShow() {
         return this.props.plantSettingGetNoShowRequest(this.props.authData.currentId).then(
@@ -159,7 +209,6 @@ class PlantSettingTab extends Component {
                 if (response === true) {
                     this.handleSetNoshowTime();
                 }
-
             }
         )
         // this.props.authData.currentId
@@ -194,13 +243,14 @@ class PlantSettingTab extends Component {
                         }
                     )
                 } else {
-                    console.log('DEBUG: 노쇼 업데이트 실패');
+                    console.log('DEBUG:nosh 업데이트 실패');
                     return false;
                 }
             }
         )
     }
     handleChangeNoshowTime(value) {
+        
         this.setState({ noshowTime: value })
         return true;
     }
@@ -326,8 +376,8 @@ class PlantSettingTab extends Component {
                     return (
                         <PlantInformSettingAlarmView
                             alarmTalkData={data} key={i}
-                            onRemoveData = {this.handleRemoveAlarm}
-                            onChangeAlarmTime={this.handleChangeAlarm}
+                            onRemoveData={this.handleRemoveAlarm}
+                            onChangeAlarmData={this.handleChangeAlarm}
                         />
                     )
                 }
@@ -367,11 +417,15 @@ class PlantSettingTab extends Component {
                     <Tab label="알림톡세팅" buttonStyle={plantSettingStyles.Button}>
                         <div>
                             <div>
-                                <br/>
-                                <PlantInformAlarmSaveButtonView /> 
-                                <br/>
+                                <br />
+                                <PlantInformAlarmSaveButtonView
+                                    onUpdateAlarmData={this.handleUpdateAlarm}
+                                    onGetAlarmData={this.handleGetPlantSettingAlarm}
+                                    onCheckAlarmData={this.handleCheckAlarmData}
+                                />
+                                <br />
                                 <PlantInformAlarmAddButtonView
-                                    onAddData = {this.handleAddAlarm}
+                                    onAddData={this.handleAddAlarm}
                                 />
                             </div>
                             <div>
@@ -423,6 +477,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         plantSettingGetAlarmDataRequest: (id) => {
             return dispatch(plantSettingGetAlarmDataRequest(id))
+        },
+        plantSettingUpdateAlarmDataRequest: (id, alarmList) => {
+            return dispatch(plantSettingUpdateAlarmDataRequest(id, alarmList))
         }
     };
 };

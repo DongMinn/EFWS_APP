@@ -28,7 +28,7 @@ class Header extends Component {
     }
     
     handleLinkToHome() {
-        browserHistory.push('/reservationstate');
+        browserHistory.push('/');
         console.log('link')
     };
 
