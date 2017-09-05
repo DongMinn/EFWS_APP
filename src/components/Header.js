@@ -22,8 +22,13 @@ class Header extends Component {
         this.handleLinkToReservation = this.handleLinkToReservation.bind(this);
         this.handleLinkToChangeInform= this.handleLinkToChangeInform.bind(this);
     }
+    
+    componentWillMount() {
+        this.handleLinkToHome();
+    }
+    
     handleLinkToHome() {
-        browserHistory.push('/');
+        browserHistory.push('/reservationstate');
         console.log('link')
     };
 
