@@ -66,7 +66,7 @@ export const plantSettingUpdateDataRequest = (id, plantSettingList) => {
                     return -1;
                 }
             } else if (error.response.data.status === 400) {
-                debugger;
+                
                 dispatch(plantSettingUpdateDataFailureByReserveData(error.response.data.message));
             }
 

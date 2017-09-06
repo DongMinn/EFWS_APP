@@ -54,6 +54,7 @@ export const reservationUpdateRequest = (id, reservationNo, state) => {
             waitingState: state
         }).then(
             response => {
+                
                 if (response.status === 200) {
                     console.log('DEBUG: reservation.action 예약데이터 상태변경완료 ');
                     dispatch(reserveUpdateDataSuccess());

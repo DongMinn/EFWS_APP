@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { CustomerReservationStateView } from '../components';
+import { CustomerReservationStateView, CustomerReservationPlantInfoView } from '../components';
 import { connect } from 'react-redux';
 import { customerReservationGetDataRequest, customerLoginRequest } from '../actions/customerReservation';
 import { reservationUpdateRequest, reservationPutRequest } from '../actions/reservation';
+import { getStoreInformationRequest } from '../actions/authentication'
+
 import { getDefaultSettingValue } from '../common/common';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
@@ -16,23 +18,27 @@ class CustomerReservationState extends Component {
             customerData: {},
             loginId: '',
             reservationNo: '',
-            availableCheck:true
+            availableCheck:false,
+            plantInfo:{}
         };
         this.handleGetCustomerReserveData = this.handleGetCustomerReserveData.bind(this);
         this.handleLoginRequest = this.handleLoginRequest.bind(this);
         this.handleUpdateCustomerReserveData = this.handleUpdateCustomerReserveData.bind(this);
         this.handlePutCustomerReserveData = this.handlePutCustomerReserveData.bind(this);
         this.handleDeleteCustomerReserveData = this.handleDeleteCustomerReserveData.bind(this);
+        
+        this.handleGetPlantInfo = this.handleGetPlantInfo.bind(this);
     };
     handleDeleteCustomerReserveData(customerData, newState){
-        return this.handleLoginRequest().then(
+        return this.handleLoginRequest(this.state.loginId , this.state.reservationNo).then(
             response => {
+                
                 if (response) {
                     return this.props.reservationUpdateRequest(this.state.loginId, this.state.reservationNo, newState).then(
                         response => {
                             if (response === true) {
                                 this.handleGetCustomerReserveData(this.state.loginId, this.state.reservationNo);
-                                return true;
+                                
                             } else if (response === -1) {
                                     //재로그인..?
                             } else {
@@ -114,6 +120,7 @@ class CustomerReservationState extends Component {
                 if (response===true) {
                     axios.defaults.headers.common['authorization'] = this.props.token;
                     this.handleGetCustomerReserveData(id , reservationNo);
+                    this.handleGetPlantInfo(id);
                     return true;
                 } else { return false; }
             }
@@ -123,6 +130,7 @@ class CustomerReservationState extends Component {
 
         return this.props.customerReservationGetDataRequest(id, reservationNo).then(
             response => {
+                
                 if (response===true) {
                     this.setState({
                         customerData: this.props.customerData,
@@ -130,12 +138,24 @@ class CustomerReservationState extends Component {
                     })
                     return true;
                 } else if(response===-1){
+                    
                     this.setState({availableCheck:false})
+                    window.location.reload();
+                    return -1;
                 }
                 else {
                     console.log('실패');
                     return false;
                 }
+            }
+        )
+    }
+    handleGetPlantInfo(id){
+        this.props.getStoreInformationRequest(id).then(
+            ()=>{
+                this.setState({
+                    plantInfo:this.props.plantInfo
+                })
             }
         )
     }
@@ -166,6 +186,11 @@ class CustomerReservationState extends Component {
                         onGetReserveData={this.handleGetCustomerReserveData}
                     />
                 </div>
+                <div>
+                    <CustomerReservationPlantInfoView
+                        plantInfo={this.state.plantInfo}
+                    />
+                </div>
 
             </div>
         );
@@ -175,7 +200,8 @@ const mapStateToProps = (state) => {
     return {
         customerData: state.customerReservation.value.customerReserveData,
         token: state.customerReservation.value.token,
-        NewreservationNo: state.reservation.reservationNo
+        NewreservationNo: state.reservation.reservationNo,
+        plantInfo: state.authentication.value
     }
 
 };
@@ -192,6 +218,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         reservationPutRequest: (id, reserveData) => {
             return dispatch(reservationPutRequest(id, reserveData))
+        },
+        getStoreInformationRequest: (id) => {
+            return dispatch(getStoreInformationRequest(id))
         }
     }
 };

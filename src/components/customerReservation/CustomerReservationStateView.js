@@ -13,10 +13,10 @@ import Autonew from 'material-ui/svg-icons/action/autorenew';
 import Delete from 'material-ui/svg-icons/action/delete';
 
 import SweetAlert from 'sweetalert-react';
-import pizzaImg from '../images/pizza.jpg';
+import pizzaImg from '../../images/pizza.jpg';
 
-import { styles, customerStyles, gridStyles } from '../common/styles';
-import '../css/customerReserve.scss';
+import { styles, customerStyles, gridStyles } from '../../common/styles';
+import '../../css/customerReserve.scss';
 
 class CustomerReservationStateView extends Component {
     constructor(props) {
@@ -37,7 +37,7 @@ class CustomerReservationStateView extends Component {
     }
     handleTitle() {
         if (this.props.customerData.remainingWaitingTime === "0") return '지금 입장하세요!'
-        else if (this.props.customerData.remainingWaitingTime === undefined) return '대기정보가 없습니다!'
+        else if (this.props.availableCheck === false) return '대기정보가 없습니다!'
         return this.props.customerData.remainingWaitingTime + '분 후 입장가능!'
     }
     setCustomerData(customerData, state) {
@@ -176,9 +176,7 @@ class CustomerReservationStateView extends Component {
                         </GridTile>
                     ))}
                 </GridList>
-                <div>
-                    피자몰 명동점에 방문해주셔서 감사합니다.
-                </div>
+                
 
             </div>
         )
@@ -258,7 +256,6 @@ class CustomerReservationStateView extends Component {
                     show={this.state.putDataShow}
                     title='대기 변경 완료'
                     text='대기 변경 완료되었습니다.'
-                    showCancelButton
                     onConfirm={() => {
                         this.setState({
                             putDataShow: false,

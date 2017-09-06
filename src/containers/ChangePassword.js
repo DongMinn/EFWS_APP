@@ -74,11 +74,11 @@ class ChangePassword extends Component {
 
                                 return this.props.checkPasswordRequest(id, password).then(
                                     (response)=>{
-                                        debugger;
+                                        
                                         if(response===true){
                                             return this.props.changePasswordRequest(id, password , newPassword).then(
                                                 response=>{
-                                                    debugger;
+                                                    
                                                     return response;
                                                 }
                                             )

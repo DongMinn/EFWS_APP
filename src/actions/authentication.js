@@ -67,7 +67,7 @@ export function checkPasswordRequest(id, password) {
             password: hasha(password)
         }).then((response) => {
             //체크 성공이라면,
-            debugger;
+            
             if (response.status === 200) {
                 if (response.data.status === 200) {
                     dispatch(checkPasswordSuccess());
@@ -77,7 +77,7 @@ export function checkPasswordRequest(id, password) {
         }).catch((error) => {
             console.log('DEBUG: CheckPassword request failed!');
             dispatch(checkPasswordFailure());
-            debugger;
+            
             if (error.response.data.status === 500) {
                 if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                     return -1;
@@ -160,7 +160,7 @@ export function getStoreInformationRequest(id) {
                 }
             }
         }).catch(error => {
-debugger;
+
             console.log('DEBUG:getStoreInformationRequest:실패')
             dispatch(getStoreInformationFailure());
             if (error.response.data.status === 500) {
