@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
-
+import SweetAlert from 'sweetalert-react';
 import Remove from 'material-ui/svg-icons/content/remove';
 
 
@@ -18,7 +18,7 @@ class PlantInformSettingAlarmView extends Component {
             sequence: '',
             sendPoint:'',
             disabledCheck: false,
-            showPopUp:false
+            showPopUp:false,
         }
         this.handleChangeAlarm = this.handleChangeAlarm.bind(this);
         this.handleChangeSendPoint = this.handleChangeSendPoint.bind(this);
@@ -50,6 +50,9 @@ class PlantInformSettingAlarmView extends Component {
             this.setState({
                 value: parseInt(this.props.alarmTalkData.sendPoint, 10),
             })
+        }else{
+            
+            this.setState({ showPopUp: true });
         }
     }
     handleChangeAlarm() {
@@ -76,6 +79,19 @@ class PlantInformSettingAlarmView extends Component {
 
     }
     render() {
+        const changeFailedView = (
+            <div>
+                <SweetAlert
+                    show={this.state.showPopUp}
+                    title="알림톡세팅 변경 실패"
+                    text="중복값은 사용 할 수 없습니다!"
+                    onConfirm={() => {
+                        this.setState({ showPopUp: false });
+                        //this.props.onGetAlarmData();
+                    }}
+                />
+            </div>
+        );
         const items = [];
         for (let i = -1; i < 10; i++) {
             items.push(<MenuItem value={i} key={i} primaryText={this.handleValue(i)} disabled={i===-1?true:false} />);
@@ -108,9 +124,10 @@ class PlantInformSettingAlarmView extends Component {
             </Card>
 
         );
-    
+        
         return (
             <div>
+                {changeFailedView}
                 {settingView}
             </div>
         );

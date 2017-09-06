@@ -205,7 +205,11 @@ class CustomerReservationStateView extends Component {
                         <RaisedButton
                             backgroundColor='#8CD4F5'
                             label="Ok"
-                            onTouchTap={this.handleChangeData}
+                            onTouchTap={() => {
+                                this.handleChangeData()
+                               
+                                }
+                            }
                         />,
                     ]}
                     modal={false}
@@ -259,6 +263,7 @@ class CustomerReservationStateView extends Component {
                         this.setState({
                             putDataShow: false,
                         });
+                        window.location.reload();
                     }}
                     onClose={() => console.log('close')} // eslint-disable-line no-console
                 />

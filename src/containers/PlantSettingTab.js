@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 import {
     PlantInformSettingView, PlantSettingSaveButtonView, PlantInformSettingNoShowView, PlantInformSettingAlarmView
-    , PlantInformAlarmSaveButtonView, PlantInformAlarmAddButtonView 
+    , PlantInformAlarmSaveButtonView, PlantInformAlarmAddButtonView
 } from '../components';
-import {PlantSetting , PlantSettingAlarm , PlantSettingNoshow} from '../containers'
+
 import { connect } from 'react-redux';
 import {
     plantSettingGetDataRequest, plantSettingUpdateDataRequest, plantSettingGetNoShowDataRequest
@@ -26,8 +26,8 @@ class PlantSettingTab extends Component {
             plantSettingList: [],
             noshowTime: '',
             alarmTalkList: [],
-            alarmCheckSuccessStatus:false,
-            alarmCheckFailStatus:false
+            alarmCheckSuccessStatus: false,
+            alarmCheckFailStatus: false
         };
 
         this.handleGetPlantSetting = this.handleGetPlantSetting.bind(this);
@@ -153,21 +153,49 @@ class PlantSettingTab extends Component {
             sendPoint: newValue
         }
         let tmpSequence = tmpAlarmTalkData.sequence;
-
         for (let i = 1; i < tmpAlarmTalkList.length; i++) {
             if (tmpSequence === tmpAlarmTalkList[i].sequence) {
                 tmpAlarmTalkList[i] = tmpAlarmTalkData;
-                this.setState({
-                    alarmTalkList: tmpAlarmTalkList
-                })
-                return true;
             }
         }
-        return false;
+        /*중복확인*/ 
+        for (let i = 1; i < tmpAlarmTalkList.length - 1; i++) {
+            for (let y = i + 1; y < tmpAlarmTalkList.length; y++) {
+                if (tmpAlarmTalkList[i].sendPoint === tmpAlarmTalkList[y].sendPoint) {
+                    return false;
+                }
+            }
+        }
+
+        /*자동정렬하기*/    
+        for (let i = 1; i < tmpAlarmTalkList.length - 1; i++) {
+            for (let y = i + 1; y < tmpAlarmTalkList.length; y++) {
+                if (tmpAlarmTalkList[i].sendPoint < tmpAlarmTalkList[y].sendPoint) {
+                    let tmpPoint = tmpAlarmTalkList[i].sendPoint
+                    tmpAlarmTalkList[i].sendPoint = tmpAlarmTalkList[y].sendPoint
+                    tmpAlarmTalkList[y].sendPoint = tmpPoint
+                }
+            }
+        }
+        this.setState({
+            alarmTalkList: tmpAlarmTalkList
+        })
+        return true;
+
+        // let tmpSequence = tmpAlarmTalkData.sequence;
+
+        // for (let i = 1; i < tmpAlarmTalkList.length; i++) {
+        //     if (tmpSequence === tmpAlarmTalkList[i].sequence) {
+        //         tmpAlarmTalkList[i] = tmpAlarmTalkData;
+        //         this.setState({
+        //             alarmTalkList: tmpAlarmTalkList
+        //         })
+        //         return true;
+        //     }
+        // }
+        // return false;
     }
     handleCheckAlarmData() {
-
-        
         for (let i = 1; i < this.state.alarmTalkList.length - 1; i++) {
             for (let y = i + 1; y < this.state.alarmTalkList.length; y++) {
                 if (this.state.alarmTalkList[i].sendPoint === this.state.alarmTalkList[y].sendPoint) {
@@ -179,15 +207,14 @@ class PlantSettingTab extends Component {
         return true;
     }
     handleUpdateAlarm() {
-        
+
         return this.props.plantSettingUpdateAlarmDataRequest(this.props.authData.currentId, this.state.alarmTalkList).then(
             response => {
                 if (response === true) {
-                    
                     this.handleGetPlantSettingAlarm();
                     return true;
                 } else if (response === -1) {
-                    
+
                     let loginData = getCookie('key');
                     return this.handleLogin(loginData.id, loginData.password).then(
                         (reseponse) => {
@@ -229,7 +256,7 @@ class PlantSettingTab extends Component {
         })
     }
     handleUpdateNoshowTime() {
-        
+
         return this.props.plantSettingUpdateNoShowRequest(this.props.authData.currentId, this.state.noshowTime).then(
             response => {
                 if (response === true) {
@@ -256,7 +283,7 @@ class PlantSettingTab extends Component {
         )
     }
     handleChangeNoshowTime(value) {
-        
+
         this.setState({ noshowTime: value })
         return true;
     }
@@ -371,15 +398,15 @@ class PlantSettingTab extends Component {
                             plantSettingData={data} key={i}
                             onChangeTableCheckFlag={this.handleChangeCheckFlag}
                             onChangeTableTime={this.handleChangeTableTime}
-                            onChangeTimeCheckFlag={this.handleChangeCheckFlag}
+                            
                         />
                     )
                 }
             )
         }
         const maptToPlantSettingAlarmData = (AlarmData) => {
-            
-            
+
+
             return AlarmData.map(
                 (data, i) => {
                     return (
@@ -407,10 +434,10 @@ class PlantSettingTab extends Component {
                                 />
                             </div>
                             <div>
-                              
-<Paper style={plantSettingStyles.Paper} zDepth={2}>
-{maptToPlantSettingData(this.state.plantSettingList)}
-</Paper>
+
+                                <Paper style={plantSettingStyles.Paper} zDepth={2}>
+                                    {maptToPlantSettingData(this.state.plantSettingList)}
+                                </Paper>
                             </div>
 
                         </div>

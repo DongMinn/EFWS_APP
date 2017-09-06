@@ -69,7 +69,7 @@ class PlantSettingSaveButtonView extends Component {
                 <SweetAlert
                     show={this.state.failStatus}
                     title="매장세팅 변경 실패!"
-                    text={this.props.returnMessage}
+                    text={this.props.returnMessage===undefined?'사용중인 테이블입니다.':this.props.returnMessage}
                     onConfirm={() => {
                         this.setState({ failStatus: false });
                         this.props.onGetPlantSetting();

@@ -5,7 +5,7 @@ import { customerReservationGetDataRequest, customerLoginRequest } from '../acti
 import { reservationUpdateRequest, reservationPutRequest } from '../actions/reservation';
 import { getDefaultSettingValue } from '../common/common';
 import axios from 'axios';
-
+import { browserHistory } from 'react-router';
 import base64 from 'base-64';
 
 
@@ -15,7 +15,7 @@ class CustomerReservationState extends Component {
         this.state = {
             customerData: {},
             loginId: '',
-            customerCellPhone: '',
+            reservationNo: '',
             availableCheck:true
         };
         this.handleGetCustomerReserveData = this.handleGetCustomerReserveData.bind(this);
@@ -28,10 +28,10 @@ class CustomerReservationState extends Component {
         return this.handleLoginRequest().then(
             response => {
                 if (response) {
-                    return this.props.reservationUpdateRequest(this.state.loginId, this.state.customerCellPhone, newState).then(
+                    return this.props.reservationUpdateRequest(this.state.loginId, this.state.reservationNo, newState).then(
                         response => {
                             if (response === true) {
-                                this.handleGetCustomerReserveData(this.state.loginId, this.state.customerCellPhone);
+                                this.handleGetCustomerReserveData(this.state.loginId, this.state.reservationNo);
                                 return true;
                             } else if (response === -1) {
                                     //재로그인..?
@@ -56,7 +56,7 @@ class CustomerReservationState extends Component {
         return this.props.reservationPutRequest(this.state.loginId, reserveData).then(
             response => {
                 if (response === true) {   
-                    this.handleGetCustomerReserveData(this.state.loginId, this.state.customerCellPhone);
+                    this.handleGetCustomerReserveData(this.state.loginId, this.state.reservationNo);
                 } else if (response === -1) {
                     // let loginData = getCookie('key');
                     // this.handleLogin(loginData.id, loginData.password).then(
@@ -74,13 +74,20 @@ class CustomerReservationState extends Component {
         )
     }
     handleUpdateCustomerReserveData(customerData, newState) {
-        return this.handleLoginRequest().then(
+        return this.handleLoginRequest(this.state.loginId , this.state.reservationNo).then(
             response => {
                 if (response) {
-                    return this.props.reservationUpdateRequest(this.state.loginId, this.state.customerCellPhone, newState).then(
+                    return this.props.reservationUpdateRequest(this.state.loginId, this.state.reservationNo, newState).then(
                         response => {
                             if (response === true) {
-                                this.handlePutCustomerReserveData(customerData);
+                                this.handlePutCustomerReserveData(customerData).then(
+                                    response=>{
+                                        if(response===true){
+                                            browserHistory.push(`/reservationdata/${this.state.loginId}/${this.props.NewreservationNo}`)
+                                            
+                                        } 
+                                    }
+                                );
                                 return true;
                             } else if (response === -1) {
 
@@ -100,21 +107,21 @@ class CustomerReservationState extends Component {
             }
         )
     }
-    handleLoginRequest() {
+    handleLoginRequest(id , reservationNo) {
         getDefaultSettingValue('MOBILE');
-
-        return this.props.customerLoginRequest(this.state.loginId, this.state.customerCellPhone).then(
+        return this.props.customerLoginRequest(id , reservationNo).then(
             response => {
                 if (response===true) {
                     axios.defaults.headers.common['authorization'] = this.props.token;
+                    this.handleGetCustomerReserveData(id , reservationNo);
                     return true;
                 } else { return false; }
             }
         )
     }
-    handleGetCustomerReserveData(id, cellPhone) {
+    handleGetCustomerReserveData(id, reservationNo) {
 
-        return this.props.customerReservationGetDataRequest(id, cellPhone).then(
+        return this.props.customerReservationGetDataRequest(id, reservationNo).then(
             response => {
                 if (response===true) {
                     this.setState({
@@ -136,14 +143,14 @@ class CustomerReservationState extends Component {
 
         getDefaultSettingValue('MOBILE');
         let tmpId = this.props.params.loginId;
-        let tmpPhone = this.props.params.customerCellPhone;
+        let tmpNo = this.props.params.reservationNo;
         this.setState({
             loginId: tmpId,
-            customerCellPhone: tmpPhone
+            reservationNo: tmpNo
         })
         // console.log(base64.encode('efws~*'));     
-
-        this.handleGetCustomerReserveData(tmpId, tmpPhone);
+        this.handleLoginRequest(tmpId , tmpNo);
+        
     }
     render() {
         return (
@@ -151,7 +158,7 @@ class CustomerReservationState extends Component {
                 <div>
                     <CustomerReservationStateView
                         loginId={this.state.loginId}
-                        customerCellPhone={this.state.customerCellPhone}
+                        reservationNo={this.state.reservationNo}
                         availableCheck={this.state.availableCheck}
                         customerData={this.state.customerData}
                         onUpdateCustomerReservation={this.handleUpdateCustomerReserveData}
@@ -167,7 +174,8 @@ class CustomerReservationState extends Component {
 const mapStateToProps = (state) => {
     return {
         customerData: state.customerReservation.value.customerReserveData,
-        token: state.customerReservation.value.token
+        token: state.customerReservation.value.token,
+        NewreservationNo: state.reservation.reservationNo
     }
 
 };

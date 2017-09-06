@@ -6,13 +6,10 @@ import ChangePassword from './ChangePassword';
 import ReservationState from './ReservationState';
 import CustomerReservationState from './CustomerReservationState';
 import PlantSettingTab from './PlantSettingTab'
-import PlantSetting from './PlantSetting'
-import PlantSettingAlarm from './PlantSettingAlarm'
-import PlantSettingNoshow from './PlantSettingNoshow'
 
 
 export { App, Login, Change  , ChangeInformation 
     ,ChangePassword ,ReservationState
     , CustomerReservationState, PlantSettingTab 
-    ,PlantSetting , PlantSettingAlarm , PlantSettingNoshow
+    
 };

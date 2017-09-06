@@ -186,7 +186,7 @@ class ReservationState extends Component {
     handleUpdateData(reserveData, newState) {
         //if -1 ? 토큰먼저확인 
         //reservationUpdateReques
-        return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.customerCellphone, newState).then(
+        return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
             response => {
                 //성공
                 if (response === true) {
@@ -196,7 +196,7 @@ class ReservationState extends Component {
                     let loginData = getCookie('key');
                     return this.handleLogin(loginData.id, loginData.password).then(
                         () => {
-                            return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.customerCellphone, newState).then(
+                            return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
                                 response => {
                                     if (response === true) {
                                         this.handleGetData();

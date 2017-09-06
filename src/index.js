@@ -25,8 +25,8 @@ ReactDOM.render(
     <Provider store={store}>
         <MuiThemeProvider>
             <Router history={browserHistory}>
-                <Route path="reservationdata/:loginId/:customerCellPhone" component={CustomerReservationState}>
-                    <Redirect from="reservationdata/:loginId/:customerCellPhone/*" to="reservationdata/:loginId/:customerCellPhone/" />
+                <Route path="reservationdata/:loginId/:reservationNo" component={CustomerReservationState}>
+                    <Redirect from="reservationdata/:loginId/:reservationNo/*" to="reservationdata/:loginId/:reservationNo/" />
                 </Route>
                 <Route path="/" component={App}>
                     <IndexRoute component={Login} />

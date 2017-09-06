@@ -21,55 +21,23 @@ class PlantInformAlarmSaveButtonView extends Component {
         })
     }
     handleSaveAlarmData() {
-        let flag = this.props.onCheckAlarmData();
-        if (flag === true) {
-            this.props.onUpdateAlarmData().then(
-                response => {
+        this.props.onUpdateAlarmData().then(
+            response => {
 
-                    if (response === true) {
-                        this.setState({ show: false, successStatus: true })
-                    } else {
-                        this.setState({
-                            show: false,
-                            newStatus: true,
-                        })
-                    }
+                if (response === true) {
+                    this.setState({ show: false, successStatus: true })
+                } else {
+                    this.setState({
+                        show: false,
+                        newStatus: true,
+                        message:'시스템스에 문의하세요!'
+                    })
                 }
-            )
-        } else {
-            this.setState({
-                show: false,
-                newStatus: true,
-                message: '중복된 값은 저장할 수 없습니다!'
-            })
-        }
+            }
+        )
+
     }
-    componentWillMount() {
-        console.log('윌마운트')
-        console.log(this.state.newStatus)
-        console.log(this.state.successStatus)
-    }
-    componentDidMount() {
-        console.log('디드마운트')
-        console.log(this.state.newStatus)
-        console.log(this.state.successStatus)
-    }
-    
-    
-    componentWillUpdate(nextProps, nextState) {
-        console.log('윌 업데이트')
-        console.log(this.state.newStatus)
-        console.log(this.state.successStatus)
-        console.log(nextState)
-        console.log(nextProps)
-    }
-    componentDidUpdate(prevProps, prevState) {
-        console.log('디드업데이트')
-        console.log(this.state.newStatus)
-        console.log(this.state.successStatus)
-        console.log(prevState)
-        console.log(prevProps)
-    }   
+
     render() {
         const alarmTalkDataConfirmView = (
             <div>

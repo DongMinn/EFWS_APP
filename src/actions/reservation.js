@@ -44,13 +44,13 @@ export const reservationGetDataRequest = (plantCode) => {
     }
 }
 
-export const reservationUpdateRequest = (id, customerCellphone, state) => {
+export const reservationUpdateRequest = (id, reservationNo, state) => {
     return (dispatch) => {
 
         dispatch(reserveUpdateData());
         return axios.post('/table/reservation/store/update', {
             loginId: id,
-            customerCellphone: customerCellphone,
+            reservationNo: reservationNo,
             waitingState: state
         }).then(
             response => {
@@ -85,7 +85,7 @@ export const reservationPutRequest = (id, reserveData) => {
             response => {
                 if (response.status === 201) {
                     console.log('DEBUG: reservation.action 예약데이터 생성완료');
-                    dispatch(reservePutDataSuccess());
+                    dispatch(reservePutDataSuccess(response.data.reservationNo));
                     return true;
                 } else {
 
@@ -168,8 +168,9 @@ export const reserveUpdateDataFailure = () => ({
 export const reservePutData = () => ({
     type: types.RESERVE_PUT_DATA
 })
-export const reservePutDataSuccess = () => ({
-    type: types.RESERVE_PUT_DATA_SUCCESS
+export const reservePutDataSuccess = (reservationNo) => ({
+    type: types.RESERVE_PUT_DATA_SUCCESS,
+    reservationNo
 })
 export const reservePutDataFailure = () => ({
     type: types.RESERVE_PUT_DATA_FAILURE

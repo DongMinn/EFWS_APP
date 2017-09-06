@@ -10,6 +10,7 @@ const initialState = {
         updateData:'',
         putData:'',
     },
+    reservationNo:'',
     reserveValue: [],
     reserveTotalValue:[]
 };
@@ -83,7 +84,8 @@ export default function reservation(state = initialState, action) {
                 status:{
                     ...state.status,
                     putData:'SUCCESS'
-                }
+                },
+                reservationNo:action.reservationNo
             };
         case types.RESERVE_PUT_DATA_FAILURE:
             return{
