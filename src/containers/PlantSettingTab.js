@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 
 import {
     PlantInformSettingView, PlantSettingSaveButtonView, PlantInformSettingNoShowView, PlantInformSettingAlarmView
-    , PlantInformAlarmSaveButtonView, PlantInformAlarmAddButtonView
+    , PlantInformAlarmSaveButtonView, PlantInformAlarmAddButtonView 
 } from '../components';
+import {PlantSetting , PlantSettingAlarm , PlantSettingNoshow} from '../containers'
 import { connect } from 'react-redux';
 import {
     plantSettingGetDataRequest, plantSettingUpdateDataRequest, plantSettingGetNoShowDataRequest
@@ -24,7 +25,9 @@ class PlantSettingTab extends Component {
         this.state = {
             plantSettingList: [],
             noshowTime: '',
-            alarmTalkList: []
+            alarmTalkList: [],
+            alarmCheckSuccessStatus:false,
+            alarmCheckFailStatus:false
         };
 
         this.handleGetPlantSetting = this.handleGetPlantSetting.bind(this);
@@ -164,11 +167,11 @@ class PlantSettingTab extends Component {
     }
     handleCheckAlarmData() {
 
+        
         for (let i = 1; i < this.state.alarmTalkList.length - 1; i++) {
             for (let y = i + 1; y < this.state.alarmTalkList.length; y++) {
                 if (this.state.alarmTalkList[i].sendPoint === this.state.alarmTalkList[y].sendPoint) {
-                    console.log(this.state.alarmTalkList[i].sendPoint)
-                    console.log(this.state.alarmTalkList[y].sendPoint)
+                    // this.setState({alarmCheckFailStatus:true})
                     return false;
                 }
             }
@@ -176,13 +179,15 @@ class PlantSettingTab extends Component {
         return true;
     }
     handleUpdateAlarm() {
-        debugger;
+        
         return this.props.plantSettingUpdateAlarmDataRequest(this.props.authData.currentId, this.state.alarmTalkList).then(
             response => {
                 if (response === true) {
+                    
                     this.handleGetPlantSettingAlarm();
                     return true;
                 } else if (response === -1) {
+                    
                     let loginData = getCookie('key');
                     return this.handleLogin(loginData.id, loginData.password).then(
                         (reseponse) => {
@@ -224,6 +229,7 @@ class PlantSettingTab extends Component {
         })
     }
     handleUpdateNoshowTime() {
+        
         return this.props.plantSettingUpdateNoShowRequest(this.props.authData.currentId, this.state.noshowTime).then(
             response => {
                 if (response === true) {
@@ -352,9 +358,10 @@ class PlantSettingTab extends Component {
             }
         )
     }
-    componentWillMount() {
+    componentDidMount() {
         this.checkJWT();
     }
+
     render() {
         const maptToPlantSettingData = (plantSettingData) => {
             return plantSettingData.map(
@@ -371,6 +378,8 @@ class PlantSettingTab extends Component {
             )
         }
         const maptToPlantSettingAlarmData = (AlarmData) => {
+            
+            
             return AlarmData.map(
                 (data, i) => {
                     return (
@@ -398,9 +407,10 @@ class PlantSettingTab extends Component {
                                 />
                             </div>
                             <div>
-                                <Paper style={plantSettingStyles.Paper} zDepth={2}>
-                                    {maptToPlantSettingData(this.state.plantSettingList)}
-                                </Paper>
+                              
+<Paper style={plantSettingStyles.Paper} zDepth={2}>
+{maptToPlantSettingData(this.state.plantSettingList)}
+</Paper>
                             </div>
 
                         </div>
@@ -422,6 +432,7 @@ class PlantSettingTab extends Component {
                                     onUpdateAlarmData={this.handleUpdateAlarm}
                                     onGetAlarmData={this.handleGetPlantSettingAlarm}
                                     onCheckAlarmData={this.handleCheckAlarmData}
+                                    failStatus={this.state.alarmCheckFailStatus}
                                 />
                                 <br />
                                 <PlantInformAlarmAddButtonView
@@ -484,3 +495,5 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PlantSettingTab);
+
+

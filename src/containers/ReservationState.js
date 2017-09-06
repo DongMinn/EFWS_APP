@@ -216,11 +216,12 @@ class ReservationState extends Component {
     }
     //컴포터는 최초 로딩시 데이터 호출
     componentWillMount() {
-        this.checkJWT();
+        
 
     }
     componentDidMount() {
-        //웹소켓 연결하는 부분
+        this.checkJWT();
+            //웹소켓 연결하는 부분
 
         let api_url='';
         if(process.env.NODE_ENV === 'development'){

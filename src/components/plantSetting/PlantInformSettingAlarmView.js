@@ -23,6 +23,14 @@ class PlantInformSettingAlarmView extends Component {
         this.handleChangeAlarm = this.handleChangeAlarm.bind(this);
         this.handleChangeSendPoint = this.handleChangeSendPoint.bind(this);
         this.handleRemoveData = this.handleRemoveData.bind(this);
+        this.handleValue = this.handleValue.bind(this);
+    }
+    handleValue(i){
+        if(i===-1){
+            return `예약하자마자`
+        }else{
+            return `앞에 ${i}팀 남아있을때`
+        }
     }
     handleRemoveData() {
        
@@ -70,7 +78,7 @@ class PlantInformSettingAlarmView extends Component {
     render() {
         const items = [];
         for (let i = -1; i < 10; i++) {
-            items.push(<MenuItem value={i} key={i} primaryText={`입장 ${i} 번째 전`} disabled={i===-1?true:false} />);
+            items.push(<MenuItem value={i} key={i} primaryText={this.handleValue(i)} disabled={i===-1?true:false} />);
         }
 
 

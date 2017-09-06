@@ -14,18 +14,26 @@ class PlantInformSettingNoShowView extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            show: false,
             value: 10,
             failStatus: false,
             successStatus: false
         }
         this.handleChangeTableTime = this.handleChangeTableTime.bind(this);
         this.handleUpdateNoshowTime = this.handleUpdateNoshowTime.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+    }
+    handleClick() {
+        this.setState({
+            show: true
+        })
     }
     handleUpdateNoshowTime() {
+        
         if (this.props.onUpdateNoshowTime()) {
-            this.setState({ successStatus: true })
+            this.setState({ show:false , successStatus: true })
         }else{
-            this.setState({ failStatus: true })
+            this.setState({ show:false , failStatus: true })
         }
     }
     handleChangeTableTime(event, index, value) {
@@ -51,6 +59,22 @@ class PlantInformSettingNoShowView extends Component {
         for (let i = 1; i <= 60; i++) {
             items.push(<MenuItem value={i} key={i} primaryText={`${i} 분`} />);
         }
+        const noShowDataConfirmView = (
+            <div>
+                <SweetAlert
+                    show={this.state.show}
+                    title="NoShow 세팅 변경"
+                    text={'Noshow 세팅을 저장 하시겠습니까?'}
+                    showCancelButton
+                    onConfirm={this.handleUpdateNoshowTime}
+                    onCancel={() => {
+                        this.setState({
+                            show: false,
+                        });
+                    }}
+                />
+            </div>
+        );
         const changeSuccessedView = (
             <div>
                 <SweetAlert
@@ -78,7 +102,7 @@ class PlantInformSettingNoShowView extends Component {
             </div>
         );
         const saveButton = (
-            <RaisedButton primary={true} onClick={this.handleUpdateNoshowTime}>저장</RaisedButton>
+            <RaisedButton primary={true} onClick={this.handleClick}>저장</RaisedButton>
         )
         const settingView = (
             <Card>
@@ -102,6 +126,7 @@ class PlantInformSettingNoShowView extends Component {
         )
         return (
             <div>
+                {noShowDataConfirmView}
                 {changeSuccessedView}
                 {changeFailedView}
                 <br />
