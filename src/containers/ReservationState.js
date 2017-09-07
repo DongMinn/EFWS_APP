@@ -256,6 +256,7 @@ class ReservationState extends Component {
                     let tmpRightPhoneNumber = Right(reserve.customerCellphone, 4);
                     let tmpLeftPhoneNumber = Left(reserve.customerCellphone, 3);
                     tmpCellPhone = tmpLeftPhoneNumber + '-****-' + tmpRightPhoneNumber;
+                    if(reserve.customerCellphone===undefined) tmpCellPhone='프린터출력고객'
                     return (<ReservationStateView reserveData={reserve} key={i}
                         onUpdateReserveState={this.handleUpdateData}
                         onPutReserveData={this.handlePutData}
