@@ -15,7 +15,7 @@ class CustomerReservationPlantInfoView extends Component {
             <div>
 
                 {this.props.plantInfo.plantName}/
-                <a href="tel:{this.props.plantInfo.plantTelNo}">{this.props.plantInfo.plantTelNo}</a>
+                <a href>{this.props.plantInfo.plantTelNo}</a>
             </div>
         );
     }
