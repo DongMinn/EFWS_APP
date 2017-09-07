@@ -27,13 +27,10 @@ export function getDefaultSettingValue(type) {
     //   api_url = 'http://enjoeat.eland.co.kr:8080';
     }
     else {
-      api_url = 'http://enjoeat.eland.co.kr:8080';
+        api_url = 'http://enjoeat.eland.co.kr:8080';
     //   console.log('------------------------운영서버--------------------')
     }
     axios.defaults.baseURL = api_url;
-    // axios.defaults.baseURL = 'http://helpot.iptime.org:8080';
-
-
 
     let today = new Date();
     let dd = today.getDate();

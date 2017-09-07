@@ -4,7 +4,7 @@ import { ReservationStateView, ReservationInformView, SearchBarView } from '../c
 import Stomp from 'stompjs';
 import { reservationGetDataRequest, reservationUpdateRequest, reservationPutRequest, reservationGetTotalDataRequest } from '../actions/reservation';
 import { getStatusRequest, loginRequest } from '../actions/authentication'
-import { getCookie , Left , Right } from '../common/common';
+import { getCookie, Left, Right } from '../common/common';
 import { setCurrentInform } from '../actions/authentication';
 import '../css/common.scss'
 import axios from 'axios';
@@ -18,7 +18,7 @@ class ReservationState extends Component {
             reserveTotalData: [],
             cellPhone: '',
             reservationNo: '',
-            searchType: 'cellPhone',
+            searchType: 'reservationNo',
             reserveTotalTime: 0,
             reserveTotalTeam: 0
         };
@@ -33,7 +33,7 @@ class ReservationState extends Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.checkJWT = this.checkJWT.bind(this);
     }
-    
+
     handleSearchTypeChange(searchType) {
         this.setState({
             searchType: searchType
@@ -58,7 +58,7 @@ class ReservationState extends Component {
     }
     checkJWT() {
         let loginData = getCookie('key');
-      
+
         if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
         axios.defaults.headers.common['authorization'] = loginData.token;
         this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);
@@ -78,7 +78,7 @@ class ReservationState extends Component {
             () => {
                 if (this.props.loginStatus.status === "SUCCESS") {
                     //document.cookie = '';
-                    document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });      
+                    document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
                     let loginData = {
                         isLoggedIn: true,
                         id: id,
@@ -100,21 +100,21 @@ class ReservationState extends Component {
     handleGetData() {
         this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
             response => {
-                
-                if (response===true) {
+
+                if (response === true) {
                     this.handleSetData();
-                }else if(response===-1) this.checkJWT();
-                else{
+                } else if (response === -1) this.checkJWT();
+                else {
                     console.log('데이터불러오기 실패')
                 }
             }
         )
         this.props.reservationGetDataRequest(this.props.authData.currentId).then(
             response => {
-                if (response===true) {
+                if (response === true) {
                     this.handleSetData();
-                }else if(response===-1) this.checkJWT();
-                else{
+                } else if (response === -1) this.checkJWT();
+                else {
                     console.log('데이터불러오기 실패')
                 }
             }
@@ -127,13 +127,13 @@ class ReservationState extends Component {
 
         reserveData = reserveData.filter(
             (reserve) => {
-                if (this.state.searchType === 'cellPhone') {
-                    return reserve.customerCellphone.toLowerCase()
-                        .indexOf(this.state.cellPhone.toLowerCase()) > -1;
-                } else {
-                    return reserve.reservationNo.toLowerCase()
-                        .indexOf(this.state.reservationNo.toLowerCase()) > -1;
-                }
+                // if (this.state.searchType === 'cellPhone') {
+                //     return reserve.customerCellphone
+                //         .indexOf(this.state.cellPhone) > -1;
+                // } else {
+                return reserve.reservationNo.toLowerCase()
+                    .indexOf(this.state.reservationNo.toLowerCase()) > -1;
+                // }
             }
         );
         return reserveData;
@@ -175,13 +175,13 @@ class ReservationState extends Component {
                 tmpTotalTime = tmpTotalTime + Number(getReserveTotalData[i].remainingWaitingTime);
                 tmpTotalTeam = tmpTotalTeam + Number(getReserveTotalData[i].remainingWaitingTeamCount);
             }
-        }  
+        }
         this.setState({
             reservedData: getReserveData,
             reserveTotalData: getReserveTotalData,
             reserveTotalTime: tmpTotalTime,
             reserveTotalTeam: tmpTotalTeam
-        })    
+        })
     }
     handleUpdateData(reserveData, newState) {
         //if -1 ? 토큰먼저확인 
@@ -201,7 +201,7 @@ class ReservationState extends Component {
                                     if (response === true) {
                                         this.handleGetData();
                                         return true;
-                                    }else{
+                                    } else {
                                         return false;
                                     }
                                 }
@@ -216,21 +216,21 @@ class ReservationState extends Component {
     }
     //컴포터는 최초 로딩시 데이터 호출
     componentWillMount() {
-        
+
 
     }
     componentDidMount() {
         this.checkJWT();
-            //웹소켓 연결하는 부분
+        //웹소켓 연결하는 부분
 
-        let api_url='';
-        if(process.env.NODE_ENV === 'development'){
-          api_url=  'ws://localhost:8080/efws-websocket/websocket';
-        // api_url = 'ws://enjoeat.eland.co.kr:8080/efws-websocket/websocket';
+        let api_url = '';
+        if (process.env.NODE_ENV === 'development') {
+            api_url = 'ws://localhost:8080/efws-websocket/websocket';
+            // api_url = 'ws://enjoeat.eland.co.kr:8080/efws-websocket/websocket';
         }
         else {
             // api_url=  'ws://localhost:8080/efws-websocket/websocket';
-          api_url = 'ws://enjoeat.eland.co.kr:8080/efws-websocket/websocket';
+            api_url = 'ws://enjoeat.eland.co.kr:8080/efws-websocket/websocket';
         }
         let stomp = Stomp.client(api_url);
         stomp.connect({}, () => {
@@ -252,14 +252,14 @@ class ReservationState extends Component {
             reserveData = this.handleFilteredData(reserveData);
             return reserveData.map(
                 (reserve, i) => {
-                    let tmpCellPhone= '';
-                    let tmpRightPhoneNumber = Right(reserve.customerCellphone , 4);
-                    let tmpLeftPhoneNumber = Left(reserve.customerCellphone , 3);
-                    tmpCellPhone = tmpLeftPhoneNumber + '-****-'+ tmpRightPhoneNumber;
+                    let tmpCellPhone = '';
+                    let tmpRightPhoneNumber = Right(reserve.customerCellphone, 4);
+                    let tmpLeftPhoneNumber = Left(reserve.customerCellphone, 3);
+                    tmpCellPhone = tmpLeftPhoneNumber + '-****-' + tmpRightPhoneNumber;
                     return (<ReservationStateView reserveData={reserve} key={i}
                         onUpdateReserveState={this.handleUpdateData}
                         onPutReserveData={this.handlePutData}
-                        CellPhone = {tmpCellPhone}
+                        CellPhone={tmpCellPhone}
                     />)
                 }
             )
@@ -274,11 +274,11 @@ class ReservationState extends Component {
                         reserveTotalTeam={this.state.reserveTotalTeam}
                     />
                 </div>
-                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br/> <br/><br/> <br/>
+                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /> <br /><br /> <br />
                 <br />
                 <div>
                     <div id="reserveInfo">
-                        <SearchBarView 
+                        <SearchBarView
                             onChangeSearchData={this.handleChange}
                             onChangeSearchType={this.handleSearchTypeChange}
                             onClearData={this.handleClear}

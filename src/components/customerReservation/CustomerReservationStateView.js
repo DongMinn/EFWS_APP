@@ -13,7 +13,10 @@ import Autonew from 'material-ui/svg-icons/action/autorenew';
 import Delete from 'material-ui/svg-icons/action/delete';
 
 import SweetAlert from 'sweetalert-react';
-import pizzaImg from '../../images/pizza.jpg';
+import pm from '../../images/pm1.JPG';
+import al from '../../images/al1.JPG';
+import test1 from '../../images/test1.jpg';
+
 
 import { styles, customerStyles, gridStyles } from '../../common/styles';
 import '../../css/customerReserve.scss';
@@ -34,6 +37,21 @@ class CustomerReservationStateView extends Component {
         this.handleChangeReserve = this.handleChangeReserve.bind(this);
         this.handleRefreshClick = this.handleRefreshClick.bind(this);
         this.handleTitle = this.handleTitle.bind(this);
+        this.handleImage = this.handleImage.bind(this);
+    }
+    handleImage(){
+        
+        if(this.props.loginId.toUpperCase().indexOf("AL")!==-1){
+            return al
+        }
+        else if(this.props.loginId.toUpperCase().indexOf("PM")!==-1){
+            return pm
+        }
+        else if(this.props.loginId.toUpperCase().indexOf("JB")!==-1){
+            return test1
+        }
+        
+       
     }
     handleTitle() {
         if (this.props.customerData.remainingWaitingTime === "0") return '지금 입장하세요!'
@@ -114,7 +132,7 @@ class CustomerReservationStateView extends Component {
         const now = new Date();
         const tilesData = [
             {
-                img: pizzaImg,
+                img: this.handleImage(),
                 title: now.toLocaleString() + ' 기준',
                 titleBackground: "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)",
                 subtitle: this.handleTitle(),

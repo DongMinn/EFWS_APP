@@ -88,11 +88,12 @@ export const plantSettingStyles={
         fontWeight:'bold'
     },
     Tabs:{
-        width:'800px',
+        width:'600px',
         float: 'left'
     },
     Button:{
-        backgroundColor:'rgba(221, 98, 253, 0.94)'
+        backgroundColor:'rgba(221, 98, 253, 0.94)',
+        width:'200px'
     },
     Paper:{
         margin: 20,

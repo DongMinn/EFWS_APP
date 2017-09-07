@@ -9,9 +9,9 @@ class SearchBarView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cellPhone:'',
-            reservationNo:'',
-            searchType:'cellPhone'
+            cellPhone: '',
+            reservationNo: '',
+            searchType: 'reservationNo'
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleClear = this.handleClear.bind(this);
@@ -31,16 +31,16 @@ class SearchBarView extends Component {
         this.props.onClearData();
     }
     handleChange(e) {
-        if (this.state.searchType === 'cellPhone') {
-            this.setState({
-                cellPhone: e.target.value
-            })
-            
-        } else {
-            this.setState({
-                reservationNo: e.target.value
-            })
-        }
+        // if (this.state.searchType === 'cellPhone') {
+        //     this.setState({
+        //         cellPhone: e.target.value
+        //     })
+
+        // } else {
+        this.setState({
+            reservationNo: e.target.value
+        })
+        // }
         this.props.onChangeSearchData(e.target.value);
     }
 
@@ -49,12 +49,12 @@ class SearchBarView extends Component {
             <div>
                 <div>
                     <SelectField
-                        floatingLabelText="SearchType"
-                        value={this.state.searchType}
+                        floatingLabelText="검색구분"
+                        value={'reservationNo'}
                         onChange={this.handleSearchTypeChange}
+                        disabled={true}
                     >
-                        <MenuItem value={'cellPhone'} primaryText="Phone" />
-                        <MenuItem value={'reservationNo'} primaryText="ReservationNo" />
+                        <MenuItem value={'reservationNo'} primaryText="대기번호" />
                     </SelectField>
                 </div>
                 <div>
