@@ -9,6 +9,8 @@ import { setCurrentInform } from '../actions/authentication';
 import '../css/common.scss'
 import axios from 'axios';
 
+import { Card, CardActions, CardHeader } from 'material-ui/Card';
+
 
 class ReservationState extends Component {
     constructor(props) {
@@ -256,7 +258,7 @@ class ReservationState extends Component {
                     let tmpRightPhoneNumber = Right(reserve.customerCellphone, 4);
                     let tmpLeftPhoneNumber = Left(reserve.customerCellphone, 3);
                     tmpCellPhone = tmpLeftPhoneNumber + '-****-' + tmpRightPhoneNumber;
-                    if(reserve.customerCellphone===undefined) tmpCellPhone='프린터출력고객'
+                    if (reserve.customerCellphone === undefined) tmpCellPhone = '프린터출력고객'
                     return (<ReservationStateView reserveData={reserve} key={i}
                         onUpdateReserveState={this.handleUpdateData}
                         onPutReserveData={this.handlePutData}
@@ -267,14 +269,15 @@ class ReservationState extends Component {
         }
         return (
             <div>
-                <div>
-
-                    <ReservationInformView
-                        reserveTotalData={this.state.reserveTotalData}
-                        reserveTotalTime={this.state.reserveTotalTime}
-                        reserveTotalTeam={this.state.reserveTotalTeam}
-                    />
-                </div>
+                <Card>
+                    <div>
+                        <ReservationInformView
+                            reserveTotalData={this.state.reserveTotalData}
+                            reserveTotalTime={this.state.reserveTotalTime}
+                            reserveTotalTeam={this.state.reserveTotalTeam}
+                        />
+                    </div>
+                </Card>
                 <div>
                     <div id="reserveInfoSerchBar">
                         <SearchBarView
