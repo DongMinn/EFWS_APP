@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { customerReservationGetDataRequest, customerLoginRequest } from '../actions/customerReservation';
 import { reservationUpdateRequest, reservationPutRequest } from '../actions/reservation';
 import { getStoreInformationRequest } from '../actions/authentication'
+import { plantSettingGetDataRequest } from '../actions/plantSetting'
 
 import { getDefaultSettingValue } from '../common/common';
 import axios from 'axios';
@@ -18,37 +19,40 @@ class CustomerReservationState extends Component {
             customerData: {},
             loginId: '',
             reservationNo: '',
-            availableCheck:false,
-            plantInfo:{}
+            availableCheck: false,
+            plantInfo: {},
+            plantSettingList:[]
         };
         this.handleGetCustomerReserveData = this.handleGetCustomerReserveData.bind(this);
         this.handleLoginRequest = this.handleLoginRequest.bind(this);
         this.handleUpdateCustomerReserveData = this.handleUpdateCustomerReserveData.bind(this);
         this.handlePutCustomerReserveData = this.handlePutCustomerReserveData.bind(this);
         this.handleDeleteCustomerReserveData = this.handleDeleteCustomerReserveData.bind(this);
-        
+
+        this.handleGetPlantSettingInfo = this.handleGetPlantSettingInfo.bind(this);
         this.handleGetPlantInfo = this.handleGetPlantInfo.bind(this);
+        this.handleSetData = this.handleSetData.bind(this);
     };
-    handleDeleteCustomerReserveData(customerData, newState){
-        return this.handleLoginRequest(this.state.loginId , this.state.reservationNo).then(
+    handleDeleteCustomerReserveData(customerData, newState) {
+        return this.handleLoginRequest(this.state.loginId, this.state.reservationNo).then(
             response => {
-                
+
                 if (response) {
                     return this.props.reservationUpdateRequest(this.state.loginId, this.state.reservationNo, newState).then(
                         response => {
                             if (response === true) {
                                 this.handleGetCustomerReserveData(this.state.loginId, this.state.reservationNo);
-                                
+
                             } else if (response === -1) {
-                                    //재로그인..?
+                                //재로그인..?
                             } else {
                                 console.log('DEBUG: 예약상태 업데이트 실패')
                                 return false;
                             }
-                        }                              
-                    ) 
+                        }
+                    )
                 } else {
-                    
+
                     console.log('DEBUG: 커스터머로그인실패')
                     return false;
 
@@ -61,7 +65,7 @@ class CustomerReservationState extends Component {
 
         return this.props.reservationPutRequest(this.state.loginId, reserveData).then(
             response => {
-                if (response === true) {   
+                if (response === true) {
                     this.handleGetCustomerReserveData(this.state.loginId, this.state.reservationNo);
                 } else if (response === -1) {
                     // let loginData = getCookie('key');
@@ -80,18 +84,18 @@ class CustomerReservationState extends Component {
         )
     }
     handleUpdateCustomerReserveData(customerData, newState) {
-        return this.handleLoginRequest(this.state.loginId , this.state.reservationNo).then(
+        return this.handleLoginRequest(this.state.loginId, this.state.reservationNo).then(
             response => {
                 if (response) {
                     return this.props.reservationUpdateRequest(this.state.loginId, this.state.reservationNo, newState).then(
                         response => {
                             if (response === true) {
                                 this.handlePutCustomerReserveData(customerData).then(
-                                    response=>{
-                                        if(response===true){
+                                    response => {
+                                        if (response === true) {
                                             browserHistory.push(`/reservationdata/${this.state.loginId}/${this.props.NewreservationNo}`)
-                                            
-                                        } 
+
+                                        }
                                     }
                                 );
                                 return true;
@@ -104,7 +108,7 @@ class CustomerReservationState extends Component {
                         }
                     )
                 } else {
-                    
+
                     console.log('DEBUG: 커스터머로그인실패')
                     return false;
 
@@ -113,14 +117,15 @@ class CustomerReservationState extends Component {
             }
         )
     }
-    handleLoginRequest(id , reservationNo) {
+    handleLoginRequest(id, reservationNo) {
         getDefaultSettingValue('MOBILE');
-        return this.props.customerLoginRequest(id , reservationNo).then(
+        return this.props.customerLoginRequest(id, reservationNo).then(
             response => {
-                if (response===true) {
+                if (response === true) {
                     axios.defaults.headers.common['authorization'] = this.props.token;
-                    this.handleGetCustomerReserveData(id , reservationNo);
+                    this.handleGetCustomerReserveData(id, reservationNo);
                     this.handleGetPlantInfo(id);
+                    this.handleGetPlantSettingInfo(id);
                     return true;
                 } else { return false; }
             }
@@ -130,16 +135,16 @@ class CustomerReservationState extends Component {
 
         return this.props.customerReservationGetDataRequest(id, reservationNo).then(
             response => {
-                
-                if (response===true) {
+
+                if (response === true) {
                     this.setState({
                         customerData: this.props.customerData,
-                        availableCheck:true
+                        availableCheck: true
                     })
                     return true;
-                } else if(response===-1){
-                    
-                    this.setState({availableCheck:false})
+                } else if (response === -1) {
+
+                    this.setState({ availableCheck: false })
                     window.location.reload();
                     return -1;
                 }
@@ -150,12 +155,33 @@ class CustomerReservationState extends Component {
             }
         )
     }
-    handleGetPlantInfo(id){
+    handleGetPlantInfo(id) {
         this.props.getStoreInformationRequest(id).then(
-            ()=>{
+            () => {
                 this.setState({
-                    plantInfo:this.props.plantInfo
+                    plantInfo: this.props.plantInfo
                 })
+            }
+        )
+    }
+    handleSetData() {
+
+        let tmpPlantSettingList = this.props.plantSettingData;
+        if (tmpPlantSettingList === undefined) {
+            tmpPlantSettingList = ''
+        }
+        this.setState({
+            plantSettingList: tmpPlantSettingList
+        })
+        
+    }
+
+    handleGetPlantSettingInfo(id) {
+        this.props.plantSettingGetDataRequest(id).then(
+            response => {
+                if (response === true) {
+                    this.handleSetData();
+                }
             }
         )
     }
@@ -169,8 +195,8 @@ class CustomerReservationState extends Component {
             reservationNo: tmpNo
         })
         // console.log(base64.encode('efws~*'));     
-        this.handleLoginRequest(tmpId , tmpNo);
-        
+        this.handleLoginRequest(tmpId, tmpNo);
+
     }
     render() {
         return (
@@ -184,6 +210,7 @@ class CustomerReservationState extends Component {
                         onUpdateCustomerReservation={this.handleUpdateCustomerReserveData}
                         onDeleteReserveData={this.handleDeleteCustomerReserveData}
                         onGetReserveData={this.handleGetCustomerReserveData}
+                        plantSettingList={this.state.plantSettingList}
                     />
                 </div>
                 <div>
@@ -201,7 +228,8 @@ const mapStateToProps = (state) => {
         customerData: state.customerReservation.value.customerReserveData,
         token: state.customerReservation.value.token,
         NewreservationNo: state.reservation.reservationNo,
-        plantInfo: state.authentication.value
+        plantInfo: state.authentication.value,
+        plantSettingData: state.plantSetting.value.plantSettingList,
     }
 
 };
@@ -221,6 +249,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         getStoreInformationRequest: (id) => {
             return dispatch(getStoreInformationRequest(id))
+        },
+        plantSettingGetDataRequest: (id) => {
+            return dispatch(plantSettingGetDataRequest(id))
         }
     }
 };

@@ -60,7 +60,7 @@ class ChangeInformationView extends Component {
     }
     componentWillUnmount() {
         //리덕스 폼 초기화 하는 방법을 아무리 써도 안됨....
-        window.location.reload();
+      
     }
 
 
@@ -137,7 +137,6 @@ class ChangeInformationView extends Component {
 ChangeInformationView.propTypes = {
     mode: PropTypes.PropTypes.bool,
     onLogin: PropTypes.PropTypes.func
-
 };
 ChangeInformationView.defaultProps = {
     mode: true,
@@ -150,7 +149,6 @@ ChangeInformationView.defaultProps = {
 const mapDispatchToProps = (dispatch) => {
     return {
         load: (data) => { dispatch(loadData(data)) },
-
     };
 };
 

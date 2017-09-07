@@ -14,14 +14,11 @@ class CustomerReservationPlantInfoView extends Component {
         return (
             <div>
 
-                {this.props.plantInfo.plantName}/{this.props.plantInfo.plantTelNo}
+                {this.props.plantInfo.plantName}/
+                <a href="tel:{this.props.plantInfo.plantTelNo}">{this.props.plantInfo.plantTelNo}</a>
             </div>
         );
     }
 }
-
-CustomerReservationPlantInfoView.propTypes = {
-
-};
 
 export default CustomerReservationPlantInfoView;

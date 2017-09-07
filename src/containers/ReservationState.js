@@ -275,10 +275,8 @@ class ReservationState extends Component {
                         reserveTotalTeam={this.state.reserveTotalTeam}
                     />
                 </div>
-                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /> <br /><br /> <br />
-                <br />
                 <div>
-                    <div id="reserveInfo">
+                    <div id="reserveInfoSerchBar">
                         <SearchBarView
                             onChangeSearchData={this.handleChange}
                             onChangeSearchType={this.handleSearchTypeChange}

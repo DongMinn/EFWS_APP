@@ -60,7 +60,9 @@ export const styles = {
         width:'600px'
     },
     reserveinfoCard:{
-        height:'250px'
+        height:'250px',
+        width:'380px'
+
     },
     reserveinfoCardButton:{
         color: 'black' ,

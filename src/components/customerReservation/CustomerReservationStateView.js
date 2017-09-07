@@ -205,7 +205,13 @@ class CustomerReservationStateView extends Component {
                 {customerGridView}
             </div>
         )
-
+        const items = [];
+        for (let i = 0; i < this.props.plantSettingList.length; i++) {
+            
+            if(this.props.plantSettingList[i].tableUseChk==='Y'){
+                items.push(<MenuItem value={this.props.plantSettingList[i].tableType} key={i} primaryText={`${this.props.plantSettingList[i].tableType} 인 테이블`} />);
+            }
+        }
         const DialogView = (
             <div>
                 <Dialog
@@ -234,13 +240,9 @@ class CustomerReservationStateView extends Component {
                 >
                     <h3 id="dialogText">수정시 기존 대기상태는 삭제처리 됩니다.</h3>
                     <br />
-                    테이블 타입 :
+                    <h3>테이블 타입</h3><br/>
                     <DropDownMenu value={this.state.customerData.tableType} onChange={this.handleChangeReserve}>
-                        <MenuItem value={'2'} primaryText="2인테이블" />
-                        <MenuItem value={'4'} primaryText="4인테이블" />
-                        <MenuItem value={'6'} primaryText="6인테이블" />
-                        <MenuItem value={'8'} primaryText="8인테이블" />
-                        <MenuItem value={'9'} primaryText="9인테이블" />
+                        {items}
                     </DropDownMenu>
                 </Dialog>
 
@@ -284,6 +286,9 @@ class CustomerReservationStateView extends Component {
                 />
             </div>
         );
+
+       
+
         return (
             <div>
                 {reserveStateConfirmView}
@@ -297,6 +302,13 @@ class CustomerReservationStateView extends Component {
 }
 
 export default CustomerReservationStateView;
+
+
+// <MenuItem value={'2'} primaryText="2인테이블" />
+// <MenuItem value={'4'} primaryText="4인테이블" />
+// <MenuItem value={'6'} primaryText="6인테이블" />
+// <MenuItem value={'8'} primaryText="8인테이블" />
+// <MenuItem value={'9'} primaryText="9인테이블" />
 
 
 

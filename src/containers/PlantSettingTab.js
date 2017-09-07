@@ -405,8 +405,6 @@ class PlantSettingTab extends Component {
             )
         }
         const maptToPlantSettingAlarmData = (AlarmData) => {
-
-
             return AlarmData.map(
                 (data, i) => {
                     return (
