@@ -224,7 +224,6 @@ class ReservationState extends Component {
     componentDidMount() {
         this.checkJWT();
         //웹소켓 연결하는 부분
-
         let api_url = '';
         if (process.env.NODE_ENV === 'development') {
             api_url = 'ws://localhost:8080/efws-websocket/websocket';
@@ -241,8 +240,6 @@ class ReservationState extends Component {
                 this.checkJWT();
             })
         })
-    }
-    componentWillUnmount() {
     }
 
     render() {
@@ -268,16 +265,18 @@ class ReservationState extends Component {
             )
         }
         return (
-            <div>
-                <Card>
-                    <div>
-                        <ReservationInformView
-                            reserveTotalData={this.state.reserveTotalData}
-                            reserveTotalTime={this.state.reserveTotalTime}
-                            reserveTotalTeam={this.state.reserveTotalTeam}
-                        />
-                    </div>
-                </Card>
+            <div id="reserveTotal">
+                <div id="reserveInfoView">
+                    <Card>
+                        <div>
+                            <ReservationInformView
+                                reserveTotalData={this.state.reserveTotalData}
+                                reserveTotalTime={this.state.reserveTotalTime}
+                                reserveTotalTeam={this.state.reserveTotalTeam}
+                            />
+                        </div>
+                    </Card>
+                </div>
                 <div>
                     <div id="reserveInfoSerchBar">
                         <SearchBarView
@@ -289,8 +288,11 @@ class ReservationState extends Component {
 
                     </div>
                     <br /><br />
+
                     <div id="reserveInfo">
-                        {mapToReserveData(this.state.reservedData)}
+                        <div>
+                            {mapToReserveData(this.state.reservedData)}
+                        </div>
                     </div>
                 </div>
             </div>

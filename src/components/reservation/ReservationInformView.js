@@ -3,34 +3,35 @@ import React, { Component } from 'react';
 import { Card, CardActions, CardHeader } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-import { styles } from '../../common/styles';
+import { reservationInfoStyle, styles } from '../../common/styles';
 
 class ReservationInformView extends Component {
 
     render() {
         const totalDataLeftView = (
+            <div>
+                <Card style={reservationInfoStyle.reserveinfoCard}>
+                    <CardHeader
+                        title={'총 대기 상태'}
+                        actAsExpander={true}
+                        titleStyle={styles.cardHeader}
+                        titleColor={'#FF5722'}
+                    />
+                    <CardActions>
 
-            <Card style={styles.reserveinfoCard}>
-                <CardHeader
-                    title={'총 대기 상태'}
-                    actAsExpander={true}
-                    titleStyle={styles.cardHeader}
-                    titleColor={'#FF5722'}
-                />
-                <CardActions>
+                        <FlatButton label={'총 대기시간 '} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
+                        <FlatButton label={this.props.reserveTotalTime + ' 분'} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
+                        <br />
+                        <FlatButton label={'총 대기 팀 '} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
+                        <FlatButton label={this.props.reserveTotalTeam + ' 팀'} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
 
-                    <FlatButton label={'총 대기시간 '} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
-                    <FlatButton label={this.props.reserveTotalTime + ' 분'} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
-                    <br />
-                    <FlatButton label={'총 대기 팀 '} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
-                    <FlatButton label={this.props.reserveTotalTeam + ' 팀'} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
-
-                </CardActions>
-            </Card>
+                    </CardActions>
+                </Card>
+            </div>
         )
         const totalDataCenterView = (
             <div>
-                <Card style={styles.reserveinfoCard}>
+                <Card style={reservationInfoStyle.reserveinfoCard}>
                     <CardHeader
                         title={'전체 예약 상황'}
                         actAsExpander={true}

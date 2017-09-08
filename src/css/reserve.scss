@@ -2,11 +2,11 @@
    float:left
 }
 #reserveInfo {
-   float:left;
+   display:inline-block; 
   }
 #reserveInfoSerchBar {
-    float:left;
     width:100%;
+    display:inline-block; 
    }
 #reserveStateView{
   border:1px solid cadetblue;
@@ -37,6 +37,11 @@
 }
 
 
-// .sweet-alert h2 {
-//     color: pink
-// }
+//////////
+#reserveInfoView{
+  display:inline-block; 
+}
+#reserveTotal{
+  // text-align:center;
+}
+
