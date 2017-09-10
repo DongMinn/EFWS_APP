@@ -53,10 +53,10 @@ class ReservationInformView extends Component {
         )
         return (
             <div>
-                <div className="reserveTotalLeft">
+                <div className="reserve-total-left">
                     {totalDataLeftView}
                 </div>
-                <div className="reserveTotalCenter">
+                <div className="reserve-total-center">
                     {totalDataCenterView}
                 </div>
 

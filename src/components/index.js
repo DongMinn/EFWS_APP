@@ -1,6 +1,7 @@
 
 
 import Header from './Header';
+import MenuBar from './MenuBar';
 import LoginView from './LoginView';
 // import ChangeRequest from './ChangeRequest';
 import ReservationStateView from './reservation/ReservationStateView';
@@ -19,7 +20,7 @@ import PlantInformAlarmAddButtonView from './plantSetting/PlantInformAlarmAddBut
 import SearchBarView from './reservation/SearchBarView';
 
 
-export { Header , LoginView ,  ReservationStateView , CustomerReservationStateView,CustomerReservationPlantInfoView , ChangePasswordView , ChangeInformationView , PlantInformSettingView 
+export { Header , MenuBar,LoginView ,  ReservationStateView , CustomerReservationStateView,CustomerReservationPlantInfoView , ChangePasswordView , ChangeInformationView , PlantInformSettingView 
         , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingNoShowView , PlantInformSettingAlarmView 
         , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView
     };

@@ -9,10 +9,12 @@ const initialState = {
         getTotalData:'',
         updateData:'',
         putData:'',
+        getByTableData:''
     },
     reservationNo:'',
     reserveValue: [],
-    reserveTotalValue:[]
+    reserveTotalValue:[],
+    tableDataList:[]
 };
 export default function reservation(state = initialState, action) {
     switch (action.type) {
@@ -118,6 +120,31 @@ export default function reservation(state = initialState, action) {
                 status:{
                     ...state.status,
                     getTotalData:'FAILURE'
+                }
+            };
+        case types.RESERVE_GET_BYTABLE_DATA:
+            return{
+                ...state,
+                status:{
+                    ...state.status,
+                    getByTableData:'INIT'
+                }
+            };
+        case types.RESERVE_GET_BYTABLE_DATA_SUCCESS:
+            return{
+                ...state,
+                status:{
+                    ...state.status,
+                    getByTableData:'SUCCESS'
+                },
+                tableDataList:action.tableDataList
+            };
+        case types.RESERVE_GET_BYTABLE_DATA_FAILURE:
+            return{
+                ...state,
+                status:{
+                    ...state.status,
+                    getByTableData:'FAILURE'
                 }
             };
         default:

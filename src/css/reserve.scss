@@ -1,47 +1,47 @@
 .reserve {
    float:left
 }
-#reserveInfo {
+#reserve-info {
    display:inline-block; 
   }
-#reserveInfoSerchBar {
+#reserve-info-serch-bar {
     width:100%;
     display:inline-block; 
    }
-#reserveStateView{
+#reserve-state-view{
   border:1px solid cadetblue;
   float: left;
 }
-#reserveStateView1{
+#reserve-state-view1{
   border:1px solid cadetblue;
 
 }
-#reserveStateView2{
+#reserve-state-view2{
   border:1px solid cadetblue;
   width:88px;
   float: left;
 }
-#reserveCustomerTitle{
+#reserve-customer-title{
   text-align: center;
   border:1px solid black;
 }
 
+
 // 토탈 부분 css
-.reserveTotalCenter{
+.reserve-total-center{
   width: 370px;
   float:left;
 }
-.reserveTotalLeft{
-  width: 300px;
+.reserve-total-left{
+  width: 370px;
   float:left;
 }
 
 
-//////////
-#reserveInfoView{
+#reserve-info-view{
   display:inline-block; 
 }
-#reserveTotal{
-  // text-align:center;
+#reserve-total{
+  display:inline-block;
 }
 

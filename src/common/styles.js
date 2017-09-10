@@ -107,7 +107,9 @@ export const plantSettingStyles = {
 export const reservationInfoStyle={
     reserveinfoCard:{
         height:'250px',
-        width:'380px'
+        // width:'380p'
+        display:'inlineBlock'
+
     
     },
 }

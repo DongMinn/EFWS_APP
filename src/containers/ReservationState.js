@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ReservationStateView, ReservationInformView, SearchBarView } from '../components'
 import Stomp from 'stompjs';
-import { reservationGetDataRequest, reservationUpdateRequest, reservationPutRequest, reservationGetTotalDataRequest } from '../actions/reservation';
+import { reservationGetDataRequest, reservationUpdateRequest, reservationPutRequest
+    , reservationGetTotalDataRequest, reservationGetByTableDataRequest } from '../actions/reservation';
+import { plantSettingGetDataRequest } from '../actions/plantSetting'
 import { getStatusRequest, loginRequest } from '../actions/authentication'
 import { getCookie, Left, Right } from '../common/common';
 import { setCurrentInform } from '../actions/authentication';
 import '../css/common.scss'
 import axios from 'axios';
 
-import { Card, CardActions, CardHeader } from 'material-ui/Card';
 
 
 class ReservationState extends Component {
@@ -22,7 +23,8 @@ class ReservationState extends Component {
             reservationNo: '',
             searchType: 'reservationNo',
             reserveTotalTime: 0,
-            reserveTotalTeam: 0
+            reserveTotalTeam: 0,
+            plantSettingList: []
         };
         this.handleSetData = this.handleSetData.bind(this);
         this.handleUpdateData = this.handleUpdateData.bind(this);
@@ -34,8 +36,32 @@ class ReservationState extends Component {
         this.handleLogin = this.handleLogin.bind(this);
         this.handleGetData = this.handleGetData.bind(this);
         this.checkJWT = this.checkJWT.bind(this);
-    }
 
+        this.handleGetPlantSettingInfo = this.handleGetPlantSettingInfo.bind(this);
+        // this.handleAddPlantData = this.handleAddPlantData.bind(this);
+
+    }
+    // handleAddPlantData(){
+    //     let tmpPlantSettingList = this.state.plantSettingList;
+    //     tmpPlantSettingList.unshift({
+    //         tableType:"1",
+    //         tableUseChk:"Y",
+    //         tableWaitTime:"30",
+    //         tableWaitTimeUseChk:"Y"
+    //     });
+    //     this.setState({
+    //         plantSettingList:tmpPlantSettingList
+    //     })
+    // }
+    handleGetPlantSettingInfo(id) {
+        this.props.plantSettingGetDataRequest(id).then(
+            response => {
+                if (response === true) {
+                    this.handleSetData();
+                }
+            }
+        )
+    }
     handleSearchTypeChange(searchType) {
         this.setState({
             searchType: searchType
@@ -59,6 +85,7 @@ class ReservationState extends Component {
         }
     }
     checkJWT() {
+        
         let loginData = getCookie('key');
 
         if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
@@ -121,6 +148,8 @@ class ReservationState extends Component {
                 }
             }
         )
+        this.handleGetPlantSettingInfo(this.props.authData.currentId);
+
     }
     handleFilteredData(reserveData) {
         reserveData.sort((a, b) => {
@@ -162,10 +191,16 @@ class ReservationState extends Component {
         )
     }
     handleSetData() {
+        let tmpPlantSettingList = this.props.plantSettingData;
+
         let getReserveData = this.props.reserveData;
         let getReserveTotalData = this.props.reserveTotalData;
         let tmpTotalTime = 0;
         let tmpTotalTeam = 0;
+        if (tmpPlantSettingList === undefined) {
+            tmpPlantSettingList = ''
+        }
+
         if (getReserveData === undefined) {
             getReserveData = ''
         }
@@ -178,12 +213,21 @@ class ReservationState extends Component {
                 tmpTotalTeam = tmpTotalTeam + Number(getReserveTotalData[i].remainingWaitingTeamCount);
             }
         }
+
+        // tmpPlantSettingList.unshift({
+        //     tableType:"1",
+        //     tableUseChk:"Y",
+        //     tableWaitTime:"30",
+        //     tableWaitTimeUseChk:"Y"
+        // });
         this.setState({
             reservedData: getReserveData,
             reserveTotalData: getReserveTotalData,
             reserveTotalTime: tmpTotalTime,
-            reserveTotalTeam: tmpTotalTeam
+            reserveTotalTeam: tmpTotalTeam,
+            plantSettingList: tmpPlantSettingList
         })
+
     }
     handleUpdateData(reserveData, newState) {
         //if -1 ? 토큰먼저확인 
@@ -216,11 +260,7 @@ class ReservationState extends Component {
                 }
             })
     }
-    //컴포터는 최초 로딩시 데이터 호출
-    componentWillMount() {
 
-
-    }
     componentDidMount() {
         this.checkJWT();
         //웹소켓 연결하는 부분
@@ -265,31 +305,32 @@ class ReservationState extends Component {
             )
         }
         return (
-            <div id="reserveTotal">
-                <div id="reserveInfoView">
-                    <Card>
-                        <div>
-                            <ReservationInformView
-                                reserveTotalData={this.state.reserveTotalData}
-                                reserveTotalTime={this.state.reserveTotalTime}
-                                reserveTotalTeam={this.state.reserveTotalTeam}
-                            />
-                        </div>
-                    </Card>
+            <div id="reserve-total">
+                <div id="reserve-info-view">
+
+                    <div>
+                        <ReservationInformView
+                            reserveTotalData={this.state.reserveTotalData}
+                            reserveTotalTime={this.state.reserveTotalTime}
+                            reserveTotalTeam={this.state.reserveTotalTeam}
+                        />
+                    </div>
+
                 </div>
                 <div>
-                    <div id="reserveInfoSerchBar">
+                    <div id="reserve-info-serch-bar">
                         <SearchBarView
                             onChangeSearchData={this.handleChange}
                             onChangeSearchType={this.handleSearchTypeChange}
                             onClearData={this.handleClear}
                             searchType={this.state.searchType}
+                            plantSettingList={this.state.plantSettingList}
                         />
 
                     </div>
                     <br /><br />
 
-                    <div id="reserveInfo">
+                    <div id="reserve-info">
                         <div>
                             {mapToReserveData(this.state.reservedData)}
                         </div>
@@ -305,7 +346,9 @@ const mapStateToProps = (state) => {
         reserveTotalData: state.reservation.reserveTotalValue,
         reserveStatus: state.reservation.status,
         authData: state.authentication.value,
-        loginStatus: state.authentication.login
+        loginStatus: state.authentication.login,
+        plantSettingData: state.plantSetting.value.plantSettingList,
+        tableDataList :state.reservation.tableDataList
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -331,6 +374,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         loginRequest: (id, password) => {
             return dispatch(loginRequest(id, password))
+        },
+        plantSettingGetDataRequest: (id) => {
+            return dispatch(plantSettingGetDataRequest(id))
+        },
+        reservationGetByTableDataRequest:(id ,byTableData)=>{
+            return dispatch(reservationGetByTableDataRequest(id , byTableData));
         }
     };
 };

@@ -35,10 +35,10 @@ export const reservationGetDataRequest = (plantCode) => {
             console.log('DEBUG: Reserve request failed!');
             if (error.response.data.status === 500) {
 
-                    if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
-                        return -1;
-                    }
+                if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
+                    return -1;
                 }
+            }
             return false;
         });
     }
@@ -54,7 +54,7 @@ export const reservationUpdateRequest = (id, reservationNo, state) => {
             waitingState: state
         }).then(
             response => {
-                
+
                 if (response.status === 200) {
                     console.log('DEBUG: reservation.action 예약데이터 상태변경완료 ');
                     dispatch(reserveUpdateDataSuccess());
@@ -64,7 +64,7 @@ export const reservationUpdateRequest = (id, reservationNo, state) => {
 
                 console.log('DEBUG: reservation.action 예약데이터 상태변경실패 ');
                 dispatch(reserveUpdateDataFailure());
-                if (error.response.data.status === 500) { 
+                if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                         return -1;
                     }
@@ -115,7 +115,7 @@ export const reservationGetTotalDataRequest = (id) => {
             loginId: id
         }).then(
             response => {
-                
+
                 if (response.status === 200) {
                     if (response.data.status === 200) {
                         console.log('DEBUG: reservation.action 예약종합데이터 조회 완료');
@@ -128,9 +128,6 @@ export const reservationGetTotalDataRequest = (id) => {
                 }
             }).catch(
             error => {
-
-                console.log(error.response);
-
                 console.log('DEBUG: reservation.action 예약종합데이터 조회 응답실패');
                 dispatch(reserveGetTotalDataFailure());
                 if (error.response.data.status === 500) {
@@ -142,6 +139,66 @@ export const reservationGetTotalDataRequest = (id) => {
             })
     }
 
+}
+
+export const reservationGetByTableDataRequest = (id, tableTypeList) => {
+    return (dispatch) => {
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1; //January is 0!
+        let yyyy = today.getFullYear();
+        if (mm < 10) {
+            mm = "0" + mm;
+        }
+        if (dd < 10) {
+            dd = "0" + dd;
+        }
+        let dates = yyyy + '-' + mm + '-' + dd
+        dispatch(reserveGetByTableData())
+        return axios.post('/table/reservation/store/find', {
+            loginId: id,
+            reservationNo: null,
+            waitingNo: null,
+            customerCellphone: '',
+            tableTypeList: tableTypeList,
+            waitingStateList: [{
+                waitingState: "RESERVATION"
+            },
+            {
+                waitingState: "CALL"
+            },
+            {
+                waitingState: "WAIT"
+            }],
+            reservationOrderTimeBegin: dates,
+            reservationOrderTimeEnd: dates
+
+        }).then(
+            response => {
+
+                if (response.status === 200) {
+                    if (response.data.status === 200) {
+                        console.log('DEBUG: reservation.action 테이블별데이터조회완료');
+                        dispatch(reserveGetByTableDataSuccess(response.data.reservationList));
+                        return true;
+                    }
+                } else {
+                    console.log('DEBUG: reservation.action 테이블별데이터조회실패');
+                    return false;
+                }
+            }
+            ).catch(
+            error => {
+                console.log('DEBUG: reservation.action 테이블별데이터조회실패');
+                dispatch(reserveGetByTableDataFailure());
+                if (error.response.data.status === 500) {
+                    if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
+                        return -1;
+                    }
+                }
+                return false;
+            })
+    }
 }
 
 
@@ -185,4 +242,14 @@ export const reserveGetTotalDataSuccess = (reserveTotalData) => ({
 })
 export const reserveGetTotalDataFailure = () => ({
     type: types.RESERVE_GET_TOTAL_DATA_FAILURE
+})
+export const reserveGetByTableData = () => ({
+    type: types.RESERVE_GET_BYTABLE_DATA
+})
+export const reserveGetByTableDataSuccess = (tableDataList) => ({
+    type: types.RESERVE_GET_BYTABLE_DATA_SUCCESS,
+    tableDataList
+})
+export const reserveGetByTableDataFailure = () => ({
+    type: types.RESERVE_GET_BYTABLE_DATA_FAILURE
 })
