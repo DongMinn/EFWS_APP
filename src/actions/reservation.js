@@ -160,7 +160,7 @@ export const reservationGetByTableDataRequest = (id, tableTypeList) => {
             reservationNo: null,
             waitingNo: null,
             customerCellphone: '',
-            tableTypeList: tableTypeList,
+            tableTypeList: [{tableType:tableTypeList}],
             waitingStateList: [{
                 waitingState: "RESERVATION"
             },
@@ -179,6 +179,7 @@ export const reservationGetByTableDataRequest = (id, tableTypeList) => {
                 if (response.status === 200) {
                     if (response.data.status === 200) {
                         console.log('DEBUG: reservation.action 테이블별데이터조회완료');
+                        
                         dispatch(reserveGetByTableDataSuccess(response.data.reservationList));
                         return true;
                     }

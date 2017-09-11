@@ -13,8 +13,8 @@ const initialState = {
     },
     reservationNo:'',
     reserveValue: [],
-    reserveTotalValue:[],
-    tableDataList:[]
+    reserveTotalValue:[]
+    
 };
 export default function reservation(state = initialState, action) {
     switch (action.type) {
@@ -137,7 +137,7 @@ export default function reservation(state = initialState, action) {
                     ...state.status,
                     getByTableData:'SUCCESS'
                 },
-                tableDataList:action.tableDataList
+                reserveValue:action.tableDataList
             };
         case types.RESERVE_GET_BYTABLE_DATA_FAILURE:
             return{

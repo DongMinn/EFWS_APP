@@ -42,7 +42,6 @@ class PlantSettingTab extends Component {
         this.handleRemoveAlarm = this.handleRemoveAlarm.bind(this);
         this.handleChangeAlarm = this.handleChangeAlarm.bind(this);
         this.handleUpdateAlarm = this.handleUpdateAlarm.bind(this);
-        this.handleCheckAlarmData = this.handleCheckAlarmData.bind(this);
 
         this.handleGetPlantSettingNoShow = this.handleGetPlantSettingNoShow.bind(this);
         this.handleUpdateNoshowTime = this.handleUpdateNoshowTime.bind(this);
@@ -144,6 +143,7 @@ class PlantSettingTab extends Component {
     }
     handleChangeAlarm(alarmTalkData, value) {
 
+     
         let tmpAlarmTalkList = this.state.alarmTalkList;
         let newValue = value.toString();
         let tmpAlarmTalkData = alarmTalkData;
@@ -159,6 +159,8 @@ class PlantSettingTab extends Component {
             }
         }
         /*중복확인*/ 
+
+       
         for (let i = 1; i < tmpAlarmTalkList.length - 1; i++) {
             for (let y = i + 1; y < tmpAlarmTalkList.length; y++) {
                 if (tmpAlarmTalkList[i].sendPoint === tmpAlarmTalkList[y].sendPoint) {
@@ -195,20 +197,24 @@ class PlantSettingTab extends Component {
         // }
         // return false;
     }
-    handleCheckAlarmData() {
-        for (let i = 1; i < this.state.alarmTalkList.length - 1; i++) {
-            for (let y = i + 1; y < this.state.alarmTalkList.length; y++) {
-                if (this.state.alarmTalkList[i].sendPoint === this.state.alarmTalkList[y].sendPoint) {
-                    // this.setState({alarmCheckFailStatus:true})
-                    return false;
+    
+    handleUpdateAlarm() {
+
+        let delData=[]
+        let tmpAlarmTalkList = this.state.alarmTalkList;
+        for (let i = 1; i < tmpAlarmTalkList.length - 1; i++) {
+            for (let y = i + 1; y < tmpAlarmTalkList.length; y++) {
+                if (tmpAlarmTalkList[i].sendPoint === tmpAlarmTalkList[y].sendPoint) {
+                    delData.push(y);
                 }
             }
         }
-        return true;
-    }
-    handleUpdateAlarm() {
 
-        return this.props.plantSettingUpdateAlarmDataRequest(this.props.authData.currentId, this.state.alarmTalkList).then(
+        for(let i=delData.length-1; i>=0 ; i--){
+            tmpAlarmTalkList.splice(delData[i], 1)
+        }
+
+        return this.props.plantSettingUpdateAlarmDataRequest(this.props.authData.currentId, tmpAlarmTalkList).then(
             response => {
                 if (response === true) {
                     this.handleGetPlantSettingAlarm();
@@ -219,7 +225,7 @@ class PlantSettingTab extends Component {
                     return this.handleLogin(loginData.id, loginData.password).then(
                         (reseponse) => {
                             if (reseponse) {
-                                return this.props.plantSettingUpdateAlarmDataRequest(this.props.authData.currentId, this.state.alarmTalkList).then(
+                                return this.props.plantSettingUpdateAlarmDataRequest(this.props.authData.currentId, tmpAlarmTalkList).then(
                                     response => {
                                         if (response === true) { this.handleGetPlantSettingAlarm(); return true; }
                                     }
@@ -456,7 +462,6 @@ class PlantSettingTab extends Component {
                                 <PlantInformAlarmSaveButtonView
                                     onUpdateAlarmData={this.handleUpdateAlarm}
                                     onGetAlarmData={this.handleGetPlantSettingAlarm}
-                                    onCheckAlarmData={this.handleCheckAlarmData}
                                     failStatus={this.state.alarmCheckFailStatus}
                                 />
                                 <br />

@@ -29,7 +29,7 @@ class SearchBarView extends Component {
         }
     }
     handleRadioButton(event , value){
-        console.log(value);
+        this.props.onChangeRadioButton(value);
         //여기서 값 불러오기 시전하면됨.
     }
     handleSearchTypeChange(event, index, value) {

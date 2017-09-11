@@ -6,6 +6,8 @@ import LoginView from './LoginView';
 // import ChangeRequest from './ChangeRequest';
 import ReservationStateView from './reservation/ReservationStateView';
 import ReservationInformView from './reservation/ReservationInformView';
+import EmptyReserveData from './reservation/EmptyReserveData';
+
 import CustomerReservationStateView from './customerReservation/CustomerReservationStateView'
 import CustomerReservationPlantInfoView from './customerReservation/CustomerReservationPlantInfoView'
 
@@ -22,5 +24,5 @@ import SearchBarView from './reservation/SearchBarView';
 
 export { Header , MenuBar,LoginView ,  ReservationStateView , CustomerReservationStateView,CustomerReservationPlantInfoView , ChangePasswordView , ChangeInformationView , PlantInformSettingView 
         , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingNoShowView , PlantInformSettingAlarmView 
-        , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView
+        , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView, EmptyReserveData
     };

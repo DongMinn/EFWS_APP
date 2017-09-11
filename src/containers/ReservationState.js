@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ReservationStateView, ReservationInformView, SearchBarView } from '../components'
+import { ReservationStateView, ReservationInformView, SearchBarView, EmptyReserveData } from '../components'
 import Stomp from 'stompjs';
-import { reservationGetDataRequest, reservationUpdateRequest, reservationPutRequest
-    , reservationGetTotalDataRequest, reservationGetByTableDataRequest } from '../actions/reservation';
+import {
+    reservationGetDataRequest, reservationUpdateRequest, reservationPutRequest
+    , reservationGetTotalDataRequest, reservationGetByTableDataRequest
+} from '../actions/reservation';
 import { plantSettingGetDataRequest } from '../actions/plantSetting'
 import { getStatusRequest, loginRequest } from '../actions/authentication'
 import { getCookie, Left, Right } from '../common/common';
@@ -24,7 +26,8 @@ class ReservationState extends Component {
             searchType: 'reservationNo',
             reserveTotalTime: 0,
             reserveTotalTeam: 0,
-            plantSettingList: []
+            plantSettingList: [],
+            searchTable: '1'
         };
         this.handleSetData = this.handleSetData.bind(this);
         this.handleUpdateData = this.handleUpdateData.bind(this);
@@ -38,6 +41,7 @@ class ReservationState extends Component {
         this.checkJWT = this.checkJWT.bind(this);
 
         this.handleGetPlantSettingInfo = this.handleGetPlantSettingInfo.bind(this);
+        this.handleGetByTableData = this.handleGetByTableData.bind(this);
         // this.handleAddPlantData = this.handleAddPlantData.bind(this);
 
     }
@@ -53,6 +57,11 @@ class ReservationState extends Component {
     //         plantSettingList:tmpPlantSettingList
     //     })
     // }
+    handleGetByTableData(tableType) {
+        this.setState({
+            searchTable: tableType
+        })
+    }
     handleGetPlantSettingInfo(id) {
         this.props.plantSettingGetDataRequest(id).then(
             response => {
@@ -85,7 +94,7 @@ class ReservationState extends Component {
         }
     }
     checkJWT() {
-        
+
         let loginData = getCookie('key');
 
         if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
@@ -283,13 +292,24 @@ class ReservationState extends Component {
     }
 
     render() {
-        const mapToReserveData = (reserveData) => {
+        const mapToReserveData = (reserveData, searchTable) => {
+            let realReserveData = reserveData
+            if (realReserveData === undefined || realReserveData === "") {
+                return (<EmptyReserveData />)
+            }
 
-            reserveData.sort((a, b) => {
+            if (searchTable !== "1") {
+                realReserveData = reserveData.filter(
+                    (reserve) => {
+                        return reserve.tableType
+                            .indexOf(searchTable) > -1;
+                    })
+            }
+            realReserveData.sort((a, b) => {
                 return a.tableType < b.tableType ? -1 : a.tableType > b.tableType ? 1 : 0;
             });
-            reserveData = this.handleFilteredData(reserveData);
-            return reserveData.map(
+            realReserveData = this.handleFilteredData(realReserveData);
+            return realReserveData.map(
                 (reserve, i) => {
                     let tmpCellPhone = '';
                     let tmpRightPhoneNumber = Right(reserve.customerCellphone, 4);
@@ -303,6 +323,8 @@ class ReservationState extends Component {
                     />)
                 }
             )
+
+
         }
         return (
             <div id="reserve-total">
@@ -325,6 +347,7 @@ class ReservationState extends Component {
                             onClearData={this.handleClear}
                             searchType={this.state.searchType}
                             plantSettingList={this.state.plantSettingList}
+                            onChangeRadioButton={this.handleGetByTableData}
                         />
 
                     </div>
@@ -332,7 +355,7 @@ class ReservationState extends Component {
 
                     <div id="reserve-info">
                         <div>
-                            {mapToReserveData(this.state.reservedData)}
+                            {mapToReserveData(this.state.reservedData, this.state.searchTable)}
                         </div>
                     </div>
                 </div>
@@ -348,7 +371,7 @@ const mapStateToProps = (state) => {
         authData: state.authentication.value,
         loginStatus: state.authentication.login,
         plantSettingData: state.plantSetting.value.plantSettingList,
-        tableDataList :state.reservation.tableDataList
+
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -378,8 +401,8 @@ const mapDispatchToProps = (dispatch) => {
         plantSettingGetDataRequest: (id) => {
             return dispatch(plantSettingGetDataRequest(id))
         },
-        reservationGetByTableDataRequest:(id ,byTableData)=>{
-            return dispatch(reservationGetByTableDataRequest(id , byTableData));
+        reservationGetByTableDataRequest: (id, byTableData) => {
+            return dispatch(reservationGetByTableDataRequest(id, byTableData));
         }
     };
 };
