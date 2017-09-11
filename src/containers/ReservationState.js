@@ -308,6 +308,9 @@ class ReservationState extends Component {
             realReserveData.sort((a, b) => {
                 return a.tableType < b.tableType ? -1 : a.tableType > b.tableType ? 1 : 0;
             });
+            realReserveData.sort((a, b) => {
+                return a.reservationNo < b.reservationNo ? -1 : a.reservationNo > b.reservationNo ? 1 : 0;
+            });
             realReserveData = this.handleFilteredData(realReserveData);
             return realReserveData.map(
                 (reserve, i) => {
