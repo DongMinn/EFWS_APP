@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
+import '../../css/customerReserve.scss';
 
 class CustomerReservationPlantInfoView extends Component {
     constructor(props) {
@@ -17,10 +17,11 @@ class CustomerReservationPlantInfoView extends Component {
     }
     render() {
         return (
-            <div>
+            <div id="customerPlantInfo">
 
-                {this.props.plantInfo.plantName}/
-                <a href="tel:0220299771">{this.props.plantInfo.plantTelNo}</a>
+                {this.props.plantInfo.plantName}
+                <br/>
+                <a href={this.handlePhoneNo()}>{this.props.plantInfo.plantTelNo}</a>
             </div>
         );
     }
