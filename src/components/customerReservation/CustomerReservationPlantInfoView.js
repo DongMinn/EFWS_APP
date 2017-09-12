@@ -9,13 +9,18 @@ class CustomerReservationPlantInfoView extends Component {
         this.state = {
 
         }
+        this.handlePhoneNo = this.handlePhoneNo.bind(this);
+    }
+    handlePhoneNo(){
+        let no=this.props.plantInfo.plantTelNo
+        return "tel:"+no
     }
     render() {
         return (
             <div>
 
                 {this.props.plantInfo.plantName}/
-                <a href>{this.props.plantInfo.plantTelNo}</a>
+                <a href={this.handlePhoneNo}>{this.props.plantInfo.plantTelNo}</a>
             </div>
         );
     }
