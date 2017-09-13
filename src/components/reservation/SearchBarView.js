@@ -6,6 +6,8 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
+import '../../css/reserve.scss';
+
 class SearchBarView extends Component {
     constructor(props) {
         super(props);
@@ -20,15 +22,15 @@ class SearchBarView extends Component {
         this.handleRadioButton = this.handleRadioButton.bind(this);
         this.handleRadioValue = this.handleRadioValue.bind(this);
     }
-    handleRadioValue(i){
-        let value=parseInt(i,10);
-        if(value===1){
+    handleRadioValue(i) {
+        let value = parseInt(i, 10);
+        if (value === 1) {
             return `전체`
-        }else{
+        } else {
             return `${value}인석`
         }
     }
-    handleRadioButton(event , value){
+    handleRadioButton(event, value) {
         this.props.onChangeRadioButton(value);
         //여기서 값 불러오기 시전하면됨.
     }
@@ -60,15 +62,15 @@ class SearchBarView extends Component {
     }
     render() {
         const items = [];
-        items.push(<RadioButton value={"1"} label={this.handleRadioValue("1")} />);
+        items.push(<RadioButton style={{ width: 'auto' }} labelStyle={{ width: 'auto' }} value={"1"} label={this.handleRadioValue("1")} />);
         for (let i = 0; i < this.props.plantSettingList.length; i++) {
-            if(this.props.plantSettingList[i].tableUseChk==='Y'){
-                items.push(<RadioButton value={this.props.plantSettingList[i].tableType} key={i} label={this.handleRadioValue(this.props.plantSettingList[i].tableType)} />);
-            }            
+            if (this.props.plantSettingList[i].tableUseChk === 'Y') {
+                items.push(<RadioButton style={{ width: 'auto' }} labelStyle={{ width: 'auto' }} value={this.props.plantSettingList[i].tableType} key={i} label={this.handleRadioValue(this.props.plantSettingList[i].tableType)} />);
+            }
         }
         return (
             <div>
-                <div>
+                <div id="searchbar_select">
                     <SelectField
                         floatingLabelText="검색구분"
                         value={'reservationNo'}
@@ -78,20 +80,24 @@ class SearchBarView extends Component {
                         <MenuItem value={'reservationNo'} primaryText="대기번호" />
                     </SelectField>
                 </div>
-                <div>
+
+                <div id="searchbar_select">
                     <TextField
                         floatingLabelText="Search"
                         onChange={this.handleChange}
                         value={this.state.searchType === 'cellPhone' ? this.state.cellPhone : this.state.reservationNo}
                     />
                     <RaisedButton primary={true} onClick={this.handleClear}>Clear</RaisedButton>
-                    <div>
-                        <RadioButtonGroup name="shipSpeed" defaultSelected={"1"} onChange={this.handleRadioButton}>
-                            {items}
-                        </RadioButtonGroup>
-                    </div>
+                </div>
+                <div >
+                    <RadioButtonGroup style={{ display: 'flex' }} name="shipSpeed" defaultSelected={"1"} onChange={this.handleRadioButton}>
+
+                        {items}
+
+                    </RadioButtonGroup>
                 </div>
             </div>
+
         );
     }
 }
