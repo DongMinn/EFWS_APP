@@ -7,8 +7,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { LoginField } from '../common/model';
 import { renderTextField } from '../common/common';
-import { required , maxLength15 } from '../common/validation';
-
+import { required, maxLength15 } from '../common/validation';
+import { browserHistory } from 'react-router';
 import SweetAlert from 'sweetalert-react';
 import '../css/sweetalert.scss';
 import '../css/login.scss';
@@ -23,8 +23,11 @@ class LoginView extends Component {
         //터치드 되었는지 확인
         //redux-form  사용 예시
         this.handleLogin = this.handleLogin.bind(this);
+        // this.handleRedirect = this.handleRedirect.bidn(this);
     }
-
+    // handleRedirect(){
+    //     setTimeout( browserHistory.push('/'),5000);
+    // }
     handleLogin(values) {
         let id = values.id;
         let password = values.password;
@@ -57,7 +60,7 @@ class LoginView extends Component {
                 <div>
                     {
 
-                        LoginField.map((option , i) =>
+                        LoginField.map((option, i) =>
                             <div key={i}>
                                 <Field
                                     {...option}
@@ -80,7 +83,12 @@ class LoginView extends Component {
         );
         const loggedinView = (
             <div>
-                로그인 되었습니다.
+                <h1>
+                    정상 로그인 되었습니다.
+               </h1>
+                <h4>
+                    예약확인버튼을 누르세요.
+                </h4>
             </div>
         );
         const loggedFailedView = (
@@ -95,7 +103,7 @@ class LoginView extends Component {
         )
         return (
             <div className="App">
-               
+
                 <div>
                     {this.props.isLoggedIn ? undefined : loggedFailedView}
                 </div>

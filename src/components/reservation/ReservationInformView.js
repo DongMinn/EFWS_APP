@@ -12,7 +12,7 @@ class ReservationInformView extends Component {
             <div>
                 <Card style={reservationInfoStyle.reserveinfoCard}>
                     <CardHeader
-                        title={'총 대기 상태'}
+                        title={'종합 대기 정보'}
                         actAsExpander={true}
                         titleStyle={styles.cardHeader}
                         titleColor={'#FF5722'}
@@ -33,7 +33,7 @@ class ReservationInformView extends Component {
             <div>
                 <Card style={reservationInfoStyle.reserveinfoCard}>
                     <CardHeader
-                        title={'전체 예약 상황'}
+                        title={'상세 대기 정보'}
                         actAsExpander={true}
                         titleStyle={styles.cardHeader}
                         titleColor={'#FF5722'}
@@ -42,7 +42,7 @@ class ReservationInformView extends Component {
                         {this.props.reserveTotalData.map((reserve, i) => (
                             <div key={i}>
                                 <FlatButton label={reserve.tableType + '인 테이블 대기 팀: ' + reserve.remainingWaitingTeamCount + ' 팀'} style={styles.reserveState} disabled={true}></FlatButton>
-                                <FlatButton label={'총 대기 시간: ' + reserve.remainingWaitingTime} style={styles.reserveState} disabled={true}></FlatButton>
+                                <FlatButton label={'총 대기 시간: ' + reserve.remainingWaitingTime+'분'} style={styles.reserveState} disabled={true}></FlatButton>
                                 <br />
                             </div>
                         ))

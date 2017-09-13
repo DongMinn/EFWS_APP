@@ -147,9 +147,9 @@ class ReservationStateTestView extends Component {
                         <NotificationsIcon />
                     </Badge>
                     <CardHeader
-                        title={this.handleLabel(this.props.reserveData.waitingState)}
+                        title={'['+this.handleLabel(this.props.reserveData.waitingState)+'][대기번호: '+this.props.reserveData.reservationNo+']'}
                         titleStyle={styles.cardHeader}
-                        subtitle={'고객번호: '+ this.props.CellPhone}
+                        subtitle={'[고객번호: '+ this.props.CellPhone+']'}
                         actAsExpander={true}
                         showExpandableButton={true}
                     />
@@ -171,7 +171,7 @@ class ReservationStateTestView extends Component {
                         <span> </span>
                         <RaisedButton style={styles.reserveButtonDelete} onClick={() => { this.handleConfirmState(this.props.reserveData, 'CANCEL') }} >삭제</RaisedButton>
                         <br/>
-                      예약번호: {this.props.reserveData.reservationNo}/{this.props.reserveData.customerCellphone}
+                     
                     </CardText>
                 </Card>
             </div>

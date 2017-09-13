@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 
-
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 
@@ -42,8 +41,8 @@ class Header extends Component {
                 <div>
                     <AppBar
                         // title={<span onTouchTap={this.handleLinkToHome}>Home</span>}
-                        title={<span style={styles.title}>Home</span>}
-                        onTitleTouchTap={this.handleLinkToHome}
+                        title={<span style={styles.title}>E:NJO E:AT</span>}
+                        // onTitleTouchTap={this.handleLinkToHome}
                         showMenuIconButton={false}
                         iconElementRight={this.props.isLoggedIn ? logoutButton : loginButton}
                     />

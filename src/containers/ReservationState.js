@@ -206,10 +206,12 @@ class ReservationState extends Component {
         if (tmpPlantSettingList === undefined) {
             tmpPlantSettingList = ''
         }
+        // console.log(tmpPlantSettingList)
 
         if (getReserveData === undefined) {
             getReserveData = ''
         }
+        // console.log(getReserveData)
         if (getReserveTotalData === undefined) {
             getReserveTotalData = ''
         } else {
@@ -219,6 +221,7 @@ class ReservationState extends Component {
                 tmpTotalTeam = tmpTotalTeam + Number(getReserveTotalData[i].remainingWaitingTeamCount);
             }
         }
+        // console.log(getReserveData)
 
         // tmpPlantSettingList.unshift({
         //     tableType:"1",

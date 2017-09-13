@@ -19,8 +19,8 @@ class ChangeInformation extends Component {
     }
     checkJWT() {
         let loginData = getCookie('key');
-        console.log('DEBUG: changePassword 현재 쿠키');
-        console.log(loginData);
+        
+        
         if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
         axios.defaults.headers.common['authorization'] = loginData.token;
         this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);
@@ -95,7 +95,7 @@ class ChangeInformation extends Component {
       
         return this.props.getStoreInformRequest(id).then(
             ()=>{
-                console.log('DEBUG: settingInformation ')
+              
                 // console.log(this.props.value)
             }
         )

@@ -15,7 +15,7 @@ import Delete from 'material-ui/svg-icons/action/delete';
 import SweetAlert from 'sweetalert-react';
 import pm from '../../images/pm1.JPG';
 import al from '../../images/al1.JPG';
-import test1 from '../../images/test1.jpg';
+
 
 
 import { styles, customerStyles, gridStyles } from '../../common/styles';
@@ -47,11 +47,6 @@ class CustomerReservationStateView extends Component {
         else if(this.props.loginId.toUpperCase().indexOf("PM")!==-1){
             return pm
         }
-        else if(this.props.loginId.toUpperCase().indexOf("JB")!==-1){
-            return test1
-        }
-        
-       
     }
     handleTitle() {
         if (this.props.customerData.remainingWaitingTime === "0") return '지금 입장하세요!'
@@ -162,7 +157,7 @@ class CustomerReservationStateView extends Component {
                 rows: 5
             },
             {
-                title: '예약삭제',
+                title: '대기삭제',
                 icon: <IconButton><Delete color="white" onClick={() => { this.setCustomerData(this.props.customerData, 'CANCEL') }} /></IconButton>,
                 titleBackground: "red",
                 cols: 1,

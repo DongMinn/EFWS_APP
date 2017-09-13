@@ -93,10 +93,14 @@ class App extends Component {
                     isLoggedIn={this.props.status.isLoggedIn}
                     onLogout={this.requestLogout}
                 />
-                <MenuBar
-                    isLoggedIn={this.props.status.isLoggedIn}
-                />
-                {this.props.children}
+                <div >
+                    <MenuBar
+                        isLoggedIn={this.props.status.isLoggedIn}
+                    />
+                </div>
+                <div>
+                    {this.props.children}
+                </div>
             </div>
         );
     }
