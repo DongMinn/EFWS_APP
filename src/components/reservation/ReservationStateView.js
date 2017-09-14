@@ -14,7 +14,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { SampleComponent } from '../../components';
 
 import '../../css/reserve.scss';
-import { styles , labelStyles } from '../../common/styles';
+import { styles, labelStyles } from '../../common/styles';
 
 class ReservationStateTestView extends Component {
     constructor(props) {
@@ -37,12 +37,12 @@ class ReservationStateTestView extends Component {
         this.handleReservationNo = this.handleReservationNo.bind(this);
 
     }
-    handleReservationNo(){
+    handleReservationNo() {
         let no = this.props.reserveData.reservationNo;
 
-        no = no.substr(15,4)
+        no = no.substr(15, 4)
 
-        return '[대기번호: '+no+']'
+        return '[대기번호: ' + no + ']'
     }
     handleChnageReserveRequest() {
 
@@ -147,28 +147,31 @@ class ReservationStateTestView extends Component {
 
         const items = [];
         for (let i = 0; i < this.props.plantSettingList.length; i++) {
-            
-            if(this.props.plantSettingList[i].tableUseChk==='Y'){
+
+            if (this.props.plantSettingList[i].tableUseChk === 'Y') {
                 items.push(<MenuItem value={this.props.plantSettingList[i].tableType} key={i} primaryText={`${this.props.plantSettingList[i].tableType} 인 테이블`} />);
             }
         }
         const reservateView = (
             <div>
                 <Card style={styles.card}>
-                    <Badge
-                        badgeStyle={styles.badge}
-                        badgeContent={this.props.reserveData.alarmtalkCount}
-                        primary={true}
-                    >
-                        <NotificationsIcon />
-                    </Badge>
+
                     <CardHeader
-                        title={'['+this.handleLabel(this.props.reserveData.waitingState)+']'+this.handleReservationNo()}
+                        title={'[' + this.handleLabel(this.props.reserveData.waitingState) + ']' + this.handleReservationNo()}
                         titleStyle={styles.cardHeader}
-                        subtitle={'[고객번호: '+ this.props.CellPhone+']'}
+                        subtitle={'[고객번호: ' + this.props.CellPhone + ']'}
                         actAsExpander={true}
                         showExpandableButton={true}
-                    />
+                    >
+                        <Badge
+                            badgeStyle={styles.badge}
+                            badgeContent={this.props.reserveData.alarmtalkCount}
+                            primary={true}
+                        >
+                            <NotificationsIcon />
+                        </Badge>
+                    </CardHeader>
+
                     <CardActions>
 
                         <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.props.reserveData.tableType + '인 테이블'} labelStyle={labelStyles.reservationInfoButton} style={styles.reserveState} disabled={true}></FlatButton>
@@ -186,8 +189,8 @@ class ReservationStateTestView extends Component {
                         <RaisedButton style={styles.reserveButtonUpdate} onClick={() => { this.handleConfirmState(this.props.reserveData, 'MODI') }}>수정</RaisedButton>
                         <span> </span>
                         <RaisedButton style={styles.reserveButtonDelete} onClick={() => { this.handleConfirmState(this.props.reserveData, 'CANCEL') }} >삭제</RaisedButton>
-                        <br/>
-                     
+                        <br />
+
                     </CardText>
                 </Card>
             </div>
@@ -218,7 +221,7 @@ class ReservationStateTestView extends Component {
                     <br />
                     테이블 타입 :
                     <DropDownMenu value={this.state.reserve.tableType} onChange={this.handleChangeReserve}>
-                       {items}
+                        {items}
                     </DropDownMenu>
                 </Dialog>
 
