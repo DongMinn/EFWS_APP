@@ -234,7 +234,6 @@ class CustomerReservationStateView extends Component {
                     onRequestClose={this.handleOpenDialog}
                 >
                     <h4 id="dialogText">수정시 기존 대기는</h4>
-                    <br />
                     <h4 id="dialogText">삭제 됩니다.</h4>
                     <h3>테이블 타입</h3><br/>
                     <DropDownMenu value={this.state.customerData.tableType} onChange={this.handleChangeReserve}>
