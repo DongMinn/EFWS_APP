@@ -14,7 +14,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { SampleComponent } from '../../components';
 
 import '../../css/reserve.scss';
-import { styles } from '../../common/styles';
+import { styles , labelStyles } from '../../common/styles';
 
 class ReservationStateTestView extends Component {
     constructor(props) {
@@ -91,10 +91,10 @@ class ReservationStateTestView extends Component {
     handleColorChange(state) {
         let upperState = state.toUpperCase();
         if (upperState === 'CALL') {
-            return '#3F51B5'
+            return '#7E63DD'
         }
         else if (upperState === 'WAIT') {
-            return '#2196F3'
+            return '#6CF3A9'
         }
         else if (upperState === 'ENTRANCE') {
             return '#c1ffff'
@@ -155,8 +155,8 @@ class ReservationStateTestView extends Component {
                     />
                     <CardActions>
 
-                        <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.props.reserveData.tableType + '인 테이블'} style={styles.reserveState} disabled={true}></FlatButton>
-                        <FlatButton backgroundColor={'##FAFAFA'} label={'예약시간: ' + this.props.reserveData.reservationOrderTime} style={styles.reserveState} disabled={true}></FlatButton>
+                        <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.props.reserveData.tableType + '인 테이블'} labelStyle={labelStyles.reservationInfoButton} style={styles.reserveState} disabled={true}></FlatButton>
+                        <FlatButton backgroundColor={'##FAFAFA'} label={'예약시간: ' + this.props.reserveData.reservationOrderTime} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
 
                     </CardActions>
                     <CardActions>

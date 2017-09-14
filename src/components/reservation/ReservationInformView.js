@@ -6,16 +6,31 @@ import FlatButton from 'material-ui/FlatButton';
 import { reservationInfoStyle, styles } from '../../common/styles';
 
 class ReservationInformView extends Component {
+    constructor(props){
+        super(props);
+
+        this.handleSubTitle = this.handleSubTitle.bind(this);
+    }
+    handleSubTitle(){
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1; //January is 0!
+        let yyyy = today.getFullYear();
+
+        return yyyy+'년 '+mm+'월 '+dd+'일'
+    }
 
     render() {
         const totalDataLeftView = (
             <div>
                 <Card style={reservationInfoStyle.reserveinfoCard}>
                     <CardHeader
-                        title={'종합 대기 정보'}
+                        title={'종합 정보'}
                         actAsExpander={true}
-                        titleStyle={styles.cardHeader}
+                        titleStyle={styles.infoCardHeader}
                         titleColor={'#FF5722'}
+                        subtitle={this.handleSubTitle()}
+                        subtitleStyle={styles.infoCardHeaderSub}
                     />
                     <CardActions>
 
@@ -33,9 +48,9 @@ class ReservationInformView extends Component {
             <div>
                 <Card style={reservationInfoStyle.reserveinfoCard}>
                     <CardHeader
-                        title={'상세 대기 정보'}
+                        title={'상세 정보'}
                         actAsExpander={true}
-                        titleStyle={styles.cardHeader}
+                        titleStyle={styles.infoCardHeader}
                         titleColor={'#FF5722'}
                     />
                     <CardActions>

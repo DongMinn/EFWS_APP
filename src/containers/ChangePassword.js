@@ -16,8 +16,8 @@ class ChangePassword extends Component {
     }
     checkJWT() {
         let loginData = getCookie('key');
-        console.log('DEBUG: changePassword 현재 쿠키');
-        console.log(loginData);
+       
+      
         if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
         axios.defaults.headers.common['authorization'] = loginData.token;
         this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);

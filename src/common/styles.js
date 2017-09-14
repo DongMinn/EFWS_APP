@@ -53,6 +53,14 @@ export const styles = {
         width: 20
     },
     cardHeader: {
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
+    infoCardHeader:{
+        fontSize: 25,
+        fontWeight: 'bold'
+    },
+    infoCardHeaderSub:{
         fontSize: 20,
         fontWeight: 'bold'
     },
@@ -77,6 +85,9 @@ export const styles = {
 export const labelStyles = {
     waitButton: {
         color: '#10ccd1'
+    },
+    reservationInfoButton:{
+        fontWeight: 'bold'
     }
 };
 export const plantSettingStyles = {
@@ -108,11 +119,10 @@ export const reservationInfoStyle={
     reserveinfoCard:{
         height:'250px',
         // width:'380p'
-        display:'inlineBlock'
-
-    
+        // display:'inlineBlock'
     },
 }
+
 
 export const customerStyles = {
     dialogTitle: {

@@ -62,7 +62,7 @@ class SearchBarView extends Component {
     }
     render() {
         const items = [];
-        items.push(<RadioButton style={{ width: 'auto' }} labelStyle={{ width: 'auto' }} value={"1"} label={this.handleRadioValue("1")} />);
+        items.push(<RadioButton style={{ width: 'auto' }} labelStyle={{ width: 'auto' }} key={-1} value={"1"} label={this.handleRadioValue("1")} />);
         for (let i = 0; i < this.props.plantSettingList.length; i++) {
             if (this.props.plantSettingList[i].tableUseChk === 'Y') {
                 items.push(<RadioButton style={{ width: 'auto' }} labelStyle={{ width: 'auto' }} value={this.props.plantSettingList[i].tableType} key={i} label={this.handleRadioValue(this.props.plantSettingList[i].tableType)} />);
