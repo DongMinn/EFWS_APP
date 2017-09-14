@@ -14,9 +14,10 @@ const initialState = {
     },
     value:{
         plantSettingList:[],
-        returnMessage:'',
+        tableReturnMessage:'',
         updateNoshowTime:'',
-        alarmTalkList:[]
+        alarmTalkList:[],
+        alarmReturnMessage:''
     }
 };
 export default function plantSetting(state = initialState, action) {
@@ -90,7 +91,7 @@ export default function plantSetting(state = initialState, action) {
                 },
                 value:{
                     ...state.value,
-                    returnMessage:action.returnMessage
+                    tableReturnMessage:action.returnMessage
                 }
             }
         case types.PLANTSETTING_GET_NOSHOW_DATA:
@@ -172,6 +173,19 @@ export default function plantSetting(state = initialState, action) {
                     ...state.status,
                     getAlarmData:'FAILURE'
                 }
+            }
+        case types.PLANTSETTING_UPDATE_DATA_FAILURE_BY_ALARMDATA:
+            return{
+                ...state,
+                status:{
+                    ...state.status,
+                    updateAlarmData:'FAILURE'
+                },
+                value:{
+                    ...state.value,
+                    alarmReturnMessage:action.returnMessage
+                }
+
             }
         default:
             return state;

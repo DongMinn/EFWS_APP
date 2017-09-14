@@ -8,9 +8,8 @@ class PlantInformAlarmSaveButtonView extends Component {
         super(props);
         this.state = {
             show: false,
-            message: '',
             newStatus: false,
-            successStatus: false
+            successStatus: false,
         }
         this.handleSaveAlarmData = this.handleSaveAlarmData.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -30,7 +29,6 @@ class PlantInformAlarmSaveButtonView extends Component {
                     this.setState({
                         show: false,
                         newStatus: true,
-                        message:'시스템스에 문의하세요!'
                     })
                 }
             }
@@ -73,7 +71,7 @@ class PlantInformAlarmSaveButtonView extends Component {
                 <SweetAlert
                     show={this.state.newStatus}
                     title="알림톡세팅 변경 실패"
-                    text={this.state.message}
+                    text={this.props.alarmReturnMessage===undefined?'예약건이 존재합니다.':this.props.alarmReturnMessage}
                     onConfirm={() => {
                         this.setState({ newStatus: false });
                         this.props.onGetAlarmData();
@@ -87,7 +85,6 @@ class PlantInformAlarmSaveButtonView extends Component {
                 {changeSuccessedView}
                 {changeFailedView}
                 <RaisedButton primary={true} onClick={this.handleClick}>저장</RaisedButton>
-
             </div>
         );
     }

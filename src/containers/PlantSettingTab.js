@@ -26,8 +26,8 @@ class PlantSettingTab extends Component {
             plantSettingList: [],
             noshowTime: '',
             alarmTalkList: [],
-            alarmCheckSuccessStatus: false,
-            alarmCheckFailStatus: false
+            alarmCheckSuccessStatus: false
+            
         };
 
         this.handleGetPlantSetting = this.handleGetPlantSetting.bind(this);
@@ -461,8 +461,8 @@ class PlantSettingTab extends Component {
                                 <br />
                                 <PlantInformAlarmSaveButtonView
                                     onUpdateAlarmData={this.handleUpdateAlarm}
-                                    onGetAlarmData={this.handleGetPlantSettingAlarm}
-                                    failStatus={this.state.alarmCheckFailStatus}
+                                    onGetAlarmData={this.handleGetPlantSettingAlarm} 
+                                    alarmReturnMessage={this.props.alarmReturnMessage}
                                 />
                                 <br />
                                 <PlantInformAlarmAddButtonView
@@ -486,7 +486,8 @@ const mapStateToProps = (state) => {
     return {
         plantSettingData: state.plantSetting.value.plantSettingList,
         alarmTalkList: state.plantSetting.value.alarmTalkList,
-        returnMessage: state.plantSetting.value.returnMessage,
+        returnMessage: state.plantSetting.value.tableReturnMessage,
+        alarmReturnMessage:state.plantSetting.value.alarmReturnMessage,
         authData: state.authentication.value,
         loginStatus: state.authentication.login,
         noShowTime: state.plantSetting.value.updateNoshowTime

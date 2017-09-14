@@ -69,8 +69,6 @@ export const plantSettingUpdateDataRequest = (id, plantSettingList) => {
                 
                 dispatch(plantSettingUpdateDataFailureByReserveData(error.response.data.message));
             }
-
-
             return false;
         })
     }
@@ -181,6 +179,9 @@ export const plantSettingUpdateAlarmDataRequest = (loginId , alarmList)=>{
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                         return -1;
                     }
+                }else if (error.response.data.status === 400) {
+                    
+                    dispatch(plantSettingUpdateDataFailureByAlarmData(error.response.data.message));
                 }
                 return false;
             }
@@ -254,4 +255,8 @@ export const plantSettingUpdateAlarmDataSuccess=()=>({
 })
 export const plantSettingUpdateAlarmDataFailure=()=>({
     type:types.PLANTSETTING_UPDATE_ALARM_DATA_FAILURE
+})
+export const plantSettingUpdateDataFailureByAlarmData=(returnMessage)=>({
+    type:types.PLANTSETTING_UPDATE_DATA_FAILURE_BY_ALARMDATA,
+    returnMessage
 })

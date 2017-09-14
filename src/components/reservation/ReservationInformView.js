@@ -18,8 +18,10 @@ class ReservationInformView extends Component {
         let dd = today.getDate();
         let mm = today.getMonth() + 1; //January is 0!
         let yyyy = today.getFullYear();
+        let h = today.getHours();
+        let m = today.getMinutes();
 
-        return yyyy+'년 '+mm+'월 '+dd+'일'
+        return yyyy+'년 '+mm+'월 '+dd+'일 '+ h+'시 ' +m+'분'
     }
 
     render() {
@@ -45,7 +47,7 @@ class ReservationInformView extends Component {
                         <br/>
                         <br/>
                         <br/>
-                        <FlatButton label={'정보수신 시간:'+ new Date()}  disabled={true}></FlatButton>
+                        <FlatButton label={'최종정보수신 시간:'+ new Date()}  disabled={true}></FlatButton>
                     </CardActions>
                 </Card>
             </div>
