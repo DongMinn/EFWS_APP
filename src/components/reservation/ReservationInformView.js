@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 
 import { Card, CardActions, CardHeader } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import Autonew from 'material-ui/svg-icons/action/autorenew';
+import IconButton from 'material-ui/IconButton';
 
-import { reservationInfoStyle, styles } from '../../common/styles';
+import { reservationInfoStyle, styles, iconStyle } from '../../common/styles';
 
 class ReservationInformView extends Component {
     constructor(props){
@@ -21,6 +23,7 @@ class ReservationInformView extends Component {
     }
 
     render() {
+
         const totalDataLeftView = (
             <div>
                 <Card style={reservationInfoStyle.reserveinfoCard}>
@@ -39,7 +42,10 @@ class ReservationInformView extends Component {
                         <br />
                         <FlatButton label={'총 대기 팀 '} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
                         <FlatButton label={this.props.reserveTotalTeam + ' 팀'} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
-
+                        <br/>
+                        <br/>
+                        <br/>
+                        <FlatButton label={'정보수신 시간:'+ new Date()}  disabled={true}></FlatButton>
                     </CardActions>
                 </Card>
             </div>
@@ -68,6 +74,7 @@ class ReservationInformView extends Component {
         )
         return (
             <div>
+          
                 <div className="reserve-total-left">
                     {totalDataLeftView}
                 </div>

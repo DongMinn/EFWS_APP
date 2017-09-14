@@ -34,7 +34,15 @@ class ReservationStateTestView extends Component {
         this.handleChangeReserve = this.handleChangeReserve.bind(this);
         this.handleChnageReserveRequest = this.handleChnageReserveRequest.bind(this);
         this.handleLabel = this.handleLabel.bind(this);
+        this.handleReservationNo = this.handleReservationNo.bind(this);
 
+    }
+    handleReservationNo(){
+        let no = this.props.reserveData.reservationNo;
+
+        no = no.substr(15,4)
+
+        return '[대기번호: '+no+']'
     }
     handleChnageReserveRequest() {
 
@@ -136,6 +144,14 @@ class ReservationStateTestView extends Component {
 
 
     render() {
+
+        const items = [];
+        for (let i = 0; i < this.props.plantSettingList.length; i++) {
+            
+            if(this.props.plantSettingList[i].tableUseChk==='Y'){
+                items.push(<MenuItem value={this.props.plantSettingList[i].tableType} key={i} primaryText={`${this.props.plantSettingList[i].tableType} 인 테이블`} />);
+            }
+        }
         const reservateView = (
             <div>
                 <Card style={styles.card}>
@@ -147,7 +163,7 @@ class ReservationStateTestView extends Component {
                         <NotificationsIcon />
                     </Badge>
                     <CardHeader
-                        title={'['+this.handleLabel(this.props.reserveData.waitingState)+'][대기번호: '+this.props.reserveData.reservationNo+']'}
+                        title={'['+this.handleLabel(this.props.reserveData.waitingState)+']'+this.handleReservationNo()}
                         titleStyle={styles.cardHeader}
                         subtitle={'[고객번호: '+ this.props.CellPhone+']'}
                         actAsExpander={true}
@@ -202,11 +218,7 @@ class ReservationStateTestView extends Component {
                     <br />
                     테이블 타입 :
                     <DropDownMenu value={this.state.reserve.tableType} onChange={this.handleChangeReserve}>
-                        <MenuItem value={'2'} primaryText="2인테이블" />
-                        <MenuItem value={'4'} primaryText="4인테이블" />
-                        <MenuItem value={'6'} primaryText="6인테이블" />
-                        <MenuItem value={'8'} primaryText="8인테이블" />
-                        <MenuItem value={'9'} primaryText="9인테이블" />
+                       {items}
                     </DropDownMenu>
                 </Dialog>
 

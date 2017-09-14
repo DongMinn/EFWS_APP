@@ -18,7 +18,7 @@ import al from '../../images/al1.JPG';
 
 
 
-import { styles, customerStyles, gridStyles } from '../../common/styles';
+import { styles, customerStyles, gridStyles, iconStyle } from '../../common/styles';
 import '../../css/customerReserve.scss';
 
 class CustomerReservationStateView extends Component {
@@ -131,7 +131,7 @@ class CustomerReservationStateView extends Component {
                 title: now.toLocaleString() + ' 기준',
                 titleBackground: "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)",
                 subtitle: this.handleTitle(),
-                icon: <IconButton><Autonew color="white" onClick={this.handleRefreshClick} /></IconButton>,
+                icon: <IconButton iconStyle={iconStyle.settingIcon} style={iconStyle.sizeLarge}><Autonew color="white" onClick={this.handleRefreshClick} /></IconButton>,
                 featured: true,
                 cols: 2,
                 rows: 30
@@ -151,14 +151,14 @@ class CustomerReservationStateView extends Component {
             },
             {
                 title: this.props.customerData.tableType === undefined ? '정보수정' : this.props.customerData.tableType + '인석',
-                icon: <IconButton><Settings color="white" onClick={() => { this.setCustomerData(this.props.customerData, 'MODI') }} /></IconButton>,
+                icon: <IconButton iconStyle={iconStyle.settingIcon} style={iconStyle.sizeLarge}><Settings color="white" onClick={() => { this.setCustomerData(this.props.customerData, 'MODI') }} /></IconButton>,
                 titleBackground: "green",
                 cols: 1,
                 rows: 5
             },
             {
                 title: '대기삭제',
-                icon: <IconButton><Delete color="white" onClick={() => { this.setCustomerData(this.props.customerData, 'CANCEL') }} /></IconButton>,
+                icon: <IconButton iconStyle={iconStyle.settingIcon} style={iconStyle.sizeLarge}><Delete color="white" onClick={() => { this.setCustomerData(this.props.customerData, 'CANCEL') }} /></IconButton>,
                 titleBackground: "red",
                 cols: 1,
                 rows: 5

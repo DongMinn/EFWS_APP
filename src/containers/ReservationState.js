@@ -42,21 +42,11 @@ class ReservationState extends Component {
 
         this.handleGetPlantSettingInfo = this.handleGetPlantSettingInfo.bind(this);
         this.handleGetByTableData = this.handleGetByTableData.bind(this);
+
         // this.handleAddPlantData = this.handleAddPlantData.bind(this);
 
     }
-    // handleAddPlantData(){
-    //     let tmpPlantSettingList = this.state.plantSettingList;
-    //     tmpPlantSettingList.unshift({
-    //         tableType:"1",
-    //         tableUseChk:"Y",
-    //         tableWaitTime:"30",
-    //         tableWaitTimeUseChk:"Y"
-    //     });
-    //     this.setState({
-    //         plantSettingList:tmpPlantSettingList
-    //     })
-    // }
+ 
     handleGetByTableData(tableType) {
         this.setState({
             searchTable: tableType
@@ -327,6 +317,7 @@ class ReservationState extends Component {
                         onUpdateReserveState={this.handleUpdateData}
                         onPutReserveData={this.handlePutData}
                         CellPhone={tmpCellPhone}
+                        plantSettingList={this.state.plantSettingList}
                     />)
                 }
             )

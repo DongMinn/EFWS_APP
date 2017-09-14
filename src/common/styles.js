@@ -159,3 +159,18 @@ export const gridStyles = {
         fontWeight: "bold"
     }
 };
+export const iconStyle={
+    settingIcon:{
+        width:40,
+        height:40,
+        padding:10
+    },
+    sizeLarge:{
+        width: 60,
+        height: 60,
+    },
+    infoRefresh:{
+        display:'inlineBlock'
+    }
+
+}

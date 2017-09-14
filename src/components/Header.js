@@ -41,7 +41,7 @@ class Header extends Component {
                 <div>
                     <AppBar
                         // title={<span onTouchTap={this.handleLinkToHome}>Home</span>}
-                        title={<span style={styles.title}>E:NJO E:AT</span>}
+                        title={<span style={styles.title}>ENJO E:AT</span>}
                         // onTitleTouchTap={this.handleLinkToHome}
                         showMenuIconButton={false}
                         iconElementRight={this.props.isLoggedIn ? logoutButton : loginButton}
