@@ -29,7 +29,7 @@ class PlantInformSettingAlarmView extends Component {
         if(i===-1){
             return `예약하자마자`
         }else{
-            return `앞에 ${i}팀 남아있을때`
+            return `대기 순위 ${i}번째 일때`
         }
     }
     handleRemoveData() {
@@ -94,7 +94,9 @@ class PlantInformSettingAlarmView extends Component {
         );
         const items = [];
         for (let i = -1; i < 10; i++) {
-            items.push(<MenuItem value={i} key={i} primaryText={this.handleValue(i)} disabled={i===-1?true:false} />);
+            if(i!==0){
+                items.push(<MenuItem value={i} key={i} primaryText={this.handleValue(i)} disabled={i===-1?true:false} />);
+            }
         }
 
 
