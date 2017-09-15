@@ -47,7 +47,7 @@ class ReservationInformView extends Component {
                         <br/>
                         <br/>
                         <br/>
-                        <FlatButton label={'최종정보수신 시간:'+ new Date()}  disabled={true}></FlatButton>
+                        <FlatButton label={'최종정보수신 시간: '+ new Date()}  disabled={true}></FlatButton>
                     </CardActions>
                 </Card>
             </div>

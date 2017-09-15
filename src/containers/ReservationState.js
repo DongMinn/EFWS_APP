@@ -154,6 +154,7 @@ class ReservationState extends Component {
       
         reserveData = reserveData.filter(
             (reserve) => {
+                
                 // if (this.state.searchType === 'cellPhone') {
                 //     return reserve.customerCellphone
                 //         .indexOf(this.state.cellPhone) > -1;
