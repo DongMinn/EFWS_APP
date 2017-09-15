@@ -188,8 +188,11 @@ class CustomerReservationState extends Component {
     componentWillMount() {
 
         getDefaultSettingValue('MOBILE');
-        let tmpId = this.props.params.loginId;
-        let tmpNo = this.props.params.reservationNo;
+        // let tmpId = this.props.params.loginId;
+        // let tmpNo = this.props.params.reservationNo;
+
+        let tmpId = base64.decode(base64.decode(base64.decode(this.props.params.loginId)))
+        let tmpNo = base64.decode(base64.decode(base64.decode(this.props.params.reservationNo)))
         this.setState({
             loginId: tmpId,
             reservationNo: tmpNo
