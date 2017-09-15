@@ -17,7 +17,7 @@ export const plantSettingGetDataRequest = (id) => {
                         // console.log('예약 데이터 불러오기 성공')
                         return false;
                     } else {
-                        console.log('DEBUG: plantSetting Get Request Success')
+                        
                         dispatch(plantSettingGetDataSuccess(response.data.listTablePlantSettingEntity));
                         // console.log('예약 데이터 불러오기 성공')
                         return true;
@@ -27,12 +27,13 @@ export const plantSettingGetDataRequest = (id) => {
         }).catch((error) => {
 
             dispatch(plantSettingGetDataFailure());
-            console.log('DEBUG: plantSetting Get request failed!');
+            
             if (error.response.data.status === 500) {
                 if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                     return -1;
                 }
             }
+            console.log('DEBUG: plantSetting Get request failed!');
             return false;
         });
     }
@@ -49,7 +50,7 @@ export const plantSettingUpdateDataRequest = (id, plantSettingList) => {
 
             if (response.status === 200) {
                 if (response.data.status === 200) {
-                    console.log('DEBUG: plantSetting Update request Success!');
+                    
                     dispatch(plantSettingUpdateDataSuccess());
                     return true;
                 } else {
@@ -60,7 +61,7 @@ export const plantSettingUpdateDataRequest = (id, plantSettingList) => {
         }).catch((error) => {
 
             dispatch(plantSettingUpdateDataFailure());
-            console.log('DEBUG: plantSetting Update request failed!');
+            
             if (error.response.data.status === 500) {
                 if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                     return -1;
@@ -69,6 +70,7 @@ export const plantSettingUpdateDataRequest = (id, plantSettingList) => {
                 
                 dispatch(plantSettingUpdateDataFailureByReserveData(error.response.data.message));
             }
+            console.log('DEBUG: plantSetting Update request failed!');
             return false;
         })
     }
@@ -97,6 +99,7 @@ export const plantSettingGetNoShowDataRequest = (loginId) => {
                         return -1;
                     }
                 }
+                console.log('DEBUG: plantSetting noshow request failed!');
                 return false;
             }
             )
@@ -125,6 +128,7 @@ export const plantSettingUpdateNoShowDataRequest = (loginId, updateNoshowTime) =
                         return -1;
                     }
                 }
+                console.log('DEBUG: plantSetting noshow update failed!');
                 return false;
             }
             )
@@ -152,6 +156,7 @@ export const plantSettingGetAlarmDataRequest = (loginId)=>{
                         return -1;
                     }
                 }
+                console.log('DEBUG: plantSetting alarm request failed!');
                 return false;
             }
         )
@@ -183,6 +188,7 @@ export const plantSettingUpdateAlarmDataRequest = (loginId , alarmList)=>{
                     
                     dispatch(plantSettingUpdateDataFailureByAlarmData(error.response.data.message));
                 }
+                console.log('DEBUG: plantSetting alarm update failed!');
                 return false;
             }
         )

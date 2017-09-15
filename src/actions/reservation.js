@@ -56,19 +56,20 @@ export const reservationUpdateRequest = (id, reservationNo, state) => {
             response => {
 
                 if (response.status === 200) {
-                    console.log('DEBUG: reservation.action 예약데이터 상태변경완료 ');
+                    
                     dispatch(reserveUpdateDataSuccess());
                     return true;
                 }
             }).catch(error => {
 
-                console.log('DEBUG: reservation.action 예약데이터 상태변경실패 ');
+                
                 dispatch(reserveUpdateDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                         return -1;
                     }
                 }
+                console.log('DEBUG: reservation.action 예약데이터 상태변경실패 ');
                 return false;
             })
     }
@@ -85,7 +86,7 @@ export const reservationPutRequest = (id, reserveData) => {
         }).then(
             response => {
                 if (response.status === 201) {
-                    console.log('DEBUG: reservation.action 예약데이터 생성완료');
+                
                     dispatch(reservePutDataSuccess(response.data.reservationNo));
                     return true;
                 } else {
@@ -95,13 +96,14 @@ export const reservationPutRequest = (id, reserveData) => {
                 }
             }).catch(
             error => {
-                console.log('DEBUG: reservation.action 예약데이터 생성 실패');
+                
                 dispatch(reservePutDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                         return -1;
                     }
                 }
+                console.log('DEBUG: reservation.action 예약데이터 생성 실패');
                 return false;
             })
     }
@@ -118,7 +120,7 @@ export const reservationGetTotalDataRequest = (id) => {
 
                 if (response.status === 200) {
                     if (response.data.status === 200) {
-                        console.log('DEBUG: reservation.action 예약종합데이터 조회 완료');
+                        
                         dispatch(reserveGetTotalDataSuccess(response.data.waitingInformationListDto));
                         return true;
                     }
@@ -128,13 +130,14 @@ export const reservationGetTotalDataRequest = (id) => {
                 }
             }).catch(
             error => {
-                console.log('DEBUG: reservation.action 예약종합데이터 조회 응답실패');
+                
                 dispatch(reserveGetTotalDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                         return -1;
                     }
                 }
+                console.log('DEBUG: reservation.action 예약종합데이터 조회 응답실패');
                 return false;
             })
     }
@@ -178,7 +181,7 @@ export const reservationGetByTableDataRequest = (id, tableTypeList) => {
 
                 if (response.status === 200) {
                     if (response.data.status === 200) {
-                        console.log('DEBUG: reservation.action 테이블별데이터조회완료');
+                        
                         
                         dispatch(reserveGetByTableDataSuccess(response.data.reservationList));
                         return true;
@@ -190,13 +193,14 @@ export const reservationGetByTableDataRequest = (id, tableTypeList) => {
             }
             ).catch(
             error => {
-                console.log('DEBUG: reservation.action 테이블별데이터조회실패');
+                
                 dispatch(reserveGetByTableDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                         return -1;
                     }
                 }
+                console.log('DEBUG: reservation.action 테이블별데이터조회실패');
                 return false;
             })
     }

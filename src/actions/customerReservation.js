@@ -11,7 +11,7 @@ export const customerReservationGetDataRequest = (id, reservationNo) => {
             loginId: id,
             reservationNo: reservationNo
         }).then((response) => {
-            
+
             if (response.status === 200) {
                 if (response.data.status === 200) {
                     dispatch(customerReserveGetDataSuccess(response.data));
@@ -19,22 +19,22 @@ export const customerReservationGetDataRequest = (id, reservationNo) => {
                 }
             }
         }).catch((error) => {
-            if(error.response.status===400){
+            if (error.response.status === 400) {
                 return -1;
             }
             dispatch(customerReserveGetDataFailure());
-            console.log('Reserve request failed!');
+            console.log('DEBUG:customerReserve request failed!');
             return false;
         });
     }
 }
-export const customerLoginRequest = (id , reservationNo) =>{
-    return (dispatch)=>{
+export const customerLoginRequest = (id, reservationNo) => {
+    return (dispatch) => {
         dispatch(customerLogin());
-        return axios.post('/login/customer',{
-            loginId:id,
-            reservationNo:reservationNo
-        }).then((response)=>{
+        return axios.post('/login/customer', {
+            loginId: id,
+            reservationNo: reservationNo
+        }).then((response) => {
             if (response.status === 200) {
                 if (response.data.status === 200) {
                     dispatch(customerLoginRequestSuccess(response.headers.authorization));
@@ -43,11 +43,13 @@ export const customerLoginRequest = (id , reservationNo) =>{
             }
             else {
                 dispatch(customerLoginRequestFailure());
+                console.log('DEBUG:customerLogin request failed!');
                 return false;
             }
-        }).catch((error)=>{
+        }).catch((error) => {
             dispatch(customerLoginRequestFailure());
-                return false;
+            console.log('DEBUG:customerLogin request failed!');
+            return false;
         })
     }
 }
@@ -63,15 +65,15 @@ export const customerReserveGetDataFailure = () => ({
     type: types.CUSTOMER_RESERVE_GET_DATA_FAILURE
 })
 
-export const customerLogin = ()=>({
+export const customerLogin = () => ({
     type: types.CUSTOMER_LOGIN
 })
 
-export const customerLoginRequestSuccess = (token)=>({
+export const customerLoginRequestSuccess = (token) => ({
     type: types.CUSTOMER_LOGIN_SUCCESS,
     token
 })
 
-export const customerLoginRequestFailure = ()=>({
+export const customerLoginRequestFailure = () => ({
     type: types.CUSTOMER_LOGIN_FAILURE
 })

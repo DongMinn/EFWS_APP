@@ -76,6 +76,11 @@ export const styles = {
         color: 'black',
         fontSize: '20px'
     },
+    reserveinfoDataButton:{
+        color: 'black',
+        fontSize: '25px',
+        fontWeight: 'bold'
+    },
     sweetAlert: {
         textAlign: 'center',
 

@@ -98,7 +98,6 @@ export function changePasswordRequest(id, password, newPassword) {
             newPassword: hasha(newPassword),
             updater: id
         }).then((response) => {
-            console.log('DEBUG: changePasswordRequest:' + response);
             //체크 성공이라면, 
             if (response.status === 200) {
                 if (response.data.status === 200) {
@@ -216,7 +215,7 @@ export function getStoreSettingInformRequest(id) {
         }).then(
             response => {
 
-                console.log('DEBUG:getStoreSettingInformRequest 성공')
+              
             }
             ).catch(
             error => {

@@ -18,10 +18,9 @@ class ReservationInformView extends Component {
         let dd = today.getDate();
         let mm = today.getMonth() + 1; //January is 0!
         let yyyy = today.getFullYear();
-        let h = today.getHours();
-        let m = today.getMinutes();
+        
 
-        return yyyy+'년 '+mm+'월 '+dd+'일 '+ h+'시 ' +m+'분'
+        return yyyy+'년 '+mm+'월 '+dd+'일'
     }
 
     render() {
@@ -39,11 +38,11 @@ class ReservationInformView extends Component {
                     />
                     <CardActions>
 
-                        <FlatButton label={'총 대기시간 '} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
-                        <FlatButton label={this.props.reserveTotalTime + ' 분'} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
+                        <FlatButton label={'총 대기시간: '} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
+                        <FlatButton label={this.props.reserveTotalTime + ' 분'} labelStyle={styles.reserveinfoDataButton} disabled={true}></FlatButton>
                         <br />
-                        <FlatButton label={'총 대기 팀 '} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
-                        <FlatButton label={this.props.reserveTotalTeam + ' 팀'} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
+                        <FlatButton label={'총 대기 팀: '} labelStyle={styles.reserveinfoCardButton} disabled={true}></FlatButton>
+                        <FlatButton label={this.props.reserveTotalTeam + ' 팀'} labelStyle={styles.reserveinfoDataButton} disabled={true}></FlatButton>
                         <br/>
                         <br/>
                         <br/>
