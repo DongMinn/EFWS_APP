@@ -15,26 +15,34 @@ class Header extends Component {
         super(props)
 
         this.handleLinkToHome = this.handleLinkToHome.bind(this);
-          }
-    
+        this.handleLinkToLogin = this.handleLinkToLogin.bind(this);
+    }
+
     componentWillMount() {
         this.handleLinkToHome();
     }
-    
-    handleLinkToHome() {
-        browserHistory.push('/');
-        console.log('link')
-    };
 
-    
+    handleLinkToHome() {
+        browserHistory.push('/reservationstate');
+        
+    };
+    handleLinkToLogin() {
+        browserHistory.push('/');
+        
+    };
     render() {
 
         const loginButton = (
-            <FlatButton type="button" onClick={this.handleLinkToHome}>Login</FlatButton>
+            <div>
+                
+                <FlatButton type="button" onClick={this.handleLinkToLogin}>Login</FlatButton>
+            </div>
         );
         const logoutButton = (
-
-            <FlatButton type="button" onClick={this.props.onLogout}>Logout</FlatButton>
+            <div>
+                <FlatButton type="button" onClick={this.handleLinkToHome}>새로고침</FlatButton>
+                <FlatButton type="button" onClick={this.props.onLogout}>Logout</FlatButton>
+            </div>
         );
         return (
             <div>
@@ -47,7 +55,7 @@ class Header extends Component {
                         iconElementRight={this.props.isLoggedIn ? logoutButton : loginButton}
                     />
                 </div>
-                
+
             </div>
         );
     }

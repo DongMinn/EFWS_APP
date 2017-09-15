@@ -15,7 +15,8 @@ class App extends Component {
         this.state = {
             id: '',
             plantCode: '',
-            role: ''
+            role: '',
+            loginStatus:false
         }
         this.requestLogout = this.requestLogout.bind(this);
         this.handleGetInform = this.handleGetInform.bind(this);
@@ -46,14 +47,18 @@ class App extends Component {
         document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
         // console.log('DEBUG:로그아웃 쿠키=================request');
         // console.log(document.cookie)
-
+        
         this.props.logoutRequest();
+        this.setState({
+            loginStatus: false
+         
+        })
         browserHistory.push('/');
     }
 
     componentWillMount() {
 
-        let tmpId = this.props.params.loginId;
+        
         // console.log('DEBUG: 무조건 APP이 실행됨!!!')
         getDefaultSettingValue('WEB');
         // get cookie by name 
@@ -69,20 +74,19 @@ class App extends Component {
         //새로고침되었을때 실행되는 부분
         this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);
         axios.defaults.headers.common['authorization'] = loginData.token;
-        // console.log('DEBUG: 기존 토큰값으로 세팅!!!')
-        // this.handleGetInform(loginData.id);
-        // if (!loginData.isLoggedIn) return;
-        // browserHistory.push('/wh');
+
+        this.setState({
+            loginStatus: this.props.status.isLoggedIn
+         
+        })
     }
 
-    componentDidMount() {
-        //기본값 세팅하기
-        //not logged in , do nothing 근데 이 경우는 없을듯? 코드가 없는데..?
-        //기본 정보 스토어에 저장
-        // console.log('currentid:' + this.props.value.currentId);
-        //매장정보 가져오기
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            loginStatus: nextProps.status.isLoggedIn
+         
+        })
     }
-
     render() {
         // let re = /(login|change)/;
         // let isAuth = re.test(this.props.location.pathname);
@@ -90,12 +94,12 @@ class App extends Component {
         return (
             <div id="common">
                 <Header
-                    isLoggedIn={this.props.status.isLoggedIn}
+                    isLoggedIn={this.state.loginStatus}
                     onLogout={this.requestLogout}
                 />
                 <div >
                     <MenuBar
-                        isLoggedIn={this.props.status.isLoggedIn}
+                        isLoggedIn={this.state.loginStatus}
                     />
                 </div>
                 <div>
