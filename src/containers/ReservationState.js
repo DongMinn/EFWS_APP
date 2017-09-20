@@ -212,14 +212,7 @@ class ReservationState extends Component {
                 tmpTotalTeam = tmpTotalTeam + Number(getReserveTotalData[i].remainingWaitingTeamCount);
             }
         }
-        // console.log(getReserveData)
-
-        // tmpPlantSettingList.unshift({
-        //     tableType:"1",
-        //     tableUseChk:"Y",
-        //     tableWaitTime:"30",
-        //     tableWaitTimeUseChk:"Y"
-        // });
+      
         this.setState({
             reservedData: getReserveData,
             reserveTotalData: getReserveTotalData,
@@ -276,6 +269,7 @@ class ReservationState extends Component {
         let stomp = Stomp.client(api_url);
         stomp.connect({}, () => {
             stomp.subscribe('/from-server/' + this.props.authData.currentId + '/adminWeb', (msg) => {
+            
                 //예약 데이터 불러오는 요청
                 this.checkJWT();
             })
@@ -334,6 +328,7 @@ class ReservationState extends Component {
                             reserveTotalData={this.state.reserveTotalData}
                             reserveTotalTime={this.state.reserveTotalTime}
                             reserveTotalTeam={this.state.reserveTotalTeam}
+                            plantCode = {this.props.authData.currentId}
                         />
                     </div>
 
@@ -370,6 +365,7 @@ const mapStateToProps = (state) => {
         authData: state.authentication.value,
         loginStatus: state.authentication.login,
         plantSettingData: state.plantSetting.value.plantSettingList,
+        
 
     };
 };

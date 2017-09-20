@@ -10,11 +10,17 @@ import Badge from 'material-ui/Badge';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 import SweetAlert from 'sweetalert-react';
-import { renderToStaticMarkup } from 'react-dom/server';
-import { SampleComponent } from '../../components';
+
 
 import '../../css/reserve.scss';
 import { styles, labelStyles } from '../../common/styles';
+
+// import log4js from 'log4js';
+
+// log4js.configure({
+//     appenders:{reserve:{type:'file',filename:'reserve.log'}},
+//     categories:{default:{appenders:['reserve'],leel:'error'}}
+// });
 
 class ReservationStateTestView extends Component {
     constructor(props) {
@@ -181,10 +187,11 @@ class ReservationStateTestView extends Component {
                     <CardActions>
                         <RaisedButton style={styles.callButton} onClick={() => { this.handleConfirmState(this.props.reserveData, 'CALL') }}>CALL</RaisedButton>
                         <RaisedButton style={styles.enterButton} onClick={() => { this.handleConfirmState(this.props.reserveData, 'ENTRANCE') }}>입장</RaisedButton>
+                        <RaisedButton style={styles.noshowButton} onClick={() => { this.handleConfirmState(this.props.reserveData, 'NOSHOW') }}>NO-SHOW</RaisedButton>
                     </CardActions>
 
                     <CardText expandable={true}>
-                        <RaisedButton style={styles.reserveButtonUpdate} onClick={() => { this.handleConfirmState(this.props.reserveData, 'NOSHOW') }}>NO-SHOW</RaisedButton>
+                        
                         <span> </span>
                         <RaisedButton style={styles.reserveButtonUpdate} onClick={() => { this.handleConfirmState(this.props.reserveData, 'MODI') }}>수정</RaisedButton>
                         <span> </span>

@@ -185,7 +185,7 @@ class CustomerReservationStateView extends Component {
                             subtitle={tile.subtitle}
                             subtitleStyle={tile.featured ? gridStyles.featuredSubtitleStyle : gridStyles.subtitleStyle}
                         >
-                            <img src={tile.img} />
+                            <img src={tile.img} alt=""/>
                         </GridTile>
                     ))}
                 </GridList>
@@ -204,14 +204,14 @@ class CustomerReservationStateView extends Component {
         for (let i = 0; i < this.props.plantSettingList.length; i++) {
             
             if(this.props.plantSettingList[i].tableUseChk==='Y'){
-                items.push(<MenuItem value={this.props.plantSettingList[i].tableType} key={i} primaryText={`${this.props.plantSettingList[i].tableType} 인 테이블`} />);
+                items.push(<MenuItem value={this.props.plantSettingList[i].tableType} key={i} primaryText={`${this.props.plantSettingList[i].tableType} 인석`} />);
             }
         }
         const DialogView = (
             <div>
                 <Dialog
                     style={styles.sweetAlert}
-                    title='고객 대기 상태 수정'
+                    title='고객 대기예약 수정'
                     titleStyle={customerStyles.dialogTitle}
                     actions={[
                         <RaisedButton
@@ -233,9 +233,9 @@ class CustomerReservationStateView extends Component {
                     open={this.state.dialogOpen}
                     onRequestClose={this.handleOpenDialog}
                 >
-                    <h4 id="dialogText">수정시 기존 대기는</h4>
-                    <h4 id="dialogText">삭제 됩니다.</h4>
-                    <h3>테이블 타입</h3><br/>
+                    <h4 id="dialogText">수정시 대기순번은 </h4>
+                    <h4 id="dialogText">마지막으로 변경 됩니다.</h4>
+                    <h3>대기예약 구분</h3><br/>
                     <DropDownMenu value={this.state.customerData.tableType} onChange={this.handleChangeReserve}>
                         {items}
                     </DropDownMenu>
@@ -247,7 +247,7 @@ class CustomerReservationStateView extends Component {
             <div>
                 <SweetAlert
                     show={this.state.showPopUp}
-                    title="대기 상태 삭제"
+                    title="대기예약 삭제"
                     text={'대기 삭제 하시겠습니까?'}
                     showCancelButton
                     onConfirm={() => {
@@ -269,8 +269,8 @@ class CustomerReservationStateView extends Component {
             <div>
                 <SweetAlert
                     show={this.state.putDataShow}
-                    title='대기 변경 완료'
-                    text='대기 변경 완료되었습니다.'
+                    title='대기예약 변경 완료'
+                    text='대기예약 변경 완료되었습니다.'
                     onConfirm={() => {
                         this.setState({
                             putDataShow: false,
@@ -298,39 +298,3 @@ class CustomerReservationStateView extends Component {
 
 export default CustomerReservationStateView;
 
-
-// <MenuItem value={'2'} primaryText="2인테이블" />
-// <MenuItem value={'4'} primaryText="4인테이블" />
-// <MenuItem value={'6'} primaryText="6인테이블" />
-// <MenuItem value={'8'} primaryText="8인테이블" />
-// <MenuItem value={'9'} primaryText="9인테이블" />
-
-
-
-// <Card>
-//                             <CardHeader
-//                                 title={'고객대기상태'}
-//                                 // subtitle="현재상태"
-//                                 actAsExpander={true}
-//                                 showExpandableButton={true}
-//                             />
-//                             <div>
-//                                 <CardActions>
-//                                     <FlatButton label={'대기 번호:'} style={styles.reserveState} disabled={true}></FlatButton>
-//                                     <FlatButton label={this.props.customerData.waitingNo + ''} style={styles.reserveState} disabled={true}></FlatButton>
-//                                 </CardActions>
-//                             </div>
-//                             <CardActions>
-//                                 <FlatButton label={'예약 타입:'} style={styles.reserveState} disabled={true}></FlatButton>
-//                                 <FlatButton label={this.props.customerData.tableType + ''} style={styles.reserveState} disabled={true}></FlatButton>
-//                             </CardActions>
-//                             <CardActions>
-//                                 <FlatButton label={'대기 시간:'} style={styles.reserveState} disabled={true}></FlatButton>
-//                                 <FlatButton label={this.props.customerData.remainingWaitingTime + ''} style={styles.reserveState} disabled={true}></FlatButton>
-//                             </CardActions>
-//                             <CardText expandable={true}>
-//                                 <RaisedButton style={styles.reserveButtonUpdate} onClick={() => { this.setCustomerData(this.props.customerData, 'MODI') }} >대기 예약 수정</RaisedButton>
-//                                 <span>  </span>
-//                                 <RaisedButton style={styles.reserveButtonDelete} onClick={() => { this.setCustomerData(this.props.customerData, 'CANCEL') }}>예약 삭제</RaisedButton>
-//                             </CardText>
-//                         </Card>

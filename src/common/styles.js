@@ -48,9 +48,7 @@ export const styles = {
     },
     noshowButton: {
         border: '2px solid #FFCCBC',
-        fontSize: 10,
-        height: 40,
-        width: 20
+     
     },
     cardHeader: {
         fontSize: 18,

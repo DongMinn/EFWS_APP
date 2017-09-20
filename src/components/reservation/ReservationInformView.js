@@ -29,7 +29,7 @@ class ReservationInformView extends Component {
             <div>
                 <Card style={reservationInfoStyle.reserveinfoCard}>
                     <CardHeader
-                        title={'종합 정보'}
+                        title={'['+this.props.plantCode+'] 종합 정보'}
                         actAsExpander={true}
                         titleStyle={styles.infoCardHeader}
                         titleColor={'#FF5722'}
