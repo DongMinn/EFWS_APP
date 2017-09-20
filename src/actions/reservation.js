@@ -144,7 +144,7 @@ export const reservationGetTotalDataRequest = (id) => {
 
 }
 
-export const reservationGetByTableDataRequest = (id, tableTypeList) => {
+export const reservationGetByTableDataRequest = (id) => {
     return (dispatch) => {
         let today = new Date();
         let dd = today.getDate();
@@ -157,16 +157,21 @@ export const reservationGetByTableDataRequest = (id, tableTypeList) => {
             dd = "0" + dd;
         }
         let dates = yyyy + '-' + mm + '-' + dd
+
+        
         dispatch(reserveGetByTableData())
         return axios.post('/table/reservation/store/find', {
             loginId: id,
             reservationNo: null,
             waitingNo: null,
-            customerCellphone: '',
-            tableTypeList: [{tableType:tableTypeList}],
-            waitingStateList: [{
-                waitingState: "RESERVATION"
-            },
+            tableTypeList: [
+                {tableType:"2"},
+                {tableType:"4"},
+                {tableType:"6"},
+                {tableType:"8"},
+                {tableType:"9"}
+                ],
+            waitingStateList: [
             {
                 waitingState: "CALL"
             },
@@ -176,12 +181,12 @@ export const reservationGetByTableDataRequest = (id, tableTypeList) => {
             reservationOrderTimeBegin: dates,
             reservationOrderTimeEnd: dates
 
+
         }).then(
             response => {
 
                 if (response.status === 200) {
                     if (response.data.status === 200) {
-                        
                         
                         dispatch(reserveGetByTableDataSuccess(response.data.reservationList));
                         return true;

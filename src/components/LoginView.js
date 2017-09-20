@@ -118,13 +118,11 @@ class LoginView extends Component {
 }
 
 LoginView.propTypes = {
-    mode: PropTypes.PropTypes.bool,
     onLogin: PropTypes.PropTypes.func,
     onChangePwd: PropTypes.PropTypes.func
 
 };
-LoginView.defaultProps = {
-    mode: true,
+LoginView.defaultProps = {  
     loginStatus: {},
     onLogin: (id, password) => { console.error("login func not defined") },
 };

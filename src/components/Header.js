@@ -19,7 +19,7 @@ class Header extends Component {
     }
 
     componentWillMount() {
-        this.handleLinkToHome();
+        // this.handleLinkToHome();
     }
 
     handleLinkToHome() {

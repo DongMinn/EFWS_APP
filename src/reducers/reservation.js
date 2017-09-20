@@ -13,7 +13,8 @@ const initialState = {
     },
     reservationNo:'',
     reserveValue: [],
-    reserveTotalValue:[]
+    reserveTotalValue:[],
+    beforeCallList:[]
     
 };
 export default function reservation(state = initialState, action) {
@@ -137,7 +138,7 @@ export default function reservation(state = initialState, action) {
                     ...state.status,
                     getByTableData:'SUCCESS'
                 },
-                reserveValue:action.tableDataList
+                beforeCallList:action.tableDataList
             };
         case types.RESERVE_GET_BYTABLE_DATA_FAILURE:
             return{

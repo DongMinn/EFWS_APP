@@ -12,7 +12,9 @@ class ReservationInformView extends Component {
         super(props);
 
         this.handleSubTitle = this.handleSubTitle.bind(this);
+    
     }
+    
     handleSubTitle(){
         let today = new Date();
         let dd = today.getDate();
@@ -73,6 +75,27 @@ class ReservationInformView extends Component {
                 </Card>
             </div>
         )
+        const beforeCallListView = (
+            <div>
+                <Card style={reservationInfoStyle.reserveinfoCard}>
+                    <CardHeader
+                        title={'이전 호출 리스트'}
+                        actAsExpander={true}
+                        titleStyle={styles.infoCardHeader}
+                        titleColor={'#FF5722'}
+                    />
+                    <CardActions>
+                        {this.props.beforeCallList.map((list, i) => (
+                            <div key={i}>
+                                <FlatButton label={'['+i+1 + '] 이전호출번호: ' + list.waitingNo } style={styles.reserveState} disabled={true}></FlatButton>
+                                <br />
+                            </div>
+                        ))
+                        }
+                    </CardActions>
+                </Card>
+            </div>
+        )
         return (
             <div>
           
@@ -80,7 +103,7 @@ class ReservationInformView extends Component {
                     {totalDataLeftView}
                 </div>
                 <div className="reserve-total-center">
-                    {totalDataCenterView}
+                    {beforeCallListView}
                 </div>
 
 

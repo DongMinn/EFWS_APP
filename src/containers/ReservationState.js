@@ -27,6 +27,7 @@ class ReservationState extends Component {
             reserveTotalTime: 0,
             reserveTotalTeam: 0,
             plantSettingList: [],
+            beforeCallList:[],
             searchTable: '1'
         };
         this.handleSetData = this.handleSetData.bind(this);
@@ -42,21 +43,50 @@ class ReservationState extends Component {
 
         this.handleGetPlantSettingInfo = this.handleGetPlantSettingInfo.bind(this);
         this.handleGetByTableData = this.handleGetByTableData.bind(this);
+        this.handleGetBeforeCallList = this.handleGetBeforeCallList.bind(this);
+
+        
+        this.handleSetplantSettingList = this.handleSetplantSettingList.bind(this);
+        this.handleSetBeforeCallList = this.handleSetBeforeCallList.bind(this);
 
         // this.handleAddPlantData = this.handleAddPlantData.bind(this);
 
     }
- 
+    handleSetBeforeCallList(){
+        let tmpBeforeCallList = this.props.beforeCallList
+
+        if(tmpBeforeCallList===undefined) tmpBeforeCallList=[];
+        this.setState({
+            beforeCallList:tmpBeforeCallList
+        })
+    }
+    handleGetBeforeCallList(id){
+        this.props.reservationGetByTableDataRequest(id).then(
+            response=>{
+                if(response===true){
+                    
+                    this.handleSetBeforeCallList();
+                }
+            }
+        )
+    }
     handleGetByTableData(tableType) {
         this.setState({
             searchTable: tableType
         })
     }
+    handleSetplantSettingList(){
+        let tmpPlantSettingList = this.props.plantSettingData;
+
+        this.setState({
+            plantSettingList:tmpPlantSettingList
+        }) 
+    }
     handleGetPlantSettingInfo(id) {
         this.props.plantSettingGetDataRequest(id).then(
             response => {
                 if (response === true) {
-                    this.handleSetData();
+                    this.handleSetplantSettingList();
                 }
             }
         )
@@ -97,6 +127,8 @@ class ReservationState extends Component {
                     this.handleLogin(loginData.id, loginData.password)
                 } else {
                     this.handleGetData();
+                    this.handleGetPlantSettingInfo(this.props.authData.currentId);
+                    this.handleGetBeforeCallList(this.props.authData.currentId);
                 }
             }
         )
@@ -116,6 +148,8 @@ class ReservationState extends Component {
                     axios.defaults.headers.common['authorization'] = loginData.token;
                     //쿠키저장
                     document.cookie = 'key=' + btoa(JSON.stringify(loginData));
+                    this.handleGetPlantSettingInfo(this.props.authData.currentId);
+                    this.handleGetBeforeCallList(this.props.authData.currentId);
                     this.handleGetData();
                     return true;
                 }
@@ -128,7 +162,6 @@ class ReservationState extends Component {
     handleGetData() {
         this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
             response => {
-
                 if (response === true) {
                     this.handleSetData();
                 } else if (response === -1) this.checkJWT();
@@ -147,8 +180,6 @@ class ReservationState extends Component {
                 }
             }
         )
-        this.handleGetPlantSettingInfo(this.props.authData.currentId);
-
     }
     handleFilteredData(reserveData) {
       
@@ -171,13 +202,17 @@ class ReservationState extends Component {
             response => {
                 if (response === true) {
                     this.handleGetData();
+                    
                 } else if (response === -1) {
                     let loginData = getCookie('key');
                     this.handleLogin(loginData.id, loginData.password).then(
                         () => {
                             this.props.reservationPutRequest(this.props.authData.currentId, reserveData).then(
                                 response => {
-                                    if (response === true) this.handleGetData();
+                                    if (response === true) {
+                                        this.handleGetData(); 
+                                        
+                                    }
                                 }
                             )
                         }
@@ -188,15 +223,12 @@ class ReservationState extends Component {
         )
     }
     handleSetData() {
-        let tmpPlantSettingList = this.props.plantSettingData;
-
+        
         let getReserveData = this.props.reserveData;
         let getReserveTotalData = this.props.reserveTotalData;
         let tmpTotalTime = 0;
         let tmpTotalTeam = 0;
-        if (tmpPlantSettingList === undefined) {
-            tmpPlantSettingList = ''
-        }
+
         // console.log(tmpPlantSettingList)
 
         if (getReserveData === undefined) {
@@ -204,7 +236,7 @@ class ReservationState extends Component {
         }
         // console.log(getReserveData)
         if (getReserveTotalData === undefined) {
-            getReserveTotalData = ''
+            getReserveTotalData = []
         } else {
 
             for (let i = 0; i < getReserveTotalData.length; i++) {
@@ -217,8 +249,7 @@ class ReservationState extends Component {
             reservedData: getReserveData,
             reserveTotalData: getReserveTotalData,
             reserveTotalTime: tmpTotalTime,
-            reserveTotalTeam: tmpTotalTeam,
-            plantSettingList: tmpPlantSettingList
+            reserveTotalTeam: tmpTotalTeam, 
         })
 
     }
@@ -230,6 +261,7 @@ class ReservationState extends Component {
                 //성공
                 if (response === true) {
                     this.handleGetData();
+                    this.handleGetBeforeCallList(this.props.authData.currentId);
                     return true;
                 } else if (response === -1) {
                     let loginData = getCookie('key');
@@ -239,6 +271,7 @@ class ReservationState extends Component {
                                 response => {
                                     if (response === true) {
                                         this.handleGetData();
+                                        this.handleGetBeforeCallList(this.props.authData.currentId);
                                         return true;
                                     } else {
                                         return false;
@@ -328,6 +361,7 @@ class ReservationState extends Component {
                             reserveTotalData={this.state.reserveTotalData}
                             reserveTotalTime={this.state.reserveTotalTime}
                             reserveTotalTeam={this.state.reserveTotalTeam}
+                            beforeCallList={this.state.beforeCallList}
                             plantCode = {this.props.authData.currentId}
                         />
                     </div>
@@ -361,6 +395,7 @@ const mapStateToProps = (state) => {
     return {
         reserveData: state.reservation.reserveValue,
         reserveTotalData: state.reservation.reserveTotalValue,
+        beforeCallList:state.reservation.beforeCallList,
         reserveStatus: state.reservation.status,
         authData: state.authentication.value,
         loginStatus: state.authentication.login,
@@ -396,8 +431,8 @@ const mapDispatchToProps = (dispatch) => {
         plantSettingGetDataRequest: (id) => {
             return dispatch(plantSettingGetDataRequest(id))
         },
-        reservationGetByTableDataRequest: (id, byTableData) => {
-            return dispatch(reservationGetByTableDataRequest(id, byTableData));
+        reservationGetByTableDataRequest: (id) => {
+            return dispatch(reservationGetByTableDataRequest(id));
         }
     };
 };
