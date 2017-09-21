@@ -14,6 +14,7 @@ import '../css/common.scss'
 import axios from 'axios';
 
 
+let checkF = 1;
 
 class ReservationState extends Component {
     constructor(props) {
@@ -65,6 +66,7 @@ class ReservationState extends Component {
             response => {
                 if (response === true) {
                     // this.handleSetReserveList();
+                    checkF = 1;
                 } else if (response === -1) {
                     this.checkJWT().then(
                         response => {
@@ -91,7 +93,7 @@ class ReservationState extends Component {
         this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
             response => {
                 if (response === true) {
-
+                    checkF = 1;
                     this.handleSetTotalData();
                 } else if (response === -1) {
                     this.checkJWT().then(
@@ -220,7 +222,8 @@ class ReservationState extends Component {
         return reserveData;
     }
     handlePutData(reserveData) {
-        this.setState({ checkFlag: 1 });
+        checkF = 1;
+        // this.setState({ checkFlag: 1 });
         return this.props.reservationPutRequest(this.props.authData.currentId, reserveData).then(
             response => {
                 if (response === true) {
@@ -243,7 +246,8 @@ class ReservationState extends Component {
     }
 
     handleUpdateData(reserveData, newState) {
-        this.setState({ checkFlag: 1 });
+        checkF = 1;
+        // this.setState({ checkFlag: 1 });
         return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
             response => {
                 if (response === true) return true;
@@ -322,25 +326,28 @@ class ReservationState extends Component {
         stomp.connect({}, () => {
             stomp.subscribe('/from-server/' + this.props.authData.currentId + '/adminWeb', (msg) => {
 
-                // if (this.state.checkFlag === 1) {
-
+                if (checkF === 1) {
                     this.checkJWT().then(
-
                         response => {
                             if (response === true) {
                                 let tmp = msg.body.split(':')
                                 if (tmp[3].indexOf('waiting-information-total') > -1) {
                                     this.handleGetTotalData();
+
                                 } else {
                                     this.handleGetReserveList();
+
                                 }
-                                if (this.refs.myRef) {
-                                    this.setState({ checkFlag: 2 });
-                                }
+                                // if (this.refs.myRef) {
+                                //     this.setState({ checkFlag: 2 });
+                                // }
                             }
+                            checkF = 2;
                         }
+
                     )
-              //  }
+
+                }
 
             })
         })
@@ -364,6 +371,7 @@ class ReservationState extends Component {
     }
 
     render() {
+
         const mapToReserveData = (reserveData, searchTable) => {
             let realReserveData = reserveData
             if (realReserveData === undefined || realReserveData === "") {
