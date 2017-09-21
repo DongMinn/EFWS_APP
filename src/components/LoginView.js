@@ -133,7 +133,7 @@ LoginView.defaultProps = {
 //     })(Login);
 LoginView = connect()(LoginView);
 LoginView = reduxForm({
-    form: 'submitValidation' // a unique identifier for this form
+    form: 'submitValidation' 
 })(LoginView);
 
 export default LoginView;

@@ -27,10 +27,12 @@ class ReservationState extends Component {
             reserveTotalTime: 0,
             reserveTotalTeam: 0,
             plantSettingList: [],
-            beforeCallList:[],
-            searchTable: '1'
+            beforeCallList: [],
+            searchTable: '1',
+            checkFlag: 1
+
         };
-        this.handleSetData = this.handleSetData.bind(this);
+
         this.handleUpdateData = this.handleUpdateData.bind(this);
         this.handlePutData = this.handlePutData.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -38,154 +40,174 @@ class ReservationState extends Component {
         this.handleSearchTypeChange = this.handleSearchTypeChange.bind(this);
         this.handleFilteredData = this.handleFilteredData.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
-        this.handleGetData = this.handleGetData.bind(this);
+
         this.checkJWT = this.checkJWT.bind(this);
 
         this.handleGetPlantSettingInfo = this.handleGetPlantSettingInfo.bind(this);
         this.handleGetByTableData = this.handleGetByTableData.bind(this);
         this.handleGetBeforeCallList = this.handleGetBeforeCallList.bind(this);
+        this.handleGetReserveList = this.handleGetReserveList.bind(this);
+        this.handleGetTotalData = this.handleGetTotalData.bind(this);
 
-        
-        this.handleSetplantSettingList = this.handleSetplantSettingList.bind(this);
+
+        // this.handleSetplantSettingList = this.handleSetplantSettingList.bind(this);
         this.handleSetBeforeCallList = this.handleSetBeforeCallList.bind(this);
+        // this.handleSetReserveList = this.handleSetReserveList.bind(this);
+        this.handleSetTotalData = this.handleSetTotalData.bind(this);
 
         // this.handleAddPlantData = this.handleAddPlantData.bind(this);
 
+        this.handleWebSocket = this.handleWebSocket.bind(this);
+
     }
-    handleSetBeforeCallList(){
+    handleGetReserveList() {
+        this.props.reservationGetDataRequest(this.props.authData.currentId).then(
+            response => {
+                if (response === true) {
+                    // this.handleSetReserveList();
+                } else if (response === -1) {
+                    this.checkJWT().then(
+                        response => {
+                            // if(response===true) this.handleGetReserveList();
+                        }
+                    )
+                }
+                else {
+                    console.log('데이터불러오기 실패')
+                }
+            }
+        )
+    }
+    // handleSetReserveList() {
+    //     let getReserveData = this.props.reserveData;
+    //     if (getReserveData === undefined) {
+    //         getReserveData = ''
+    //     }
+    //     this.setState({
+    //         reservedData: getReserveData
+    //     })
+    // }
+    handleGetTotalData() {
+        this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
+            response => {
+                if (response === true) {
+
+                    this.handleSetTotalData();
+                } else if (response === -1) {
+                    this.checkJWT().then(
+                        response => {
+                            if (response === true) this.handleSetTotalData();
+                        }
+                    )
+                }
+                else {
+                    console.log('데이터불러오기 실패')
+                }
+            }
+        )
+    }
+    handleSetTotalData() {
+        let getReserveTotalData = this.props.reserveTotalData;
+        let tmpTotalTime = 0;
+        let tmpTotalTeam = 0;
+
+        if (getReserveTotalData === undefined) {
+            getReserveTotalData = []
+        } else {
+
+            for (let i = 0; i < getReserveTotalData.length; i++) {
+                tmpTotalTime = tmpTotalTime + Number(getReserveTotalData[i].remainingWaitingTime);
+                tmpTotalTeam = tmpTotalTeam + Number(getReserveTotalData[i].remainingWaitingTeamCount);
+            }
+        }
+        if (this.refs.myRef) { // setState가 render가 없으면서 시도 될때, 나오는 에러 방지를 위해 
+            this.setState({
+                reserveTotalData: getReserveTotalData,
+                reserveTotalTime: tmpTotalTime,
+                reserveTotalTeam: tmpTotalTeam,
+            })
+        }
+
+
+    }
+    handleSetBeforeCallList() {
         let tmpBeforeCallList = this.props.beforeCallList
 
-        if(tmpBeforeCallList===undefined) tmpBeforeCallList=[];
-        this.setState({
-            beforeCallList:tmpBeforeCallList
-        })
+        if (tmpBeforeCallList === undefined) tmpBeforeCallList = [];
+        if (this.refs.myRef) {
+            this.setState({
+                beforeCallList: tmpBeforeCallList
+            })
+        }
     }
-    handleGetBeforeCallList(id){
+    handleGetBeforeCallList(id) {
         this.props.reservationGetByTableDataRequest(id).then(
-            response=>{
-                if(response===true){
-                    
+            response => {
+                if (response === true) {
+
                     this.handleSetBeforeCallList();
                 }
             }
         )
     }
     handleGetByTableData(tableType) {
-        this.setState({
-            searchTable: tableType
-        })
+        if (this.refs.myRef) {
+            this.setState({
+                searchTable: tableType
+            })
+        }
     }
-    handleSetplantSettingList(){
-        let tmpPlantSettingList = this.props.plantSettingData;
+    // handleSetplantSettingList() {
+    //     let tmpPlantSettingList = this.props.plantSettingData;
 
-        this.setState({
-            plantSettingList:tmpPlantSettingList
-        }) 
-    }
+    //     this.setState({
+    //         plantSettingList: tmpPlantSettingList
+    //     })
+    // }
     handleGetPlantSettingInfo(id) {
         this.props.plantSettingGetDataRequest(id).then(
             response => {
                 if (response === true) {
-                    this.handleSetplantSettingList();
+                    // this.handleSetplantSettingList();
                 }
             }
         )
     }
     handleSearchTypeChange(searchType) {
-        this.setState({
-            searchType: searchType
-        })
-    }
-    handleClear() {
-        this.setState({
-            cellPhone: '',
-            reservationNo: ''
-        })
-    }
-    handleChange(searchData) {
-        if (this.state.searchType === 'cellPhone') {
+        if (this.refs.myRef) {
             this.setState({
-                cellPhone: searchData
-            })
-        } else {
-            this.setState({
-                reservationNo: searchData
+                searchType: searchType
             })
         }
     }
-    checkJWT() {
-
-        let loginData = getCookie('key');
-
-        if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
-        axios.defaults.headers.common['authorization'] = loginData.token;
-        this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);
-        this.props.getStatusRequest().then(
-            response => {
-                if (!response) {
-
-                    this.handleLogin(loginData.id, loginData.password)
-                } else {
-                    this.handleGetData();
-                    this.handleGetPlantSettingInfo(this.props.authData.currentId);
-                    this.handleGetBeforeCallList(this.props.authData.currentId);
-                }
-            }
-        )
+    handleClear() {
+        if (this.refs.myRef) {
+            this.setState({
+                cellPhone: '',
+                reservationNo: ''
+            })
+        }
     }
-    handleLogin(id, password) {
-        return this.props.loginRequest(id, password).then(
-            () => {
-                if (this.props.loginStatus.status === "SUCCESS") {
-                    //document.cookie = '';
-                    document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-                    let loginData = {
-                        isLoggedIn: true,
-                        id: id,
-                        password: password,//비번도 암호화 해서 쿠키에 저장하도록 수정
-                        token: this.props.authData.token
-                    };
-                    axios.defaults.headers.common['authorization'] = loginData.token;
-                    //쿠키저장
-                    document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-                    this.handleGetPlantSettingInfo(this.props.authData.currentId);
-                    this.handleGetBeforeCallList(this.props.authData.currentId);
-                    this.handleGetData();
-                    return true;
-                }
-                else {
-                    return false;
-                }
+    handleChange(searchData) {
+        if (this.refs.myRef) {
+            if (this.state.searchType === 'cellPhone') {
+                this.setState({
+                    cellPhone: searchData
+                })
+            } else {
+                this.setState({
+                    reservationNo: searchData
+                })
             }
-        )
+        }
     }
-    handleGetData() {
-        this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
-            response => {
-                if (response === true) {
-                    this.handleSetData();
-                } else if (response === -1) this.checkJWT();
-                else {
-                    console.log('데이터불러오기 실패')
-                }
-            }
-        )
-        this.props.reservationGetDataRequest(this.props.authData.currentId).then(
-            response => {
-                if (response === true) {
-                    this.handleSetData();
-                } else if (response === -1) this.checkJWT();
-                else {
-                    console.log('데이터불러오기 실패')
-                }
-            }
-        )
-    }
+
+
     handleFilteredData(reserveData) {
-      
+
         reserveData = reserveData.filter(
             (reserve) => {
-                
+
                 // if (this.state.searchType === 'cellPhone') {
                 //     return reserve.customerCellphone
                 //         .indexOf(this.state.cellPhone) > -1;
@@ -198,21 +220,18 @@ class ReservationState extends Component {
         return reserveData;
     }
     handlePutData(reserveData) {
+        this.setState({ checkFlag: 1 });
         return this.props.reservationPutRequest(this.props.authData.currentId, reserveData).then(
             response => {
                 if (response === true) {
-                    this.handleGetData();
-                    
+                    return true;
                 } else if (response === -1) {
                     let loginData = getCookie('key');
                     this.handleLogin(loginData.id, loginData.password).then(
                         () => {
                             this.props.reservationPutRequest(this.props.authData.currentId, reserveData).then(
                                 response => {
-                                    if (response === true) {
-                                        this.handleGetData(); 
-                                        
-                                    }
+                                    if (response === true) return true;
                                 }
                             )
                         }
@@ -222,56 +241,20 @@ class ReservationState extends Component {
             }
         )
     }
-    handleSetData() {
-        
-        let getReserveData = this.props.reserveData;
-        let getReserveTotalData = this.props.reserveTotalData;
-        let tmpTotalTime = 0;
-        let tmpTotalTeam = 0;
 
-        // console.log(tmpPlantSettingList)
-
-        if (getReserveData === undefined) {
-            getReserveData = ''
-        }
-        // console.log(getReserveData)
-        if (getReserveTotalData === undefined) {
-            getReserveTotalData = []
-        } else {
-
-            for (let i = 0; i < getReserveTotalData.length; i++) {
-                tmpTotalTime = tmpTotalTime + Number(getReserveTotalData[i].remainingWaitingTime);
-                tmpTotalTeam = tmpTotalTeam + Number(getReserveTotalData[i].remainingWaitingTeamCount);
-            }
-        }
-      
-        this.setState({
-            reservedData: getReserveData,
-            reserveTotalData: getReserveTotalData,
-            reserveTotalTime: tmpTotalTime,
-            reserveTotalTeam: tmpTotalTeam, 
-        })
-
-    }
     handleUpdateData(reserveData, newState) {
-        //if -1 ? 토큰먼저확인 
-        //reservationUpdateReques
+        this.setState({ checkFlag: 1 });
         return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
             response => {
-                //성공
-                if (response === true) {
-                    this.handleGetData();
-                    this.handleGetBeforeCallList(this.props.authData.currentId);
-                    return true;
-                } else if (response === -1) {
+                if (response === true) return true;
+                else if (response === -1) {
+
                     let loginData = getCookie('key');
                     return this.handleLogin(loginData.id, loginData.password).then(
                         () => {
                             return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
                                 response => {
                                     if (response === true) {
-                                        this.handleGetData();
-                                        this.handleGetBeforeCallList(this.props.authData.currentId);
                                         return true;
                                     } else {
                                         return false;
@@ -286,10 +269,46 @@ class ReservationState extends Component {
                 }
             })
     }
+    checkJWT() {
+        let loginData = getCookie('key');
+        if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
+        axios.defaults.headers.common['authorization'] = loginData.token;
+        this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);
+        return this.props.getStatusRequest().then(
+            response => {
+                if (response === true) return true;
+                if (!response) {
+                    return this.handleLogin(loginData.id, loginData.password)
+                }
+            }
+        )
+    }
+    handleLogin(id, password) {
 
-    componentDidMount() {
-        this.checkJWT();
-        //웹소켓 연결하는 부분
+        return this.props.loginRequest(id, password).then(
+            () => {
+                if (this.props.loginStatus.status === "SUCCESS") {
+                    //document.cookie = '';
+                    document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+                    let loginData = {
+                        isLoggedIn: true,
+                        id: id,
+                        password: password,//비번도 암호화 해서 쿠키에 저장하도록 수정
+                        token: this.props.authData.token
+                    };
+                    axios.defaults.headers.common['authorization'] = loginData.token;
+                    //쿠키저장
+                    document.cookie = 'key=' + btoa(JSON.stringify(loginData));
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        )
+    }
+    handleWebSocket() {
+
         let api_url = '';
         if (process.env.NODE_ENV === 'development') {
             api_url = 'ws://localhost:8080/efws-websocket/websocket';
@@ -302,11 +321,46 @@ class ReservationState extends Component {
         let stomp = Stomp.client(api_url);
         stomp.connect({}, () => {
             stomp.subscribe('/from-server/' + this.props.authData.currentId + '/adminWeb', (msg) => {
-            
-                //예약 데이터 불러오는 요청
-                this.checkJWT();
+
+                // if (this.state.checkFlag === 1) {
+
+                    this.checkJWT().then(
+
+                        response => {
+                            if (response === true) {
+                                let tmp = msg.body.split(':')
+                                if (tmp[3].indexOf('waiting-information-total') > -1) {
+                                    this.handleGetTotalData();
+                                } else {
+                                    this.handleGetReserveList();
+                                }
+                                if (this.refs.myRef) {
+                                    this.setState({ checkFlag: 2 });
+                                }
+                            }
+                        }
+                    )
+              //  }
+
             })
         })
+    }
+    componentDidMount() {
+
+        this.checkJWT().then(
+            response => {
+                if (response === true) {
+
+                    this.handleGetPlantSettingInfo(this.props.authData.currentId);
+                    this.handleGetTotalData();
+                    this.handleGetReserveList();
+                    this.handleGetBeforeCallList(this.props.authData.currentId);
+                    //웹소켓 연결하는 부분
+                    this.handleWebSocket();
+                }
+            }
+        )
+
     }
 
     render() {
@@ -315,7 +369,6 @@ class ReservationState extends Component {
             if (realReserveData === undefined || realReserveData === "") {
                 return (<EmptyReserveData />)
             }
-
             if (searchTable !== "1") {
                 realReserveData = reserveData.filter(
                     (reserve) => {
@@ -331,8 +384,6 @@ class ReservationState extends Component {
                     return a.reservationOrderTime < b.reservationOrderTime ? -1 : a.reservationOrderTime > b.reservationOrderTime ? 1 : 0;
                 });
             }
-
-
             realReserveData = this.handleFilteredData(realReserveData);
             return realReserveData.map(
                 (reserve, i) => {
@@ -356,34 +407,34 @@ class ReservationState extends Component {
             <div id="reserve-total">
                 <div id="reserve-info-view">
 
-                    <div>
+                    <div ref="myRef">
                         <ReservationInformView
                             reserveTotalData={this.state.reserveTotalData}
                             reserveTotalTime={this.state.reserveTotalTime}
                             reserveTotalTeam={this.state.reserveTotalTeam}
                             beforeCallList={this.state.beforeCallList}
-                            plantCode = {this.props.authData.currentId}
+                            plantCode={this.props.authData.currentId}
                         />
                     </div>
 
                 </div>
                 <div>
-                    <div id="reserve-info-serch-bar">
+                    <div id="reserve-info-serch-bar" ref="myRef">
                         <SearchBarView
                             onChangeSearchData={this.handleChange}
                             onChangeSearchType={this.handleSearchTypeChange}
                             onClearData={this.handleClear}
                             searchType={this.state.searchType}
-                            plantSettingList={this.state.plantSettingList}
+                            plantSettingList={this.props.plantSettingData}
                             onChangeRadioButton={this.handleGetByTableData}
                         />
 
                     </div>
                     <br /><br />
 
-                    <div id="reserve-info">
+                    <div id="reserve-info" ref="myRef">
                         <div>
-                            {mapToReserveData(this.state.reservedData, this.state.searchTable)}
+                            {mapToReserveData(this.props.reserveData, this.state.searchTable)}
                         </div>
                     </div>
                 </div>
@@ -395,12 +446,12 @@ const mapStateToProps = (state) => {
     return {
         reserveData: state.reservation.reserveValue,
         reserveTotalData: state.reservation.reserveTotalValue,
-        beforeCallList:state.reservation.beforeCallList,
+        beforeCallList: state.reservation.beforeCallList,
         reserveStatus: state.reservation.status,
         authData: state.authentication.value,
         loginStatus: state.authentication.login,
         plantSettingData: state.plantSetting.value.plantSettingList,
-        
+
 
     };
 };

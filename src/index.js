@@ -30,7 +30,7 @@ ReactDOM.render(
                 </Route>
                 <Route path="/" component={App}>
                     <IndexRoute component={Login} />
-                    <Route path="login" component={Login} />
+                 
                     <Route path="change" component={Change}>
                         <Route path="password" component={ChangePassword} />
                         <Route path="information" component={ChangeInformation} />
