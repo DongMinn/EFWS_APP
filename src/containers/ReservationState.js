@@ -50,14 +50,11 @@ class ReservationState extends Component {
         this.handleGetReserveList = this.handleGetReserveList.bind(this);
         this.handleGetTotalData = this.handleGetTotalData.bind(this);
 
-
         // this.handleSetplantSettingList = this.handleSetplantSettingList.bind(this);
         this.handleSetBeforeCallList = this.handleSetBeforeCallList.bind(this);
         // this.handleSetReserveList = this.handleSetReserveList.bind(this);
         this.handleSetTotalData = this.handleSetTotalData.bind(this);
-
         // this.handleAddPlantData = this.handleAddPlantData.bind(this);
-
         this.handleWebSocket = this.handleWebSocket.bind(this);
 
     }
@@ -66,11 +63,23 @@ class ReservationState extends Component {
             response => {
                 if (response === true) {
                     // this.handleSetReserveList();
+                    // this.handleSetBeforeCallList();
                     checkF = 1;
                 } else if (response === -1) {
-                    this.checkJWT().then(
-                        response => {
-                            // if(response===true) this.handleGetReserveList();
+                    let loginData = getCookie('key');
+                    return this.handleLogin(loginData.id, loginData.password).then(
+                        () => {
+                            return this.props.reservationGetDataRequest(this.props.authData.currentId).then(
+                                response => {
+                                    if (response === true) {
+                                        // this.handleSetBeforeCallList();
+                                        checkF = 1;
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            )
                         }
                     )
                 }
@@ -80,15 +89,7 @@ class ReservationState extends Component {
             }
         )
     }
-    // handleSetReserveList() {
-    //     let getReserveData = this.props.reserveData;
-    //     if (getReserveData === undefined) {
-    //         getReserveData = ''
-    //     }
-    //     this.setState({
-    //         reservedData: getReserveData
-    //     })
-    // }
+  
     handleGetTotalData() {
         this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
             response => {
@@ -96,9 +97,20 @@ class ReservationState extends Component {
                     checkF = 1;
                     this.handleSetTotalData();
                 } else if (response === -1) {
-                    this.checkJWT().then(
-                        response => {
-                            if (response === true) this.handleSetTotalData();
+                    let loginData = getCookie('key');
+                    return this.handleLogin(loginData.id, loginData.password).then(
+                        () => {
+                            return this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
+                                response => {
+                                    if (response === true) {
+                                        checkF = 1;
+                                        this.handleSetTotalData();
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            )
                         }
                     )
                 }
@@ -129,8 +141,6 @@ class ReservationState extends Component {
                 reserveTotalTeam: tmpTotalTeam,
             })
         }
-
-
     }
     handleSetBeforeCallList() {
         let tmpBeforeCallList = this.props.beforeCallList
@@ -161,10 +171,11 @@ class ReservationState extends Component {
     }
     // handleSetplantSettingList() {
     //     let tmpPlantSettingList = this.props.plantSettingData;
-
-    //     this.setState({
-    //         plantSettingList: tmpPlantSettingList
-    //     })
+    //     if (this.refs.myRef) {
+    //         this.setState({
+    //             plantSettingList: tmpPlantSettingList
+    //         })
+    //     }
     // }
     handleGetPlantSettingInfo(id) {
         this.props.plantSettingGetDataRequest(id).then(
@@ -292,7 +303,6 @@ class ReservationState extends Component {
         return this.props.loginRequest(id, password).then(
             () => {
                 if (this.props.loginStatus.status === "SUCCESS") {
-                    //document.cookie = '';
                     document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
                     let loginData = {
                         isLoggedIn: true,
@@ -301,7 +311,6 @@ class ReservationState extends Component {
                         token: this.props.authData.token
                     };
                     axios.defaults.headers.common['authorization'] = loginData.token;
-                    //쿠키저장
                     document.cookie = 'key=' + btoa(JSON.stringify(loginData));
                     return true;
                 }
@@ -327,28 +336,18 @@ class ReservationState extends Component {
             stomp.subscribe('/from-server/' + this.props.authData.currentId + '/adminWeb', (msg) => {
 
                 if (checkF === 1) {
-                    this.checkJWT().then(
-                        response => {
-                            if (response === true) {
-                                let tmp = msg.body.split(':')
-                                if (tmp[3].indexOf('waiting-information-total') > -1) {
-                                    this.handleGetTotalData();
-
-                                } else {
-                                    this.handleGetReserveList();
-
-                                }
-                                // if (this.refs.myRef) {
-                                //     this.setState({ checkFlag: 2 });
-                                // }
-                            }
-                            checkF = 2;
-                        }
-
-                    )
-
+                    this.handleGetTotalData();
+                    this.handleGetReserveList();
+                    checkF++;
+                    // let tmp = msg.body.split(':')
+                    // if (tmp[3].indexOf('waiting-information-total') > -1) {
+                    //     this.handleGetTotalData();
+                    //     checkF++;
+                    // } else {
+                    //     this.handleGetReserveList();
+                    //     checkF++;
+                    // }
                 }
-
             })
         })
     }
@@ -361,7 +360,7 @@ class ReservationState extends Component {
                     this.handleGetPlantSettingInfo(this.props.authData.currentId);
                     this.handleGetTotalData();
                     this.handleGetReserveList();
-                    this.handleGetBeforeCallList(this.props.authData.currentId);
+                    // this.handleGetBeforeCallList(this.props.authData.currentId);
                     //웹소켓 연결하는 부분
                     this.handleWebSocket();
                 }
@@ -404,7 +403,7 @@ class ReservationState extends Component {
                         onUpdateReserveState={this.handleUpdateData}
                         onPutReserveData={this.handlePutData}
                         CellPhone={tmpCellPhone}
-                        plantSettingList={this.state.plantSettingList}
+                        plantSettingList={this.props.plantSettingData}
                     />)
                 }
             )

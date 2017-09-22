@@ -20,7 +20,6 @@ export const styles = {
         color: 'black',
         fontFamily: '휴먼엽서체',
         fontSize: 20
-
     },
     reserveButtonEnter: {
         color: '#8080ff'
@@ -176,4 +175,10 @@ export const iconStyle={
         display:'inlineBlock'
     }
 
+}
+
+export const dialogStyle={
+    titleStyle:{
+        fontWeight: "bold"
+    }
 }
