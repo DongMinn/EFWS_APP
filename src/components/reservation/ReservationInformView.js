@@ -89,7 +89,7 @@ class ReservationInformView extends Component {
                         this.props.beforeCallList.map((list, i) => (
                             
                             <div key={i}>
-                                <FlatButton label={'['+parseInt(i+1,10) + '] 이전호출번호: ' + list.waitingNo } style={styles.beforeList} labelStyle={styles.beforeListFont} disabled={true}></FlatButton>
+                                <FlatButton label={'['+parseInt(i+1,10) + ']  ' + list.waitingNo } style={styles.beforeList} labelStyle={styles.beforeListFont} disabled={true}></FlatButton>
                                 <br />
                             </div>
                         ))

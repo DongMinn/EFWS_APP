@@ -61,12 +61,15 @@ class ReservationState extends Component {
 
     }
     handleGetTotalDatas(){
+
+        checkF++;
+        
         this.props.reservationGetDataRequest(this.props.authData.currentId).then(
             response => {
                 if (response === true) {
                     // this.handleSetReserveList();
                     // this.handleSetBeforeCallList();
-                 
+                    checkF = 1;
                 } else if (response === -1) {
                     let loginData = getCookie('key');
                     return this.handleLogin(loginData.id, loginData.password).then(
@@ -75,7 +78,7 @@ class ReservationState extends Component {
                                 response => {
                                     if (response === true) {
                                         // this.handleSetBeforeCallList();
-                                  
+                                        checkF = 1;
                                         return true;
                                     } else {
                                         return false;
@@ -419,7 +422,7 @@ class ReservationState extends Component {
                     // this.handleGetReserveList();
 
                     this.handleGetTotalDatas()
-                    checkF++;
+                    
                     // let tmp = msg.body.split(':')
                     // if (tmp[3].indexOf('waiting-information-total') > -1) {
                     //     this.handleGetTotalData();

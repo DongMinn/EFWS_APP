@@ -26,7 +26,9 @@ export const styles = {
     },
     beforeListFont:{
         fontWeight: 'bold',
-        color: 'black'
+        color: 'black',
+        fontSize: 15
+
     },
     reserveButtonEnter: {
         color: '#8080ff'
