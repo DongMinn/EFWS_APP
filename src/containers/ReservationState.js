@@ -466,15 +466,15 @@ class ReservationState extends Component {
                         return reserve.tableType
                             .indexOf(searchTable) > -1;
                     })
-                realReserveData.sort((a, b) => {
-                    return a.reservationNo < b.reservationNo ? -1 : a.reservationNo > b.reservationNo ? 1 : 0;
-                });
+                // realReserveData.sort((a, b) => {
+                //     return a.reservationNo < b.reservationNo ? -1 : a.reservationNo > b.reservationNo ? 1 : 0;
+                // });
             }
-            else {
+            // else {
                 realReserveData.sort((a, b) => {
                     return a.reservationOrderTime < b.reservationOrderTime ? -1 : a.reservationOrderTime > b.reservationOrderTime ? 1 : 0;
                 });
-            }
+            // }
             realReserveData = this.handleFilteredData(realReserveData);
             return realReserveData.map(
                 (reserve, i) => {

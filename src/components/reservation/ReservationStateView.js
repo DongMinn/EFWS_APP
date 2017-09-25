@@ -20,7 +20,6 @@ class ReservationStateTestView extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            reserveData: [],
             show: false,
             dialogOpen: false,
             reserve: {},
@@ -141,6 +140,19 @@ class ReservationStateTestView extends Component {
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if(this.props.reserveData!==nextProps.reserveData) return true;
+        if(this.props.CellPhone!==nextProps.CellPhone) return true;
+        if(this.state.reserve!==nextState.reserve) return true;
+        if(this.state.dialogOpen!==nextState.dialogOpen) return true;
+        if(this.state.show!==nextState.show) return true;
+        if(this.state.reserveState!==nextState.reserveState) return true;
+        if(this.state.putDataShow!==nextState.putDataShow) return true;
+
+        return false;
+
+    }
+    
 
 
     render() {
