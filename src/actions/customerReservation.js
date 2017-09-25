@@ -7,7 +7,7 @@ export const customerReservationGetDataRequest = (id, reservationNo) => {
     return (dispatch) => {
         //login api  시작
         dispatch(customerReserveGetData());
-        return axios.post('/table/reservation/store/waiting-information-bycase/find', {
+        return axios.post('/table/reservation/store/waiting-information-bycase2/find', {
             loginId: id,
             reservationNo: reservationNo
         }).then((response) => {

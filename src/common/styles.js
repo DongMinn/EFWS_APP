@@ -21,6 +21,13 @@ export const styles = {
         fontFamily: '휴먼엽서체',
         fontSize: 20
     },
+    beforeList:{
+        height: 30
+    },
+    beforeListFont:{
+        fontWeight: 'bold',
+        color: 'black'
+    },
     reserveButtonEnter: {
         color: '#8080ff'
     },

@@ -59,6 +59,7 @@ class ReservationState extends Component {
 
     }
     handleGetReserveList() {
+       
         this.props.reservationGetDataRequest(this.props.authData.currentId).then(
             response => {
                 if (response === true) {
@@ -91,6 +92,7 @@ class ReservationState extends Component {
     }
   
     handleGetTotalData() {
+    
         this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
             response => {
                 if (response === true) {
@@ -143,9 +145,13 @@ class ReservationState extends Component {
         }
     }
     handleSetBeforeCallList() {
+
         let tmpBeforeCallList = this.props.beforeCallList
 
         if (tmpBeforeCallList === undefined) tmpBeforeCallList = [];
+        if(tmpBeforeCallList.length>5){
+            tmpBeforeCallList.splice(5,tmpBeforeCallList.length-5);
+        }
         if (this.refs.myRef) {
             this.setState({
                 beforeCallList: tmpBeforeCallList
@@ -156,7 +162,6 @@ class ReservationState extends Component {
         this.props.reservationGetByTableDataRequest(id).then(
             response => {
                 if (response === true) {
-
                     this.handleSetBeforeCallList();
                 }
             }
@@ -235,6 +240,7 @@ class ReservationState extends Component {
     handlePutData(reserveData) {
         checkF = 1;
         // this.setState({ checkFlag: 1 });
+        
         return this.props.reservationPutRequest(this.props.authData.currentId, reserveData).then(
             response => {
                 if (response === true) {
@@ -259,9 +265,15 @@ class ReservationState extends Component {
     handleUpdateData(reserveData, newState) {
         checkF = 1;
         // this.setState({ checkFlag: 1 });
+       
         return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
             response => {
-                if (response === true) return true;
+                if (response === true) {
+                    
+                    this.handleGetBeforeCallList(this.props.authData.currentId);
+                   
+                    return true;
+                }
                 else if (response === -1) {
 
                     let loginData = getCookie('key');
@@ -270,6 +282,9 @@ class ReservationState extends Component {
                             return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
                                 response => {
                                     if (response === true) {
+                                        
+                                        this.handleGetBeforeCallList(this.props.authData.currentId);
+                                        
                                         return true;
                                     } else {
                                         return false;
@@ -335,7 +350,10 @@ class ReservationState extends Component {
         stomp.connect({}, () => {
             stomp.subscribe('/from-server/' + this.props.authData.currentId + '/adminWeb', (msg) => {
 
+                console.log(checkF)
+
                 if (checkF === 1) {
+
                     this.handleGetTotalData();
                     this.handleGetReserveList();
                     checkF++;
@@ -360,7 +378,7 @@ class ReservationState extends Component {
                     this.handleGetPlantSettingInfo(this.props.authData.currentId);
                     this.handleGetTotalData();
                     this.handleGetReserveList();
-                    // this.handleGetBeforeCallList(this.props.authData.currentId);
+                    this.handleGetBeforeCallList(this.props.authData.currentId);
                     //웹소켓 연결하는 부분
                     this.handleWebSocket();
                 }
@@ -398,7 +416,7 @@ class ReservationState extends Component {
                     let tmpRightPhoneNumber = Right(reserve.customerCellphone, 4);
                     let tmpLeftPhoneNumber = Left(reserve.customerCellphone, 3);
                     tmpCellPhone = tmpLeftPhoneNumber + '-****-' + tmpRightPhoneNumber;
-                    if (reserve.customerCellphone === undefined) tmpCellPhone = '프린터출력고객'
+                    if (reserve.customerCellphone === '000') tmpCellPhone = '프린터출력고객'
                     return (<ReservationStateView reserveData={reserve} key={i}
                         onUpdateReserveState={this.handleUpdateData}
                         onPutReserveData={this.handlePutData}

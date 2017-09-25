@@ -159,7 +159,7 @@ class ReservationStateTestView extends Component {
                     <CardHeader
                         title={'[' + this.handleLabel(this.props.reserveData.waitingState) + ']' + this.handleReservationNo()}
                         titleStyle={styles.cardHeader}
-                        subtitle={'[고객번호: ' + this.props.CellPhone + ']'}
+                        subtitle={'[고객번호: ' + this.props.CellPhone + '] [전체순번: '+ this.props.reserveData.orderInRemainingList +']'}
                         actAsExpander={true}
                         showExpandableButton={true}
                     >
@@ -179,7 +179,7 @@ class ReservationStateTestView extends Component {
 
                     </CardActions>
                     <CardActions>
-                        <RaisedButton style={styles.callButton} onClick={() => { this.handleConfirmState(this.props.reserveData, 'CALL') }}>CALL</RaisedButton>
+                        <RaisedButton style={styles.callButton} onClick={() => { this.handleConfirmState(this.props.reserveData, 'WAIT') }}>CALL</RaisedButton>
                         <RaisedButton style={styles.enterButton} onClick={() => { this.handleConfirmState(this.props.reserveData, 'ENTRANCE') }}>입장</RaisedButton>
                         <RaisedButton style={styles.noshowButton} onClick={() => { this.handleConfirmState(this.props.reserveData, 'NOSHOW') }}>NO-SHOW</RaisedButton>
                     </CardActions>

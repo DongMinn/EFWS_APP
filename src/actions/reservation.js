@@ -160,6 +160,7 @@ export const reservationGetByTableDataRequest = (id) => {
 
         
         dispatch(reserveGetByTableData())
+        
         return axios.post('/table/reservation/store/find', {
             loginId: id,
             reservationNo: null,
@@ -173,17 +174,14 @@ export const reservationGetByTableDataRequest = (id) => {
                 ],
             waitingStateList: [
             {
-                waitingState: "CALL"
-            },
-            {
                 waitingState: "WAIT"
             }],
+
             reservationOrderTimeBegin: dates,
             reservationOrderTimeEnd: dates
-
-
         }).then(
             response => {
+
 
                 if (response.status === 200) {
                     if (response.data.status === 200) {
@@ -198,6 +196,7 @@ export const reservationGetByTableDataRequest = (id) => {
             }
             ).catch(
             error => {
+                
                 
                 dispatch(reserveGetByTableDataFailure());
                 if (error.response.data.status === 500) {

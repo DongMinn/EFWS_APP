@@ -51,7 +51,7 @@ class CustomerReservationStateView extends Component {
     handleTitle() {
         if (this.props.customerData.waitingState === "WAIT") return '지금 입장하세요!'
         else if (this.props.availableCheck === false) return '대기정보가 없습니다!'
-        return this.props.customerData.remainingWaitingTime + '분 후 입장가능!'
+        return (this.props.customerData.remainingWaitingTime>60?'60':this.props.customerData.remainingWaitingTime) + '분 후 입장가능!'
     }
     setCustomerData(customerData, state) {
         if (state === 'MODI') {

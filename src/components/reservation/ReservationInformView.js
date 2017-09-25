@@ -85,9 +85,11 @@ class ReservationInformView extends Component {
                         titleColor={'#FF5722'}
                     />
                     <CardActions>
-                        {this.props.beforeCallList.map((list, i) => (
+                        {this.props.beforeCallList ===undefined ? '이전호출번호 없음':
+                        this.props.beforeCallList.map((list, i) => (
+                            
                             <div key={i}>
-                                <FlatButton label={'['+i+1 + '] 이전호출번호: ' + list.waitingNo } style={styles.reserveState} disabled={true}></FlatButton>
+                                <FlatButton label={'['+parseInt(i+1,10) + '] 이전호출번호: ' + list.waitingNo } style={styles.beforeList} labelStyle={styles.beforeListFont} disabled={true}></FlatButton>
                                 <br />
                             </div>
                         ))
