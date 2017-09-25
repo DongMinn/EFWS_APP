@@ -50,6 +50,8 @@ class ReservationState extends Component {
         this.handleGetReserveList = this.handleGetReserveList.bind(this);
         this.handleGetTotalData = this.handleGetTotalData.bind(this);
 
+        this.handleGetTotalDatas = this.handleGetTotalDatas.bind(this);
+
         // this.handleSetplantSettingList = this.handleSetplantSettingList.bind(this);
         this.handleSetBeforeCallList = this.handleSetBeforeCallList.bind(this);
         // this.handleSetReserveList = this.handleSetReserveList.bind(this);
@@ -57,6 +59,65 @@ class ReservationState extends Component {
         // this.handleAddPlantData = this.handleAddPlantData.bind(this);
         this.handleWebSocket = this.handleWebSocket.bind(this);
 
+    }
+    handleGetTotalDatas(){
+        this.props.reservationGetDataRequest(this.props.authData.currentId).then(
+            response => {
+                if (response === true) {
+                    // this.handleSetReserveList();
+                    // this.handleSetBeforeCallList();
+                 
+                } else if (response === -1) {
+                    let loginData = getCookie('key');
+                    return this.handleLogin(loginData.id, loginData.password).then(
+                        () => {
+                            return this.props.reservationGetDataRequest(this.props.authData.currentId).then(
+                                response => {
+                                    if (response === true) {
+                                        // this.handleSetBeforeCallList();
+                                  
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            )
+                        }
+                    )
+                }
+                else {
+                    console.log('데이터불러오기 실패')
+                }
+            }
+        )
+        this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
+            response => {
+                if (response === true) {
+                    checkF = 1;
+                    this.handleSetTotalData();
+                } else if (response === -1) {
+                    let loginData = getCookie('key');
+                    return this.handleLogin(loginData.id, loginData.password).then(
+                        () => {
+                            return this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
+                                response => {
+                                    if (response === true) {
+                                        checkF = 1;
+                                        this.handleSetTotalData();
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            )
+                        }
+                    )
+                }
+                else {
+                    console.log('데이터불러오기 실패')
+                }
+            }
+        )
     }
     handleGetReserveList() {
        
@@ -354,8 +415,10 @@ class ReservationState extends Component {
 
                 if (checkF === 1) {
 
-                    this.handleGetTotalData();
-                    this.handleGetReserveList();
+                    // this.handleGetTotalData();
+                    // this.handleGetReserveList();
+
+                    this.handleGetTotalDatas()
                     checkF++;
                     // let tmp = msg.body.split(':')
                     // if (tmp[3].indexOf('waiting-information-total') > -1) {
