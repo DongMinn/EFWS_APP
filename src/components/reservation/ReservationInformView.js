@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import { Card, CardActions, CardHeader } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import Autonew from 'material-ui/svg-icons/action/autorenew';
-import IconButton from 'material-ui/IconButton';
+// import Autonew from 'material-ui/svg-icons/action/autorenew';
+// import IconButton from 'material-ui/IconButton';
 
 import { reservationInfoStyle, styles, iconStyle } from '../../common/styles';
 
@@ -24,7 +24,17 @@ class ReservationInformView extends Component {
 
         return yyyy+'년 '+mm+'월 '+dd+'일'
     }
-
+    shouldComponentUpdate(nextProps, nextState) {
+        if(this.props.reserveTotalData!==nextProps.reserveTotalData) return true;
+        if(this.props.reserveTotalTime!==nextProps.reserveTotalTime) return true;
+        if(this.props.reserveTotalTeam!==nextProps.reserveTotalTeam) return true;
+        if(this.props.beforeCallList!==nextProps.beforeCallList) return true;
+        if(this.props.plantCode!==nextProps.plantCode) return true;
+ 
+       
+        return false;
+    }
+    
     render() {
 
         const totalDataLeftView = (
@@ -53,28 +63,28 @@ class ReservationInformView extends Component {
                 </Card>
             </div>
         )
-        const totalDataCenterView = (
-            <div>
-                <Card style={reservationInfoStyle.reserveinfoCard}>
-                    <CardHeader
-                        title={'상세 정보'}
-                        actAsExpander={true}
-                        titleStyle={styles.infoCardHeader}
-                        titleColor={'#FF5722'}
-                    />
-                    <CardActions>
-                        {this.props.reserveTotalData.map((reserve, i) => (
-                            <div key={i}>
-                                <FlatButton label={reserve.tableType + '인 테이블 대기 팀: ' + reserve.remainingWaitingTeamCount + ' 팀'} style={styles.reserveState} disabled={true}></FlatButton>
-                                <FlatButton label={'총 대기 시간: ' + reserve.remainingWaitingTime+'분'} style={styles.reserveState} disabled={true}></FlatButton>
-                                <br />
-                            </div>
-                        ))
-                        }
-                    </CardActions>
-                </Card>
-            </div>
-        )
+        // const totalDataCenterView = (
+        //     <div>
+        //         <Card style={reservationInfoStyle.reserveinfoCard}>
+        //             <CardHeader
+        //                 title={'상세 정보'}
+        //                 actAsExpander={true}
+        //                 titleStyle={styles.infoCardHeader}
+        //                 titleColor={'#FF5722'}
+        //             />
+        //             <CardActions>
+        //                 {this.props.reserveTotalData.map((reserve, i) => (
+        //                     <div key={i}>
+        //                         <FlatButton label={reserve.tableType + '인 테이블 대기 팀: ' + reserve.remainingWaitingTeamCount + ' 팀'} style={styles.reserveState} disabled={true}></FlatButton>
+        //                         <FlatButton label={'총 대기 시간: ' + reserve.remainingWaitingTime+'분'} style={styles.reserveState} disabled={true}></FlatButton>
+        //                         <br />
+        //                     </div>
+        //                 ))
+        //                 }
+        //             </CardActions>
+        //         </Card>
+        //     </div>
+        // )
         const beforeCallListView = (
             <div>
                 <Card style={reservationInfoStyle.reserveinfoCard}>

@@ -60,6 +60,17 @@ class SearchBarView extends Component {
         // }
         this.props.onChangeSearchData(e.target.value);
     }
+    shouldComponentUpdate(nextProps, nextState) {
+        if(this.props.searchType!==nextProps.searchType) return true;
+        if(this.props.plantSettingList!==nextProps.plantSettingList) return true;
+        if(this.state.cellPhone!==nextState.cellPhone) return true;
+        if(this.state.reservationNo!==nextState.reservationNo) return true;
+        if(this.state.searchType!==nextState.searchType) return true;
+       
+        return false;
+    }
+    
+
     render() {
         const items = [];
         items.push(<RadioButton style={{ width: '5px' }} labelStyle={{ width: '70px' }} key={-1} value={"1"} label={this.handleRadioValue("1")} />);

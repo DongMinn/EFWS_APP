@@ -238,14 +238,7 @@ class ReservationState extends Component {
             })
         }
     }
-    // handleSetplantSettingList() {
-    //     let tmpPlantSettingList = this.props.plantSettingData;
-    //     if (this.refs.myRef) {
-    //         this.setState({
-    //             plantSettingList: tmpPlantSettingList
-    //         })
-    //     }
-    // }
+ 
     handleGetPlantSettingInfo(id) {
         this.props.plantSettingGetDataRequest(id).then(
             response => {
@@ -332,10 +325,8 @@ class ReservationState extends Component {
        
         return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
             response => {
-                if (response === true) {
-                    
+                if (response === true) {    
                     this.handleGetBeforeCallList(this.props.authData.currentId);
-                   
                     return true;
                 }
                 else if (response === -1) {
@@ -346,9 +337,7 @@ class ReservationState extends Component {
                             return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
                                 response => {
                                     if (response === true) {
-                                        
                                         this.handleGetBeforeCallList(this.props.authData.currentId);
-                                        
                                         return true;
                                     } else {
                                         return false;
@@ -420,9 +409,7 @@ class ReservationState extends Component {
 
                     // this.handleGetTotalData();
                     // this.handleGetReserveList();
-
                     this.handleGetTotalDatas()
-                    
                     // let tmp = msg.body.split(':')
                     // if (tmp[3].indexOf('waiting-information-total') > -1) {
                     //     this.handleGetTotalData();
