@@ -36,22 +36,15 @@ class ChangePassword extends Component {
                     //document.cookie = '';
                     document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
 
-                    // console.log('DEBUG: changePassword 로그인 직전 쿠키');
-                    // console.log(document.cookie);
                     let loginData = {
                         isLoggedIn: true,
                         id: id,
                         password: password,//비번도 암호화 해서 쿠키에 저장하도록 수정
                         token: this.props.value.token
                     };
-                    // console.log('DEBUG: changePassword 새로고침 토큰값');
-                    // console.log(this.props.value.token);
+                    
                     axios.defaults.headers.common['authorization'] = loginData.token;
-                    //쿠키저장
-
                     document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-                    // console.log('DEBUG: 재 로그인시 쿠키값');
-                    // console.log(document.cookie);
                     return true;
                 }
                 else {
@@ -109,7 +102,14 @@ class ChangePassword extends Component {
     }
 
     componentWillMount() {
-        this.checkJWT();
+        // this.checkJWT();
+        let loginData = getCookie('key');
+        
+       
+         if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
+         axios.defaults.headers.common['authorization'] = loginData.token;
+         
+        this.handleLogin(loginData.id, loginData.password)
     }
 
     render() {

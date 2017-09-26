@@ -24,16 +24,7 @@ class ReservationInformView extends Component {
 
         return yyyy+'년 '+mm+'월 '+dd+'일'
     }
-    shouldComponentUpdate(nextProps, nextState) {
-        // if(this.props.reserveTotalData!==nextProps.reserveTotalData) return true;
-        // if(this.props.reserveTotalTime!==nextProps.reserveTotalTime) return true;
-        // if(this.props.reserveTotalTeam!==nextProps.reserveTotalTeam) return true;
-        // if(this.props.beforeCallList!==nextProps.beforeCallList) return true;
-        // if(this.props.plantCode!==nextProps.plantCode) return true;
- 
-       
-        // return false;
-    }
+   
     
     render() {
 

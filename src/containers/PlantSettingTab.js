@@ -392,7 +392,10 @@ class PlantSettingTab extends Component {
         )
     }
     componentDidMount() {
-        this.checkJWT();
+        // this.checkJWT();
+        this.handleGetPlantSetting();
+        this.handleGetPlantSettingNoShow();
+        this.handleGetPlantSettingAlarm();
     }
 
     render() {

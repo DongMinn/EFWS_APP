@@ -33,6 +33,7 @@ export const loginRequest = (id, password) => {
 }
 
 export function getStatusRequest() {
+    
     return (dispatch) => {
         // inform Get Status API is starting
         dispatch(getStatus());

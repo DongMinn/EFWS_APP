@@ -100,9 +100,18 @@ class ChangeInformation extends Component {
             }
         )
     };
+    componentDidMount() {
+        
+    }
     
     componentWillMount() {
-        this.checkJWT();
+        let loginData = getCookie('key');
+        
+       
+         if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
+         axios.defaults.headers.common['authorization'] = loginData.token;
+         this.handleGetInform(this.props.value.currentId);
+        // this.checkJWT();
         
     }
     

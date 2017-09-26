@@ -187,7 +187,7 @@ class ReservationState extends Component {
         )
     }
     handleSetTotalData() {
-        debugger;
+        
         let getReserveTotalData = this.props.reserveTotalData;
         let tmpTotalTime = 0;
         let tmpTotalTeam = 0;
@@ -354,6 +354,7 @@ class ReservationState extends Component {
             })
     }
     checkJWT() {
+        
         let loginData = getCookie('key');
         if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
         axios.defaults.headers.common['authorization'] = loginData.token;
