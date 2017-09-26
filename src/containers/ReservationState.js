@@ -187,6 +187,7 @@ class ReservationState extends Component {
         )
     }
     handleSetTotalData() {
+        debugger;
         let getReserveTotalData = this.props.reserveTotalData;
         let tmpTotalTime = 0;
         let tmpTotalTeam = 0;

@@ -23,7 +23,7 @@ class Header extends Component {
     }
 
     handleLinkToHome() {
-        browserHistory.push('/reservationstate');
+        window.location.reload();
         
     };
     handleLinkToLogin() {

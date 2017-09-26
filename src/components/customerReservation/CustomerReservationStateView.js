@@ -40,7 +40,7 @@ class CustomerReservationStateView extends Component {
         this.handleImage = this.handleImage.bind(this);
     }
     handleImage(){
-        
+        debugger;
         if(this.props.loginId.toUpperCase().indexOf("AL")!==-1){
             return al
         }
