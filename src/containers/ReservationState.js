@@ -321,6 +321,7 @@ class ReservationState extends Component {
     }
 
     handleUpdateData(reserveData, newState) {
+        
         checkF = 1;
         // this.setState({ checkFlag: 1 });
        
