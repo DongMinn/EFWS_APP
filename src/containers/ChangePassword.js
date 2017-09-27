@@ -58,16 +58,13 @@ class ChangePassword extends Component {
         
         return this.props.checkPasswordRequest(id, password).then(
             (response) => {
-        
                 if (response === -1) {
                     let loginData = getCookie('key');
                     return this.handleLogin(loginData.id, loginData.password).then(
                         (response) => {
                             if(response){
-
                                 return this.props.checkPasswordRequest(id, password).then(
                                     (response)=>{
-                                        
                                         if(response===true){
                                             return this.props.changePasswordRequest(id, password , newPassword).then(
                                                 response=>{

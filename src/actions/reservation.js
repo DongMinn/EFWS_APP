@@ -30,7 +30,7 @@ export const reservationGetDataRequest = (plantCode) => {
             }
 
         }).catch((error) => {
-            console.log(error.response.data);
+            
             dispatch(reserveGetDataFailure());
             console.log('DEBUG: Reserve request failed!');
             if (error.response.data.status === 500) {

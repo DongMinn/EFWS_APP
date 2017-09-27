@@ -112,6 +112,7 @@ class ChangePasswordView extends Component {
         return (
             <div>
                 <div>
+                
                     {!this.state.successStatus ? changeFailedView : undefined}
                 </div>
                 <div>

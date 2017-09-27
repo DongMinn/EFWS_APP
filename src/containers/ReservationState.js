@@ -95,6 +95,7 @@ class ReservationState extends Component {
         )
         this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
             response => {
+                
                 if (response === true) {
                     checkF = 1;
                     this.handleSetTotalData();
@@ -406,10 +407,13 @@ class ReservationState extends Component {
         stomp.connect({}, () => {
             stomp.subscribe('/from-server/' + this.props.authData.currentId + '/adminWeb', (msg) => {
 
+
                 console.log(checkF)
+                
 
                 if (checkF === 1) {
 
+                    console.log('websocket!!!')
                     // this.handleGetTotalData();
                     // this.handleGetReserveList();
                     this.handleGetTotalDatas()
@@ -440,11 +444,8 @@ class ReservationState extends Component {
                 }
             }
         )
-
     }
-
     render() {
-
         const mapToReserveData = (reserveData, searchTable) => {
             let realReserveData = reserveData
             if (realReserveData === undefined || realReserveData === "") {
@@ -481,8 +482,6 @@ class ReservationState extends Component {
                     />)
                 }
             )
-
-
         }
         return (
             <div id="reserve-total">
@@ -532,8 +531,6 @@ const mapStateToProps = (state) => {
         authData: state.authentication.value,
         loginStatus: state.authentication.login,
         plantSettingData: state.plantSetting.value.plantSettingList,
-
-
     };
 };
 const mapDispatchToProps = (dispatch) => {
