@@ -34,7 +34,22 @@ class ReservationStateTestView extends Component {
         this.handleChnageReserveRequest = this.handleChnageReserveRequest.bind(this);
         this.handleLabel = this.handleLabel.bind(this);
         this.handleReservationNo = this.handleReservationNo.bind(this);
+        this.handleWaitingTime = this.handleWaitingTime.bind(this);
 
+    }
+    handleWaitingTime(){
+        let regiDate = this.props.reserveData.reservationOrderTime.replace(/-/g,'/');;
+        
+        let regiTime = Date.parse(regiDate);
+        let today =new Date();
+        
+        let gap = today.getTime() - regiTime;
+        
+        let minutes=1000*60;
+        
+        let gap_m = Math.floor(gap/minutes);
+
+        return '대기시간: '+gap_m+' 분';
     }
     handleReservationNo() {
         let no = this.props.reserveData.reservationNo;
@@ -188,6 +203,7 @@ class ReservationStateTestView extends Component {
 
                         <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.props.reserveData.tableType + '인 테이블'} labelStyle={labelStyles.reservationInfoButton} style={styles.reserveState} disabled={true}></FlatButton>
                         <FlatButton backgroundColor={'##FAFAFA'} label={'예약시간: ' + this.props.reserveData.reservationOrderTime} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
+                        <FlatButton backgroundColor={'##FAFAFA'} label={this.handleWaitingTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
 
                     </CardActions>
                     <CardActions>
