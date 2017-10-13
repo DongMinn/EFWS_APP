@@ -9,9 +9,7 @@ import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import Badge from 'material-ui/Badge';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
-import SweetAlert from 'sweetalert-react';
-
-
+// import SweetAlert from 'sweetalert-react';
 import '../../css/reserve.scss';
 import { styles, labelStyles, dialogStyle } from '../../common/styles';
 
@@ -35,7 +33,16 @@ class ReservationStateTestView extends Component {
         this.handleLabel = this.handleLabel.bind(this);
         this.handleReservationNo = this.handleReservationNo.bind(this);
         this.handleWaitingTime = this.handleWaitingTime.bind(this);
+        this.handleTitleColor=this.handleTitleColor.bind(this);
 
+    }
+    handleTitleColor(){
+        let table = this.props.reserveData.reservationNo.substr(15, 4).substring(0,1);
+        if(table==='2') return 'red'
+        else if (table==='4') return 'blue'
+        else if (table==='6') return 'green'
+        else  return 'pink'
+        
     }
     handleWaitingTime(){
         let regiDate = this.props.reserveData.reservationOrderTime.replace(/-/g,'/');;
@@ -53,10 +60,10 @@ class ReservationStateTestView extends Component {
     }
     handleReservationNo() {
         let no = this.props.reserveData.reservationNo;
-
         no = no.substr(15, 4)
+        let table = no.substring(0,1);
 
-        return '[대기번호: ' + no + ']'
+        return '['+table+'인 테이블] [대기번호: ' + no + ']'
     }
     handleChnageReserveRequest() {
 
@@ -123,7 +130,7 @@ class ReservationStateTestView extends Component {
         } else if (upperState === 'NOSHOW') {
             return '#FFCCBC'
         } else {
-            return '#FF1744'
+            return '#FF8A80'
         }
     }
     handleConfirmState(reserve, state) {
@@ -148,7 +155,7 @@ class ReservationStateTestView extends Component {
     handleLabel(waitingState) {
         if (waitingState.toUpperCase() === 'RESERVATION') {
             return '예약'
-        } else if (waitingState.toUpperCase() === 'CALL') {
+        } else if (waitingState.toUpperCase() === 'WAIT') {
             return 'CALL'
         } else {
             return '대기'
@@ -184,7 +191,8 @@ class ReservationStateTestView extends Component {
                 <Card style={styles.card}>
 
                     <CardHeader
-                        title={'[' + this.handleLabel(this.props.reserveData.waitingState) + ']' + this.handleReservationNo()}
+                        title={ this.handleReservationNo()}
+                        titleColor={this.handleTitleColor()}
                         titleStyle={styles.cardHeader}
                         subtitle={'[고객번호: ' + this.props.CellPhone + '] [전체순번: '+ this.props.reserveData.orderInRemainingList +']'}
                         actAsExpander={true}
@@ -201,7 +209,7 @@ class ReservationStateTestView extends Component {
 
                     <CardActions>
 
-                        <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.props.reserveData.tableType + '인 테이블'} labelStyle={labelStyles.reservationInfoButton} style={styles.reserveState} disabled={true}></FlatButton>
+                        <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.handleLabel(this.props.reserveData.waitingState) } labelStyle={labelStyles.reservationInfoButton} style={styles.reserveState} disabled={true}></FlatButton>
                         <FlatButton backgroundColor={'##FAFAFA'} label={'예약시간: ' + this.props.reserveData.reservationOrderTime} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
                         <FlatButton backgroundColor={'##FAFAFA'} label={this.handleWaitingTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
 
