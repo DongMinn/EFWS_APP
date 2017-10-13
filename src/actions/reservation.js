@@ -30,7 +30,7 @@ export const reservationGetDataRequest = (plantCode) => {
             }
 
         }).catch((error) => {
-            
+
             dispatch(reserveGetDataFailure());
             console.log('DEBUG: Reserve request failed!');
             if (error.response.data.status === 500) {
@@ -56,13 +56,13 @@ export const reservationUpdateRequest = (id, reservationNo, state) => {
             response => {
 
                 if (response.status === 200) {
-                    
+
                     dispatch(reserveUpdateDataSuccess());
                     return true;
                 }
             }).catch(error => {
 
-                
+
                 dispatch(reserveUpdateDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
@@ -86,7 +86,7 @@ export const reservationPutRequest = (id, reserveData) => {
         }).then(
             response => {
                 if (response.status === 201) {
-                
+
                     dispatch(reservePutDataSuccess(response.data.reservationNo));
                     return true;
                 } else {
@@ -96,7 +96,7 @@ export const reservationPutRequest = (id, reserveData) => {
                 }
             }).catch(
             error => {
-                
+
                 dispatch(reservePutDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
@@ -120,7 +120,7 @@ export const reservationGetTotalDataRequest = (id) => {
 
                 if (response.status === 200) {
                     if (response.data.status === 200) {
-                        
+
                         dispatch(reserveGetTotalDataSuccess(response.data.waitingInformationListDto));
                         return true;
                     }
@@ -130,7 +130,7 @@ export const reservationGetTotalDataRequest = (id) => {
                 }
             }).catch(
             error => {
-                
+
                 dispatch(reserveGetTotalDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
@@ -158,24 +158,27 @@ export const reservationGetByTableDataRequest = (id) => {
         }
         let dates = yyyy + '-' + mm + '-' + dd
 
-        
+
         dispatch(reserveGetByTableData())
-        
+
         return axios.post('/table/reservation/store/find', {
             loginId: id,
             reservationNo: null,
             waitingNo: null,
             tableTypeList: [
-                {tableType:"2"},
-                {tableType:"4"},
-                {tableType:"6"},
-                {tableType:"8"},
-                {tableType:"9"}
-                ],
+                { tableType: "2" },
+                { tableType: "4" },
+                { tableType: "6" },
+                { tableType: "8" },
+                { tableType: "9" }
+            ],
             waitingStateList: [
-            {
-                waitingState: "WAIT"
-            }],
+                {
+                    waitingState: "ENTRANCE"
+                },
+                {
+                    waitingState: "WAIT"
+                }],
 
             reservationOrderTimeBegin: dates,
             reservationOrderTimeEnd: dates
@@ -185,7 +188,7 @@ export const reservationGetByTableDataRequest = (id) => {
 
                 if (response.status === 200) {
                     if (response.data.status === 200) {
-                        
+
                         dispatch(reserveGetByTableDataSuccess(response.data.reservationList));
                         return true;
                     }
@@ -196,8 +199,8 @@ export const reservationGetByTableDataRequest = (id) => {
             }
             ).catch(
             error => {
-                
-                
+
+
                 dispatch(reserveGetByTableDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
