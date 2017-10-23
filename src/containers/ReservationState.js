@@ -416,7 +416,8 @@ class ReservationState extends Component {
                     console.log('websocket!!!')
                     // this.handleGetTotalData();
                     // this.handleGetReserveList();
-                    this.handleGetTotalDatas()
+                    this.handleGetTotalDatas();
+                    this.handleGetBeforeCallList(this.props.authData.currentId);
                     // let tmp = msg.body.split(':')
                     // if (tmp[3].indexOf('waiting-information-total') > -1) {
                     //     this.handleGetTotalData();
