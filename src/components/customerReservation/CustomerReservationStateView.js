@@ -51,7 +51,7 @@ class CustomerReservationStateView extends Component {
     handleTitle() {
         if (this.props.customerData.waitingState === "WAIT") return '지금 입장하세요!'
         else if (this.props.availableCheck === false) return '대기정보가 없습니다!'
-        return (this.props.customerData.remainingWaitingTime>60?'60':this.props.customerData.remainingWaitingTime) + '분 후 입장가능!'
+        return '예상대기시간 '+(this.props.customerData.remainingWaitingTime>60?'60':this.props.customerData.remainingWaitingTime) + '분'
     }
     setCustomerData(customerData, state) {
         if (state === 'MODI') {
@@ -121,6 +121,7 @@ class CustomerReservationStateView extends Component {
                 // title={<span onTouchTap={this.handleLinkToHome}>Home</span>}
                 title={<span style={styles.title}>대기정보</span>}
                 showMenuIconButton={false}
+                style={{ backgroundColor: '#f37321' }}
             // iconElementRight={logoutButton}
             />
         )
@@ -129,7 +130,7 @@ class CustomerReservationStateView extends Component {
             {
                 img: this.handleImage(),
                 title: now.toLocaleString() + ' 기준',
-                titleBackground: "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)",
+                titleBackground: "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.5) 70%,rgba(0,0,0,3) 100%)",
                 subtitle: this.handleTitle(),
                 icon: <IconButton iconStyle={iconStyle.settingIcon} style={iconStyle.sizeLarge}><Autonew color="white" onClick={this.handleRefreshClick} /></IconButton>,
                 featured: true,
@@ -139,6 +140,7 @@ class CustomerReservationStateView extends Component {
             {
                 title: '대기번호',
                 subtitle: this.props.customerData.waitingNo,
+                titleBackground: "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.5) 70%,rgba(0,0,0,3) 100%)",
                 cols: 1,
                 rows: 6
             },
@@ -146,13 +148,15 @@ class CustomerReservationStateView extends Component {
                 title: '현재 대기팀 수',
                 // icon: <IconButton><StarBorder color="black" /></IconButton>,
                 subtitle: this.props.customerData.remainingWaitingTeamCount, //TODO: 대기팀데이터
+                titleBackground: "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.5) 70%,rgba(0,0,0,3) 100%)",
                 cols: 1,
                 rows: 6
             },
             {
-                title: this.props.customerData.tableType === undefined ? '정보수정' : this.props.customerData.tableType + '인석',
+                //title: this.props.customerData.tableType === undefined ? '정보수정' : this.props.customerData.tableType + '인 테이블',
+                title: this.props.customerData.tableType === undefined ? '정보수정' : '대기정보변경',
                 icon: <IconButton iconStyle={iconStyle.settingIcon} style={iconStyle.sizeLarge}><Settings color="white" onClick={() => { this.setCustomerData(this.props.customerData, 'MODI') }} /></IconButton>,
-                titleBackground: "green",
+                titleBackground: "#2b3f6b",
                 cols: 1,
                 rows: 5
             },
