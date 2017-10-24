@@ -97,12 +97,12 @@ class App extends Component {
                     isLoggedIn={this.state.loginStatus}
                     onLogout={this.requestLogout}
                 />
-                <div >
+                <div id="commonMenu">
                     <MenuBar
                         isLoggedIn={this.state.loginStatus}
                     />
                 </div>
-                <div>
+                <div id="commonChild">
                     {this.props.children}
                 </div>
             </div>

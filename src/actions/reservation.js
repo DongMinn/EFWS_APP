@@ -62,7 +62,7 @@ export const reservationUpdateRequest = (id, reservationNo, state) => {
                 }
             }).catch(error => {
 
-
+               
                 dispatch(reserveUpdateDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
@@ -213,6 +213,67 @@ export const reservationGetByTableDataRequest = (id) => {
     }
 }
 
+export const reservationGetNoShowDataRequest = (id) => {
+    return (dispatch) => {
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1; //January is 0!
+        let yyyy = today.getFullYear();
+        if (mm < 10) {
+            mm = "0" + mm;
+        }
+        if (dd < 10) {
+            dd = "0" + dd;
+        }
+        let dates = yyyy + '-' + mm + '-' + dd
+
+
+        dispatch(reserveGetNoShowData())
+
+        return axios.post('/table/reservation/store/find', {
+            loginId: id,
+            reservationNo: null,
+            waitingNo: null,
+            tableTypeList: [
+                { tableType: "2" },
+                { tableType: "4" },
+                { tableType: "6" },
+                { tableType: "8" },
+                { tableType: "9" }
+            ],
+            waitingStateList: [
+                {
+                    waitingState: "NOSHOW"
+                }],
+            reservationOrderTimeBegin: dates,
+            reservationOrderTimeEnd: dates
+        }).then(
+            response => {
+                if (response.status === 200) {
+                    if (response.data.status === 200) {
+
+                        dispatch(reserveGetNoShowDataSuccess(response.data.reservationList));
+                        return true;
+                    }
+                } else {
+                    console.log('DEBUG: reservation.action 노쇼데이터조회실패');
+                    return false;
+                }
+            }
+            ).catch(
+            error => {
+                dispatch(reserveGetNoShowDataFailure());
+                if (error.response.data.status === 500) {
+                    if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
+                        return -1;
+                    }
+                }
+                console.log('DEBUG: reservation.action 노쇼데이터조회실패');
+                return false;
+            })
+    }
+}
+
 
 export const reserveGetData = () => ({
     type: types.RESERVE_GET_DATA
@@ -264,4 +325,14 @@ export const reserveGetByTableDataSuccess = (tableDataList) => ({
 })
 export const reserveGetByTableDataFailure = () => ({
     type: types.RESERVE_GET_BYTABLE_DATA_FAILURE
+})
+export const reserveGetNoShowData = () => ({
+    type: types.RESERVE_GET_NOSHOW_DATA
+})
+export const reserveGetNoShowDataSuccess = (tableDataList) => ({
+    type: types.RESERVE_GET_NOSHOW_DATA_SUCCESS,
+    tableDataList
+})
+export const reserveGetNoShowDataFailure = () => ({
+    type: types.RESERVE_GET_NOSHOW_DATA_FAILURE
 })

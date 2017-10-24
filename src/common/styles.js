@@ -191,3 +191,19 @@ export const dialogStyle={
         fontWeight: "bold"
     }
 }
+
+
+export const NoshowListStyle={
+    headerStyle:{
+        color: "white",
+        fontSize: 15,
+        textAlign: 'center',
+        // fontWeight: "bold"
+    },
+    headerBack:{
+        backgroundColor:"rgba(221, 98, 253, 0.94)"
+    },
+    rowStyle:{
+        textAlign: 'center',
+    }
+}

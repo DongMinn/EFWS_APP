@@ -20,9 +20,9 @@ import PlantInformSettingAlarmView from './plantSetting/PlantInformSettingAlarmV
 import PlantInformAlarmSaveButtonView from './plantSetting/PlantInformAlarmSaveButtonView';
 import PlantInformAlarmAddButtonView from './plantSetting/PlantInformAlarmAddButtonView';
 import SearchBarView from './reservation/SearchBarView';
-
+import NoShowListView from './NoShowListView';
 
 export { Header , MenuBar,LoginView ,  ReservationStateView , CustomerReservationStateView,CustomerReservationPlantInfoView , ChangePasswordView , ChangeInformationView , PlantInformSettingView 
         , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingNoShowView , PlantInformSettingAlarmView 
-        , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView, EmptyReserveData
+        , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView, EmptyReserveData , NoShowListView
     };

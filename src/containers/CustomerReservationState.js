@@ -146,8 +146,8 @@ class CustomerReservationState extends Component {
                 } else if (response === -1) {
 
                     this.setState({ availableCheck: false })
-                    window.location.reload();
-                    return -1;
+                    // window.location.reload();
+                    return true;
                 }
                 else {
                     console.log('실패');
