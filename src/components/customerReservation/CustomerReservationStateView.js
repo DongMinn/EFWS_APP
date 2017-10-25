@@ -12,6 +12,8 @@ import Settings from 'material-ui/svg-icons/action/settings';
 import Autonew from 'material-ui/svg-icons/action/autorenew';
 import Delete from 'material-ui/svg-icons/action/delete';
 
+
+
 import SweetAlert from 'sweetalert-react';
 import pm from '../../images/pm1.JPG';
 import al from '../../images/al1.JPG';
@@ -125,6 +127,7 @@ class CustomerReservationStateView extends Component {
             // iconElementRight={logoutButton}
             />
         )
+     
         const now = new Date();
         const tilesData = [
             {

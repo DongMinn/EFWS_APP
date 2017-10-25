@@ -172,9 +172,8 @@ export const gridStyles = {
 };
 export const iconStyle={
     settingIcon:{
-        width:40,
-        height:40,
-        padding:10
+        width:45,
+        height:50,
     },
     sizeLarge:{
         width: 60,
