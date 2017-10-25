@@ -23,7 +23,7 @@ class ChangePasswordView extends Component {
             successStatus: false
         }
         this.handleChangePwd = this.handleChangePwd.bind(this);
-//테스트
+
     }
     handleChangePwd(values) {
         //let id = this.props.status.currentId;
