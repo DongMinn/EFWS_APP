@@ -112,7 +112,7 @@ class CustomerReservationStateView extends Component {
 
     handleRefreshClick() {
         console.log('onRefreshClick');
-        this.props.onGetReserveData(this.props.loginId, this.props.customerCellPhone)
+        this.props.onGetReserveData(this.props.loginId, this.props.reservationNo)
     }
 
     render() {

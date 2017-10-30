@@ -156,9 +156,9 @@ class ReservationStateTestView extends Component {
         if (waitingState.toUpperCase() === 'RESERVATION') {
             return '예약'
         } else if (waitingState.toUpperCase() === 'WAIT') {
-            return 'CALL'
+            return '입장대기'
         } else {
-            return '대기'
+            return '자동알림'
         }
     }
 
