@@ -322,11 +322,11 @@ class ReservationState extends Component {
                 return response;
             }
         )
-    }
+    } 
 
     handleUpdateData(reserveData, newState) {
-        debugger;
-        logSaveRequest('DEBUG' , '['+newState+'][ReservationState Button Click Event: '+newState+' Click' ); 
+        
+        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][ReservationState Button Click Event: '+newState+' Click' ); 
 
         checkF = 1;
         // this.setState({ checkFlag: 1 });

@@ -18,6 +18,7 @@ import axios from 'axios';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
 
+import { logSaveRequest } from '../common/log'
 
 class PlantSettingTab extends Component {
     constructor(props) {
@@ -200,6 +201,8 @@ class PlantSettingTab extends Component {
     
     handleUpdateAlarm() {
 
+        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][PlantSettingTab AlarmSetting Button Click Event: Save Click' ); 
+
         let delData=[]
         let tmpAlarmTalkList = this.state.alarmTalkList;
         for (let i = 1; i < tmpAlarmTalkList.length - 1; i++) {
@@ -262,6 +265,8 @@ class PlantSettingTab extends Component {
         })
     }
     handleUpdateNoshowTime() {
+
+        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][PlantSettingTab NOSHOWSetting Button Click Event: Save Click' ); 
 
         return this.props.plantSettingUpdateNoShowRequest(this.props.authData.currentId, this.state.noshowTime).then(
             response => {
@@ -346,6 +351,8 @@ class PlantSettingTab extends Component {
 
     }
     handleUpdatePlantSetting() {
+
+        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][PlantSettingTab TableSetting Button Click Event: Save Click' ); 
 
         return this.props.plantSettingUpdateDataRequest(this.props.authData.currentId, this.state.plantSettingList).then(
             response => {

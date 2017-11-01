@@ -6,7 +6,7 @@ import { changeStoreInformationRequest , getStoreInformationRequest , getStatusR
 import { getCookie } from '../common/common';
 import axios from 'axios';
 
-
+import { logSaveRequest } from '../common/log'
 
 class ChangeInformation extends Component {
     constructor(props) {
@@ -68,6 +68,8 @@ class ChangeInformation extends Component {
     
     handleChangeInform(id, plantName , plantTelNo, description) {
         
+        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][ChangeInformation Button Click Event: Save Click' ); 
+
         return this.props.changeStoreInformRequest(id, plantName , plantTelNo , description).then(
             (response)=>{
                 //성공적으로 변경되었을 시 

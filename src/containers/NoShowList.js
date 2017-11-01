@@ -10,6 +10,8 @@ import { getStatusRequest, loginRequest } from '../actions/authentication'
 import axios from 'axios';
 import { getCookie } from '../common/common';
 
+import { logSaveRequest } from '../common/log'
+
 class NoShowList extends Component {
     constructor(props) {
         super(props);
@@ -102,6 +104,8 @@ class NoShowList extends Component {
 
     handleUpdateData(reserveData, newState){
         
+        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][NoShowlist Button Click Event: '+newState+' Click' ); 
+
         return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
             response => {
                 if (response === true) {    
