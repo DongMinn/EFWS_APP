@@ -5,7 +5,7 @@ import reservation from './reservation';
 import accountinform from './accountInform';
 import plantSetting from './plantSetting'
 import customerReservation from './customerReservation';
-
+import log from './log';
 
 
 export default combineReducers({
@@ -14,7 +14,6 @@ export default combineReducers({
     reservation,
     plantSetting,
     customerReservation,
+    log,
     form: formReducer
-
-   
 })

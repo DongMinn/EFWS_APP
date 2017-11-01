@@ -19,7 +19,7 @@ class NoShowListView extends Component {
     this.handleUpdateState = this.handleUpdateState.bind(this);
   }
   handleUpdateState(data, state) {
-    if (state === 'CALL') {
+    if (state === 'WAIT') {
       this.props.onUpdateReserveState(data, state)
     } 
   }
@@ -48,7 +48,7 @@ class NoShowListView extends Component {
                 <TableRowColumn style={NoshowListStyle.rowStyle}>{data.waitingState}</TableRowColumn>
                 <TableRowColumn style={NoshowListStyle.rowStyle}>{data.reservationOrderTime}</TableRowColumn>
                 <TableRowColumn style={NoshowListStyle.rowStyle}>
-                  <RaisedButton onClick={() => { this.handleUpdateState(data, 'CALL') }}>변경하기</RaisedButton>
+                  <RaisedButton onClick={() => { this.handleUpdateState(data, 'WAIT') }}>변경하기</RaisedButton>
                 </TableRowColumn>
               </TableRow>
             ))

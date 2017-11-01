@@ -14,6 +14,7 @@ import '../../css/reserve.scss';
 import { styles, labelStyles, dialogStyle } from '../../common/styles';
 
 
+
 class ReservationStateTestView extends Component {
     constructor(props) {
         super(props)
@@ -134,7 +135,7 @@ class ReservationStateTestView extends Component {
         }
     }
     handleConfirmState(reserve, state) {
-
+        
         if (state === 'WAIT') {
             this.props.onUpdateReserveState(reserve, state)
         } else if (state === 'MODI') {
@@ -159,10 +160,11 @@ class ReservationStateTestView extends Component {
             return '입장대기'
         } else 
             return '자동알림'
-        }
     }
+    
 
     shouldComponentUpdate(nextProps, nextState) {
+        
         if(this.props.reserveData!==nextProps.reserveData) return true;
         if(this.props.CellPhone!==nextProps.CellPhone) return true;
         if(this.state.reserve!==nextState.reserve) return true;

@@ -9,10 +9,13 @@ import {
 import { plantSettingGetDataRequest } from '../actions/plantSetting'
 import { getStatusRequest, loginRequest } from '../actions/authentication'
 import { getCookie, Left, Right } from '../common/common';
+
+
 import { setCurrentInform } from '../actions/authentication';
 import '../css/common.scss'
 import axios from 'axios';
 
+import { logSaveRequest } from '../common/log'
 
 let checkF = 1;
 
@@ -322,7 +325,9 @@ class ReservationState extends Component {
     }
 
     handleUpdateData(reserveData, newState) {
-        
+        debugger;
+        logSaveRequest('DEBUG' , '['+newState+'][ReservationState Button Click Event: '+newState+' Click' ); 
+
         checkF = 1;
         // this.setState({ checkFlag: 1 });
        
@@ -479,6 +484,7 @@ class ReservationState extends Component {
                         onUpdateReserveState={this.handleUpdateData}
                         onPutReserveData={this.handlePutData}
                         CellPhone={tmpCellPhone}
+                        loginId={this.props.authData.currentId}
                         plantSettingList={this.props.plantSettingData}
                     />)
                 }
