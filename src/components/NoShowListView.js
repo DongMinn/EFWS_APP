@@ -9,21 +9,69 @@ import {
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import { NoshowListStyle } from '../common/styles'
+import SweetAlert from 'sweetalert-react';
+
 
 class NoShowListView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-
+      show:false,
+      failStatus:false,
+      successStatus:false
     }
     this.handleUpdateState = this.handleUpdateState.bind(this);
   }
   handleUpdateState(data, state) {
+    
     if (state === 'WAIT') {
       this.props.onUpdateReserveState(data, state)
     } 
   }
   render() {
+    const ConfirmView = (
+      <div>
+          <SweetAlert
+              show={this.state.show}
+              title="NoShow 상태 복원"
+              text={'[NOSHOW] 상태를 [입장대기]로 변경하시겠습니까?'}
+              showCancelButton
+              onConfirm={this.handleUpdateNoshowTime}
+              onCancel={() => {
+                  this.setState({
+                      show: false,
+                  });
+              }}
+          />
+      </div>
+  );
+  const changeSuccessedView = (
+      <div>
+          <SweetAlert
+              show={this.state.successStatus}
+              title="매장세팅 변경 완료!"
+              // text=""
+              onConfirm={() => {
+                  this.setState({ successStatus: false });
+              }}
+          />
+      </div>
+  );
+  const changeFailedView = (
+      <div>
+          <SweetAlert
+              show={this.state.failStatus}
+              title="매장세팅 변경 실패!"
+              text={this.props.returnMessage}
+              onConfirm={() => {
+
+                  this.setState({ failStatus: false });
+                  this.props.onGetPlantSetting();
+              }}
+          />
+      </div>
+  );
+
     const noshowlist = (
       <Table>
         <TableHeader
@@ -60,6 +108,9 @@ class NoShowListView extends Component {
       <div>
         <br />
         {noshowlist}
+        {ConfirmView}
+        {changeSuccessedView}
+        {changeFailedView}
       </div>
     );
   }

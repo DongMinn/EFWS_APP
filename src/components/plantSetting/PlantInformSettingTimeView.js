@@ -10,16 +10,19 @@ import { plantSettingStyles } from '../../common/styles';
 import '../../css/plantSetting.scss'
 
 
-class PlantInformSettingNoShowView extends Component {
+class PlantInformSettingTimeView extends Component {
     constructor(props) {
         super(props);
         this.state = {
             show: false,
+            maxTimeShow:false,
             value: 10,
+            maxTimeValue:60,
             failStatus: false,
-            successStatus: false
+            successStatus: false,
         }
         this.handleChangeTableTime = this.handleChangeTableTime.bind(this);
+        this.handleChangeTableMaxTime = this.handleChangeTableMaxTime.bind(this);
         this.handleUpdateNoshowTime = this.handleUpdateNoshowTime.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
@@ -41,23 +44,34 @@ class PlantInformSettingNoShowView extends Component {
             this.setState({ value: parseInt(this.props.noshowTime, 10) })
         }
     }
+    handleChangeTableMaxTime(event, index, value) {
+        if (this.props.onChangeMaxTime(value)) {
+            this.setState({ maxTimeValue: parseInt(this.props.maxTime, 10) })
+        }
+    }
     componentWillReceiveProps(nextProps) {
 
         this.setState({
-            value: parseInt(nextProps.noshowTime, 10)
+            value: parseInt(nextProps.noshowTime, 10),
+            maxTimeValue: parseInt(nextProps.maxTime, 10)
         })
     }
 
     componentWillMount() {
 
         this.setState({
-            value: parseInt(this.props.noshowTime, 10)
+            value: parseInt(this.props.noshowTime, 10),
+            maxTimeValue: parseInt(this.props.maxTime, 10)
         })
     }
     render() {
         const items = [];
         for (let i = 1; i <= 60; i++) {
             items.push(<MenuItem value={i} key={i} primaryText={`${i} 분`} />);
+        }
+        const maxtime_items = [];
+        for (let i = 30; i <= 120; i++) {
+            maxtime_items.push(<MenuItem value={i} key={i} primaryText={`${i} 분`} />);
         }
         const noShowDataConfirmView = (
             <div>
@@ -104,7 +118,7 @@ class PlantInformSettingNoShowView extends Component {
         const saveButton = (
             <RaisedButton primary={true} onClick={this.handleClick}>저장</RaisedButton>
         )
-        const settingView = (
+        const settingNoshowView = (
             <Card>
                 <CardHeader
                     title={'No Show 시간 설정'}
@@ -122,6 +136,25 @@ class PlantInformSettingNoShowView extends Component {
                 </CardActions>
 
             </Card>
+        )
+        const settingMaxTimeView = (
+            <Card>
+                <CardHeader
+                    title={'Max Time 설정'}
+                    subtitle="고객에게 보이는 최대 시간 설정 (admin 페이지는 실제 값 노출)"
+                    actAsExpander={true}
+                    titleStyle={plantSettingStyles.cardHeader}
+                    showExpandableButton={false}
+                />
+                <CardActions>
+
+                    <DropDownMenu maxHeight={200} value={this.state.maxTimeValue} onChange={this.handleChangeTableMaxTime}>
+                        {maxtime_items}
+                    </DropDownMenu>
+
+                </CardActions>
+
+            </Card>
 
         )
         return (
@@ -132,14 +165,16 @@ class PlantInformSettingNoShowView extends Component {
                 <br />
                 {saveButton}
                 <br />
-                {settingView}
+                {settingNoshowView}
+                <br />
+                {settingMaxTimeView}
             </div>
         );
     }
 }
 
-PlantInformSettingNoShowView.propTypes = {
+PlantInformSettingTimeView.propTypes = {
 
 };
 
-export default PlantInformSettingNoShowView;
+export default PlantInformSettingTimeView;

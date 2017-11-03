@@ -75,17 +75,17 @@ export const plantSettingUpdateDataRequest = (id, plantSettingList) => {
         })
     }
 }
-export const plantSettingGetNoShowDataRequest = (loginId) => {
+export const plantSettingGetTimeDataRequest = (loginId) => {
     return (dispatch) => {
         
-        dispatch(plantSettingGetNoShowData());
+        dispatch(plantSettingGetTimeData());
         return axios.post('/plant/setting/common/find', {
             loginId: loginId
         }).then(
             response => {
                 
                 if (response.status === 200 && response.data.status === 200) {
-                    dispatch(plantSettingGetNoShowDataSuccess(response.data.updateNoshowTime));
+                    dispatch(plantSettingGetTimeDataSuccess(response.data.updateNoshowTime, response.date.maxTotalWaitTime));
                     return true;
                 } else {
                     return false;
@@ -93,7 +93,7 @@ export const plantSettingGetNoShowDataRequest = (loginId) => {
             }
             ).catch(
             error => {
-                dispatch(plantSettingGetNoShowDataFailure());
+                dispatch(plantSettingGetTimeDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                         return -1;
@@ -105,16 +105,17 @@ export const plantSettingGetNoShowDataRequest = (loginId) => {
             )
     }
 }
-export const plantSettingUpdateNoShowDataRequest = (loginId, updateNoshowTime) => {
+export const plantSettingUpdateTimeDataRequest = (loginId, updateNoshowTime , maxTime) => {
     return (dispatch) => {
-        dispatch(plantSettingUpdateData());
+        dispatch(plantSettingUpdateTimeData());
         return axios.post('/plant/setting/common/update', {
             loginId: loginId,
-            updateNoshowTime: updateNoshowTime
+            updateNoshowTime: updateNoshowTime,
+            maxTotalWaitTime: maxTime
         }).then(
             response => {
                 if (response.status === 200 && response.data.status === 200) {
-                    dispatch(plantSettingUpdateNoShowDataSuccess());
+                    dispatch(plantSettingUpdateTimeDataSuccess());
                     return true;
                 } else {
                     return false;
@@ -122,7 +123,7 @@ export const plantSettingUpdateNoShowDataRequest = (loginId, updateNoshowTime) =
             }
             ).catch(
             error => {
-                dispatch(plantSettingUpdateNoShowDataFailure());
+                dispatch(plantSettingUpdateTimeDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                         return -1;
@@ -224,23 +225,24 @@ export const plantSettingUpdateDataFailureByReserveData = (returnMessage) => ({
     type: types.PLANTSETTING_UPDATE_DATA_FAILURE_BY_RESERVEDATA,
     returnMessage
 })
-export const plantSettingGetNoShowData = () => ({
+export const plantSettingGetTimeData = () => ({
     type: types.PLANTSETTING_GET_NOSHOW_DATA
 })
-export const plantSettingGetNoShowDataSuccess = (noshowtime) => ({
+export const plantSettingGetTimeDataSuccess = (noshowtime , maxtime) => ({
     type: types.PLANTSETTING_GET_NOSHOW_DATA_SUCCESS,
-    noshowtime
+    noshowtime,
+    maxtime
 })
-export const plantSettingGetNoShowDataFailure = () => ({
+export const plantSettingGetTimeDataFailure = () => ({
     type: types.PLANTSETTING_GET_NOSHOW_DATA_FAILURE
 })
-export const plantSettingUpdateNoShowData = () => ({
+export const plantSettingUpdateTimeData = () => ({
     type: types.PLANTSETTING_UPDATE_NOSHOW_DATA
 })
-export const plantSettingUpdateNoShowDataSuccess = () => ({
+export const plantSettingUpdateTimeDataSuccess = () => ({
     type: types.PLANTSETTING_UPDATE_NOSHOW_DATA_SUCCESS
 })
-export const plantSettingUpdateNoShowDataFailure = () => ({
+export const plantSettingUpdateTimeDataFailure = () => ({
     type: types.PLANTSETTING_UPDATE_NOSHOW_DATA_FAILURE
 })
 export const plantSettingGetAlarmData = ()=>({

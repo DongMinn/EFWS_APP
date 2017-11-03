@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
 import {
-    PlantInformSettingView, PlantSettingSaveButtonView, PlantInformSettingNoShowView, PlantInformSettingAlarmView
+    PlantInformSettingView, PlantSettingSaveButtonView, PlantInformSettingTimeView, PlantInformSettingAlarmView
     , PlantInformAlarmSaveButtonView, PlantInformAlarmAddButtonView
 } from '../components';
 
 import { connect } from 'react-redux';
 import {
-    plantSettingGetDataRequest, plantSettingUpdateDataRequest, plantSettingGetNoShowDataRequest
-    , plantSettingUpdateNoShowDataRequest, plantSettingGetAlarmDataRequest, plantSettingUpdateAlarmDataRequest
+    plantSettingGetDataRequest, plantSettingUpdateDataRequest, plantSettingGetTimeDataRequest
+    , plantSettingUpdateTimeDataRequest, plantSettingGetAlarmDataRequest, plantSettingUpdateAlarmDataRequest
 } from '../actions/plantSetting';
 import { getStatusRequest, setCurrentInform, loginRequest } from '../actions/authentication'
 import { plantSettingStyles } from '../common/styles';
@@ -26,9 +26,10 @@ class PlantSettingTab extends Component {
         this.state = {
             plantSettingList: [],
             noshowTime: '',
+            maxTime:'',
             alarmTalkList: [],
             alarmCheckSuccessStatus: false
-            
+
         };
 
         this.handleGetPlantSetting = this.handleGetPlantSetting.bind(this);
@@ -44,10 +45,11 @@ class PlantSettingTab extends Component {
         this.handleChangeAlarm = this.handleChangeAlarm.bind(this);
         this.handleUpdateAlarm = this.handleUpdateAlarm.bind(this);
 
-        this.handleGetPlantSettingNoShow = this.handleGetPlantSettingNoShow.bind(this);
-        this.handleUpdateNoshowTime = this.handleUpdateNoshowTime.bind(this);
+        this.handleGetPlantSettingTime = this.handleGetPlantSettingTime.bind(this);
+        this.handleUpdateTime = this.handleUpdateTime.bind(this);
         this.handleChangeNoshowTime = this.handleChangeNoshowTime.bind(this);
-        this.handleSetNoshowTime = this.handleSetNoshowTime.bind(this);
+        this.handleSetTime = this.handleSetTime.bind(this);
+        this.handleChangeMaxTime = this.handleChangeMaxTime.bind(this);
 
         this.handleLogin = this.handleLogin.bind(this);
         this.checkJWT = this.checkJWT.bind(this);
@@ -63,7 +65,7 @@ class PlantSettingTab extends Component {
                     this.handleLogin(loginData.id, loginData.password)
                 } else {
                     this.handleGetPlantSetting();
-                    this.handleGetPlantSettingNoShow();
+                    this.handleGetPlantSettingTime();
                     this.handleGetPlantSettingAlarm();
                 }
             }
@@ -84,7 +86,7 @@ class PlantSettingTab extends Component {
                     //쿠키저장
                     document.cookie = 'key=' + btoa(JSON.stringify(loginData));
                     this.handleGetPlantSetting();
-                    this.handleGetPlantSettingNoShow();
+                    this.handleGetPlantSettingTime();
                     this.handleGetPlantSettingAlarm();
                     return true;
                 }
@@ -144,7 +146,7 @@ class PlantSettingTab extends Component {
     }
     handleChangeAlarm(alarmTalkData, value) {
 
-     
+
         let tmpAlarmTalkList = this.state.alarmTalkList;
         let newValue = value.toString();
         let tmpAlarmTalkData = alarmTalkData;
@@ -159,9 +161,9 @@ class PlantSettingTab extends Component {
                 tmpAlarmTalkList[i] = tmpAlarmTalkData;
             }
         }
-        /*중복확인*/ 
+        /*중복확인*/
 
-       
+
         for (let i = 1; i < tmpAlarmTalkList.length - 1; i++) {
             for (let y = i + 1; y < tmpAlarmTalkList.length; y++) {
                 if (tmpAlarmTalkList[i].sendPoint === tmpAlarmTalkList[y].sendPoint) {
@@ -170,7 +172,7 @@ class PlantSettingTab extends Component {
             }
         }
 
-        /*자동정렬하기*/    
+        /*자동정렬하기*/
         for (let i = 1; i < tmpAlarmTalkList.length - 1; i++) {
             for (let y = i + 1; y < tmpAlarmTalkList.length; y++) {
                 if (tmpAlarmTalkList[i].sendPoint < tmpAlarmTalkList[y].sendPoint) {
@@ -198,12 +200,12 @@ class PlantSettingTab extends Component {
         // }
         // return false;
     }
-    
+
     handleUpdateAlarm() {
 
-        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][PlantSettingTab AlarmSetting Button Click Event: Save Click' ); 
+        logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][PlantSettingTab AlarmSetting Button Click Event: Save Click');
 
-        let delData=[]
+        let delData = []
         let tmpAlarmTalkList = this.state.alarmTalkList;
         for (let i = 1; i < tmpAlarmTalkList.length - 1; i++) {
             for (let y = i + 1; y < tmpAlarmTalkList.length; y++) {
@@ -213,7 +215,7 @@ class PlantSettingTab extends Component {
             }
         }
 
-        for(let i=delData.length-1; i>=0 ; i--){
+        for (let i = delData.length - 1; i >= 0; i--) {
             tmpAlarmTalkList.splice(delData[i], 1)
         }
 
@@ -244,43 +246,49 @@ class PlantSettingTab extends Component {
         )
     }
 
-    handleGetPlantSettingNoShow() {
-        return this.props.plantSettingGetNoShowRequest(this.props.authData.currentId).then(
+    handleGetPlantSettingTime() {
+        return this.props.plantSettingGetTimeRequest(this.props.authData.currentId).then(
             response => {
                 if (response === true) {
-                    this.handleSetNoshowTime();
+                    this.handleSetTime();
                 }
             }
         )
         // this.props.authData.currentId
     }
-    handleSetNoshowTime() {
+    handleSetTime() {
 
         let tmpNoshowTime = this.props.noShowTime;
         if (tmpNoshowTime === undefined) {
             tmpNoshowTime = ''
         }
+        let tmpMaxTime = this.props.maxTime;
+        if(tmpMaxTime ===undefined){
+            tmpMaxTime = ''
+        }
         this.setState({
-            noshowTime: tmpNoshowTime
+            noshowTime: tmpNoshowTime,
+            maxtime:tmpMaxTime
         })
     }
-    handleUpdateNoshowTime() {
+    
+    handleUpdateTime() {
 
-        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][PlantSettingTab NOSHOWSetting Button Click Event: Save Click' ); 
+        logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][PlantSettingTab NOSHOWSetting Button Click Event: Save Click');
 
-        return this.props.plantSettingUpdateNoShowRequest(this.props.authData.currentId, this.state.noshowTime).then(
+        return this.props.plantSettingUpdateTimeRequest(this.props.authData.currentId, this.state.noshowTime).then(
             response => {
                 if (response === true) {
-                    this.handleGetPlantSettingNoShow();
+                    this.handleGetPlantSettingTime();
                     return true;
                 } else if (response === -1) {
                     let loginData = getCookie('key');
                     return this.handleLogin(loginData.id, loginData.password).then(
                         (reseponse) => {
                             if (reseponse) {
-                                return this.props.plantSettingUpdateNoShowRequest(this.props.authData.currentId, this.state.noshowTime).then(
+                                return this.props.plantSettingUpdateTimeRequest(this.props.authData.currentId, this.state.noshowTime).then(
                                     response => {
-                                        if (response === true) { this.handleGetPlantSettingNoShow(); return true; }
+                                        if (response === true) { this.handleGetPlantSettingTime(); return true; }
                                     }
                                 )
                             }
@@ -296,6 +304,11 @@ class PlantSettingTab extends Component {
     handleChangeNoshowTime(value) {
 
         this.setState({ noshowTime: value })
+        return true;
+    }
+    handleChangeMaxTime(value) {
+
+        this.setState({ maxTime: value })
         return true;
     }
     handleChangeTableTime(plantSettingData, value) {
@@ -352,7 +365,7 @@ class PlantSettingTab extends Component {
     }
     handleUpdatePlantSetting() {
 
-        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][PlantSettingTab TableSetting Button Click Event: Save Click' ); 
+        logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][PlantSettingTab TableSetting Button Click Event: Save Click');
 
         return this.props.plantSettingUpdateDataRequest(this.props.authData.currentId, this.state.plantSettingList).then(
             response => {
@@ -401,7 +414,7 @@ class PlantSettingTab extends Component {
     componentDidMount() {
         // this.checkJWT();
         this.handleGetPlantSetting();
-        this.handleGetPlantSettingNoShow();
+        this.handleGetPlantSettingTime();
         this.handleGetPlantSettingAlarm();
     }
 
@@ -414,7 +427,7 @@ class PlantSettingTab extends Component {
                             plantSettingData={data} key={i}
                             onChangeTableCheckFlag={this.handleChangeCheckFlag}
                             onChangeTableTime={this.handleChangeTableTime}
-                            
+
                         />
                     )
                 }
@@ -456,12 +469,13 @@ class PlantSettingTab extends Component {
 
                         </div>
                     </Tab>
-                    <Tab label="NoShow세팅" buttonStyle={plantSettingStyles.Button}>
+                    <Tab label="Time 세팅" buttonStyle={plantSettingStyles.Button}>
                         <div>
-                            <PlantInformSettingNoShowView
+                            <PlantInformSettingTimeView
                                 noshowTime={this.state.noshowTime}
                                 onChangeNoshowTime={this.handleChangeNoshowTime}
-                                onUpdateNoshowTime={this.handleUpdateNoshowTime}
+                                onChangeMaxTime = {this.handleChangeMaxTime}
+                                onUpdateTime={this.handleUpdateTime}
                             />
                         </div>
                     </Tab>
@@ -471,7 +485,7 @@ class PlantSettingTab extends Component {
                                 <br />
                                 <PlantInformAlarmSaveButtonView
                                     onUpdateAlarmData={this.handleUpdateAlarm}
-                                    onGetAlarmData={this.handleGetPlantSettingAlarm} 
+                                    onGetAlarmData={this.handleGetPlantSettingAlarm}
                                     alarmReturnMessage={this.props.alarmReturnMessage}
                                 />
                                 <br />
@@ -484,6 +498,7 @@ class PlantSettingTab extends Component {
                             </div>
                         </div>
                     </Tab>
+
                 </Tabs>
 
             </div>
@@ -497,10 +512,12 @@ const mapStateToProps = (state) => {
         plantSettingData: state.plantSetting.value.plantSettingList,
         alarmTalkList: state.plantSetting.value.alarmTalkList,
         returnMessage: state.plantSetting.value.tableReturnMessage,
-        alarmReturnMessage:state.plantSetting.value.alarmReturnMessage,
+        alarmReturnMessage: state.plantSetting.value.alarmReturnMessage,
         authData: state.authentication.value,
         loginStatus: state.authentication.login,
-        noShowTime: state.plantSetting.value.updateNoshowTime
+        noShowTime: state.plantSetting.value.updateNoshowTime,
+        maxTime : state.plantSetting.value.updateMaxTime
+
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -512,11 +529,11 @@ const mapDispatchToProps = (dispatch) => {
         plantSettingUpdateDataRequest: (id, plantSettingList) => {
             return dispatch(plantSettingUpdateDataRequest(id, plantSettingList))
         },
-        plantSettingGetNoShowRequest: (id) => {
-            return dispatch(plantSettingGetNoShowDataRequest(id))
+        plantSettingGetTimeRequest: (id) => {
+            return dispatch(plantSettingGetTimeDataRequest(id))
         },
-        plantSettingUpdateNoShowRequest: (id, time) => {
-            return dispatch(plantSettingUpdateNoShowDataRequest(id, time))
+        plantSettingUpdateTimeRequest: (id, noshowtime, maxtime ) => {
+            return dispatch(plantSettingUpdateTimeDataRequest(id, noshowtime , maxtime))
         },
         getStatusRequest: () => {
             return dispatch(getStatusRequest());

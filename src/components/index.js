@@ -14,15 +14,16 @@ import CustomerReservationPlantInfoView from './customerReservation/CustomerRese
 import ChangePasswordView from './ChangePasswordView';
 import ChangeInformationView from './ChangeInformationView';
 import PlantInformSettingView from './plantSetting/PlantInformSettingView';
-import PlantInformSettingNoShowView from './plantSetting/PlantInformSettingNoShowView';
+import PlantInformSettingTimeView from './plantSetting/PlantInformSettingTimeView';
 import PlantSettingSaveButtonView from './plantSetting/PlantSettingSaveButtonView';
 import PlantInformSettingAlarmView from './plantSetting/PlantInformSettingAlarmView';
 import PlantInformAlarmSaveButtonView from './plantSetting/PlantInformAlarmSaveButtonView';
 import PlantInformAlarmAddButtonView from './plantSetting/PlantInformAlarmAddButtonView';
+
 import SearchBarView from './reservation/SearchBarView';
 import NoShowListView from './NoShowListView';
 
 export { Header , MenuBar,LoginView ,  ReservationStateView , CustomerReservationStateView,CustomerReservationPlantInfoView , ChangePasswordView , ChangeInformationView , PlantInformSettingView 
-        , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingNoShowView , PlantInformSettingAlarmView 
+        , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingTimeView , PlantInformSettingAlarmView 
         , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView, EmptyReserveData , NoShowListView
     };
