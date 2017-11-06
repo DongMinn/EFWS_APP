@@ -15,6 +15,7 @@ import ChangePasswordView from './ChangePasswordView';
 import ChangeInformationView from './ChangeInformationView';
 import PlantInformSettingView from './plantSetting/PlantInformSettingView';
 import PlantInformSettingTimeView from './plantSetting/PlantInformSettingTimeView';
+import PlantInformSettingTimeSaveButtonView from './plantSetting/PlantInformSettingTimeSaveButtonView';
 import PlantSettingSaveButtonView from './plantSetting/PlantSettingSaveButtonView';
 import PlantInformSettingAlarmView from './plantSetting/PlantInformSettingAlarmView';
 import PlantInformAlarmSaveButtonView from './plantSetting/PlantInformAlarmSaveButtonView';
@@ -24,6 +25,6 @@ import SearchBarView from './reservation/SearchBarView';
 import NoShowListView from './NoShowListView';
 
 export { Header , MenuBar,LoginView ,  ReservationStateView , CustomerReservationStateView,CustomerReservationPlantInfoView , ChangePasswordView , ChangeInformationView , PlantInformSettingView 
-        , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingTimeView , PlantInformSettingAlarmView 
+        , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingTimeSaveButtonView , PlantInformSettingTimeView , PlantInformSettingAlarmView 
         , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView, EmptyReserveData , NoShowListView
     };

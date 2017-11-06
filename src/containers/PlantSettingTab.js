@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {
     PlantInformSettingView, PlantSettingSaveButtonView, PlantInformSettingTimeView, PlantInformSettingAlarmView
-    , PlantInformAlarmSaveButtonView, PlantInformAlarmAddButtonView
+    , PlantInformAlarmSaveButtonView, PlantInformAlarmAddButtonView, PlantInformSettingTimeSaveButtonView
 } from '../components';
 
 import { connect } from 'react-redux';
@@ -26,7 +26,7 @@ class PlantSettingTab extends Component {
         this.state = {
             plantSettingList: [],
             noshowTime: '',
-            maxTime:'',
+            maxTime: '',
             alarmTalkList: [],
             alarmCheckSuccessStatus: false
 
@@ -263,20 +263,20 @@ class PlantSettingTab extends Component {
             tmpNoshowTime = ''
         }
         let tmpMaxTime = this.props.maxTime;
-        if(tmpMaxTime ===undefined){
+        if (tmpMaxTime === undefined) {
             tmpMaxTime = ''
         }
         this.setState({
             noshowTime: tmpNoshowTime,
-            maxtime:tmpMaxTime
+            maxTime: tmpMaxTime
         })
     }
-    
-    handleUpdateTime() {
 
+    handleUpdateTime() {
+        
         logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][PlantSettingTab NOSHOWSetting Button Click Event: Save Click');
 
-        return this.props.plantSettingUpdateTimeRequest(this.props.authData.currentId, this.state.noshowTime).then(
+        return this.props.plantSettingUpdateTimeRequest(this.props.authData.currentId, this.state.noshowTime , this.state.maxTime).then(
             response => {
                 if (response === true) {
                     this.handleGetPlantSettingTime();
@@ -471,12 +471,21 @@ class PlantSettingTab extends Component {
                     </Tab>
                     <Tab label="Time 세팅" buttonStyle={plantSettingStyles.Button}>
                         <div>
-                            <PlantInformSettingTimeView
-                                noshowTime={this.state.noshowTime}
-                                onChangeNoshowTime={this.handleChangeNoshowTime}
-                                onChangeMaxTime = {this.handleChangeMaxTime}
-                                onUpdateTime={this.handleUpdateTime}
-                            />
+                            <div>
+                                <br />
+                                <PlantInformSettingTimeSaveButtonView
+                                    onUpdateTime = {this.handleUpdateTime}
+                                />
+                            </div>
+                            <div>
+                                <PlantInformSettingTimeView
+                                    noshowTime={this.state.noshowTime}
+                                    maxTime={this.state.maxTime}
+                                    onChangeNoshowTime={this.handleChangeNoshowTime}
+                                    onChangeMaxTime={this.handleChangeMaxTime}
+                                    onUpdateTime={this.handleUpdateTime}
+                                />
+                            </div>
                         </div>
                     </Tab>
                     <Tab label="알림톡세팅" buttonStyle={plantSettingStyles.Button}>
@@ -516,7 +525,7 @@ const mapStateToProps = (state) => {
         authData: state.authentication.value,
         loginStatus: state.authentication.login,
         noShowTime: state.plantSetting.value.updateNoshowTime,
-        maxTime : state.plantSetting.value.updateMaxTime
+        maxTime: state.plantSetting.value.updateMaxTime
 
     };
 };
@@ -532,8 +541,8 @@ const mapDispatchToProps = (dispatch) => {
         plantSettingGetTimeRequest: (id) => {
             return dispatch(plantSettingGetTimeDataRequest(id))
         },
-        plantSettingUpdateTimeRequest: (id, noshowtime, maxtime ) => {
-            return dispatch(plantSettingUpdateTimeDataRequest(id, noshowtime , maxtime))
+        plantSettingUpdateTimeRequest: (id, noshowtime, maxtime) => {
+            return dispatch(plantSettingUpdateTimeDataRequest(id, noshowtime, maxtime))
         },
         getStatusRequest: () => {
             return dispatch(getStatusRequest());

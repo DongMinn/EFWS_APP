@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { customerReservationGetDataRequest, customerLoginRequest } from '../actions/customerReservation';
 import { reservationUpdateRequest, reservationPutRequest } from '../actions/reservation';
 import { getStoreInformationRequest } from '../actions/authentication'
-import { plantSettingGetDataRequest } from '../actions/plantSetting'
+import { plantSettingGetDataRequest , plantSettingGetTimeDataRequest } from '../actions/plantSetting'
 
 import { getDefaultSettingValue } from '../common/common';
 import axios from 'axios';
@@ -21,7 +21,8 @@ class CustomerReservationState extends Component {
             reservationNo: '',
             availableCheck: false,
             plantInfo: {},
-            plantSettingList:[]
+            plantSettingList:[], 
+            maxTime:''
         };
         this.handleGetCustomerReserveData = this.handleGetCustomerReserveData.bind(this);
         this.handleLoginRequest = this.handleLoginRequest.bind(this);
@@ -31,6 +32,8 @@ class CustomerReservationState extends Component {
 
         this.handleGetPlantSettingInfo = this.handleGetPlantSettingInfo.bind(this);
         this.handleGetPlantInfo = this.handleGetPlantInfo.bind(this);
+        this.handleGetPlantMaxTimeInfo = this.handleGetPlantMaxTimeInfo.bind(this);
+        this.handleSetTime = this.handleSetTime.bind(this);
         this.handleSetData = this.handleSetData.bind(this);
     };
     handleDeleteCustomerReserveData(customerData, newState) {
@@ -127,6 +130,7 @@ class CustomerReservationState extends Component {
                     this.handleGetCustomerReserveData(id, reservationNo);
                     this.handleGetPlantInfo(id);
                     this.handleGetPlantSettingInfo(id);
+                    this.handleGetPlantMaxTimeInfo(id);
                     return true;
                 } else { return false; }
             }
@@ -156,6 +160,26 @@ class CustomerReservationState extends Component {
             }
         )
     }
+    handleGetPlantMaxTimeInfo (id){
+        return this.props.plantSettingGetTimeRequest(id).then(
+            response => {
+                if (response === true) {
+                    this.handleSetTime();
+                }
+            }
+        )
+        // this.props.authData.currentId
+    }
+    handleSetTime() {
+        let tmpMaxTime = this.props.maxTime;
+        if (tmpMaxTime === undefined) {
+            tmpMaxTime = ''
+        }
+        this.setState({
+            maxTime: tmpMaxTime
+        })
+    }
+    
     handleGetPlantInfo(id) {
         this.props.getStoreInformationRequest(id).then(
             () => {
@@ -211,6 +235,7 @@ class CustomerReservationState extends Component {
                         reservationNo={this.state.reservationNo}
                         availableCheck={this.state.availableCheck}
                         customerData={this.state.customerData}
+                        maxTime={this.state.maxTime}
                         onUpdateCustomerReservation={this.handleUpdateCustomerReserveData}
                         onDeleteReserveData={this.handleDeleteCustomerReserveData}
                         onGetReserveData={this.handleGetCustomerReserveData}
@@ -234,6 +259,7 @@ const mapStateToProps = (state) => {
         NewreservationNo: state.reservation.reservationNo,
         plantInfo: state.authentication.value,
         plantSettingData: state.plantSetting.value.plantSettingList,
+        maxTime: state.plantSetting.value.updateMaxTime
     }
 
 };
@@ -256,7 +282,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         plantSettingGetDataRequest: (id) => {
             return dispatch(plantSettingGetDataRequest(id))
-        }
+        },
+        plantSettingGetTimeRequest: (id) => {
+            return dispatch(plantSettingGetTimeDataRequest(id))
+        },
     }
 };
 

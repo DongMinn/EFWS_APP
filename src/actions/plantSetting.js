@@ -85,7 +85,7 @@ export const plantSettingGetTimeDataRequest = (loginId) => {
             response => {
                 
                 if (response.status === 200 && response.data.status === 200) {
-                    dispatch(plantSettingGetTimeDataSuccess(response.data.updateNoshowTime, response.date.maxTotalWaitTime));
+                    dispatch(plantSettingGetTimeDataSuccess(response.data.updateNoshowTime, response.data.maxTotalWaitTime));
                     return true;
                 } else {
                     return false;

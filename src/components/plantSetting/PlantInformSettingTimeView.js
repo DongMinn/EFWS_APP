@@ -14,7 +14,6 @@ class PlantInformSettingTimeView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: false,
             maxTimeShow:false,
             value: 10,
             maxTimeValue:60,
@@ -22,23 +21,10 @@ class PlantInformSettingTimeView extends Component {
             successStatus: false,
         }
         this.handleChangeTableTime = this.handleChangeTableTime.bind(this);
-        this.handleChangeTableMaxTime = this.handleChangeTableMaxTime.bind(this);
-        this.handleUpdateNoshowTime = this.handleUpdateNoshowTime.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleChangeTableMaxTime = this.handleChangeTableMaxTime.bind(this);       
     }
-    handleClick() {
-        this.setState({
-            show: true
-        })
-    }
-    handleUpdateNoshowTime() {
-        
-        if (this.props.onUpdateNoshowTime()) {
-            this.setState({ show:false , successStatus: true })
-        }else{
-            this.setState({ show:false , failStatus: true })
-        }
-    }
+  
+   
     handleChangeTableTime(event, index, value) {
         if (this.props.onChangeNoshowTime(value)) {
             this.setState({ value: parseInt(this.props.noshowTime, 10) })
@@ -58,12 +44,22 @@ class PlantInformSettingTimeView extends Component {
     }
 
     componentWillMount() {
-
         this.setState({
             value: parseInt(this.props.noshowTime, 10),
             maxTimeValue: parseInt(this.props.maxTime, 10)
         })
     }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        
+        if(this.props.noshowTime!==nextProps.noshowTime) return true;
+        if(this.props.maxTime!==nextProps.maxTime) return true;
+
+
+        return false;
+
+    }
+
     render() {
         const items = [];
         for (let i = 1; i <= 60; i++) {
@@ -73,51 +69,7 @@ class PlantInformSettingTimeView extends Component {
         for (let i = 30; i <= 120; i++) {
             maxtime_items.push(<MenuItem value={i} key={i} primaryText={`${i} 분`} />);
         }
-        const noShowDataConfirmView = (
-            <div>
-                <SweetAlert
-                    show={this.state.show}
-                    title="NoShow 세팅 변경"
-                    text={'Noshow 세팅을 저장 하시겠습니까?'}
-                    showCancelButton
-                    onConfirm={this.handleUpdateNoshowTime}
-                    onCancel={() => {
-                        this.setState({
-                            show: false,
-                        });
-                    }}
-                />
-            </div>
-        );
-        const changeSuccessedView = (
-            <div>
-                <SweetAlert
-                    show={this.state.successStatus}
-                    title="매장세팅 변경 완료!"
-                    // text=""
-                    onConfirm={() => {
-                        this.setState({ successStatus: false });
-                    }}
-                />
-            </div>
-        );
-        const changeFailedView = (
-            <div>
-                <SweetAlert
-                    show={this.state.failStatus}
-                    title="매장세팅 변경 실패!"
-                    text={this.props.returnMessage}
-                    onConfirm={() => {
-
-                        this.setState({ failStatus: false });
-                        this.props.onGetPlantSetting();
-                    }}
-                />
-            </div>
-        );
-        const saveButton = (
-            <RaisedButton primary={true} onClick={this.handleClick}>저장</RaisedButton>
-        )
+      
         const settingNoshowView = (
             <Card>
                 <CardHeader
@@ -159,11 +111,6 @@ class PlantInformSettingTimeView extends Component {
         )
         return (
             <div>
-                {noShowDataConfirmView}
-                {changeSuccessedView}
-                {changeFailedView}
-                <br />
-                {saveButton}
                 <br />
                 {settingNoshowView}
                 <br />
