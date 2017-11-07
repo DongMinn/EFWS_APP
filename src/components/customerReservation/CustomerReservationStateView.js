@@ -20,6 +20,7 @@ import al from '../../images/al1.JPG';
 
 
 
+
 import { styles, customerStyles, gridStyles, iconStyle } from '../../common/styles';
 import '../../css/customerReserve.scss';
 
@@ -79,7 +80,6 @@ class CustomerReservationStateView extends Component {
             tableType: value
         }
         this.setState({ customerData: newState });
-
     }
     handleChangeData() {
 

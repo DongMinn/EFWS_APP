@@ -34,37 +34,44 @@ class ReservationStateTestView extends Component {
         this.handleLabel = this.handleLabel.bind(this);
         this.handleReservationNo = this.handleReservationNo.bind(this);
         this.handleWaitingTime = this.handleWaitingTime.bind(this);
-        this.handleTitleColor=this.handleTitleColor.bind(this);
+        this.handleTitleColor = this.handleTitleColor.bind(this);
+        this.handleOrderTime = this.handleOrderTime.bind(this);
 
     }
-    handleTitleColor(){
-        let table = this.props.reserveData.reservationNo.substr(15, 4).substring(0,1);
-        if(table==='2') return 'red'
-        else if (table==='4') return 'blue'
-        else if (table==='6') return 'green'
-        else  return 'pink'
-        
+    handleOrderTime() {
+        let orderTime = this.props.reserveData.reservationOrderTime.split(' ');
+
+
+        return '예약시간: ' + orderTime[1];
     }
-    handleWaitingTime(){
-        let regiDate = this.props.reserveData.reservationOrderTime.replace(/-/g,'/');;
-        
+    handleTitleColor() {
+        let table = this.props.reserveData.reservationNo.substr(15, 4).substring(0, 1);
+        if (table === '2') return 'red'
+        else if (table === '4') return 'blue'
+        else if (table === '6') return 'green'
+        else return 'pink'
+
+    }
+    handleWaitingTime() {
+        let regiDate = this.props.reserveData.reservationOrderTime.replace(/-/g, '/');;
+
         let regiTime = Date.parse(regiDate);
-        let today =new Date();
-        
-        let gap = today.getTime() - regiTime;
-        
-        let minutes=1000*60;
-        
-        let gap_m = Math.floor(gap/minutes);
+        let today = new Date();
 
-        return '대기시간: '+gap_m+' 분';
+        let gap = today.getTime() - regiTime;
+
+        let minutes = 1000 * 60;
+
+        let gap_m = Math.floor(gap / minutes);
+
+        return '대기시간: ' + gap_m + ' 분';
     }
     handleReservationNo() {
         let no = this.props.reserveData.reservationNo;
         no = no.substr(15, 4)
-        let table = no.substring(0,1);
+        let table = no.substring(0, 1);
 
-        return '['+table+'인 테이블] [대기번호: ' + no + ']'
+        return '[' + table + '인 테이블] [대기번호: ' + no + ']'
     }
     handleChnageReserveRequest() {
 
@@ -135,7 +142,7 @@ class ReservationStateTestView extends Component {
         }
     }
     handleConfirmState(reserve, state) {
-        
+
         if (state === 'WAIT') {
             this.props.onUpdateReserveState(reserve, state)
         } else if (state === 'MODI') {
@@ -158,25 +165,25 @@ class ReservationStateTestView extends Component {
             return '예약'
         } else if (waitingState.toUpperCase() === 'WAIT') {
             return '입장대기'
-        } else 
+        } else
             return '자동알림'
     }
-    
+
 
     shouldComponentUpdate(nextProps, nextState) {
-        
-        if(this.props.reserveData!==nextProps.reserveData) return true;
-        if(this.props.CellPhone!==nextProps.CellPhone) return true;
-        if(this.state.reserve!==nextState.reserve) return true;
-        if(this.state.dialogOpen!==nextState.dialogOpen) return true;
-        if(this.state.show!==nextState.show) return true;
-        if(this.state.reserveState!==nextState.reserveState) return true;
-        if(this.state.putDataShow!==nextState.putDataShow) return true;
+
+        if (this.props.reserveData !== nextProps.reserveData) return true;
+        if (this.props.CellPhone !== nextProps.CellPhone) return true;
+        if (this.state.reserve !== nextState.reserve) return true;
+        if (this.state.dialogOpen !== nextState.dialogOpen) return true;
+        if (this.state.show !== nextState.show) return true;
+        if (this.state.reserveState !== nextState.reserveState) return true;
+        if (this.state.putDataShow !== nextState.putDataShow) return true;
 
         return false;
 
     }
-    
+
 
 
     render() {
@@ -193,10 +200,10 @@ class ReservationStateTestView extends Component {
                 <Card style={styles.card}>
 
                     <CardHeader
-                        title={ this.handleReservationNo()}
+                        title={this.handleReservationNo()}
                         titleColor={this.handleTitleColor()}
                         titleStyle={styles.cardHeader}
-                        subtitle={'[고객번호: ' + this.props.CellPhone + '] [전체순번: '+ this.props.reserveData.orderInRemainingList +']'}
+                        subtitle={'[고객번호: ' + this.props.CellPhone + '] [전체순번: ' + this.props.reserveData.orderInRemainingList + ']'}
                         actAsExpander={true}
                         showExpandableButton={true}
                     >
@@ -211,8 +218,8 @@ class ReservationStateTestView extends Component {
 
                     <CardActions>
 
-                        <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.handleLabel(this.props.reserveData.waitingState) } labelStyle={labelStyles.reservationInfoButton} style={styles.reserveState} disabled={true}></FlatButton>
-                        <FlatButton backgroundColor={'##FAFAFA'} label={'예약시간: ' + this.props.reserveData.reservationOrderTime} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
+                        <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.handleLabel(this.props.reserveData.waitingState)} labelStyle={labelStyles.reservationInfoButton} style={styles.reserveState} disabled={true}></FlatButton>
+                        <FlatButton backgroundColor={'##FAFAFA'} label={this.handleOrderTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
                         <FlatButton backgroundColor={'##FAFAFA'} label={this.handleWaitingTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
 
                     </CardActions>
@@ -223,7 +230,7 @@ class ReservationStateTestView extends Component {
                     </CardActions>
 
                     <CardText expandable={true}>
-                        
+
                         <span> </span>
                         <RaisedButton style={styles.reserveButtonUpdate} onClick={() => { this.handleConfirmState(this.props.reserveData, 'MODI') }}>수정</RaisedButton>
                         <span> </span>
@@ -304,7 +311,7 @@ class ReservationStateTestView extends Component {
                     ]}
                     modal={false}
                     open={this.state.show}
-                    // onRequestClose={this.handleOpenDialog}
+                // onRequestClose={this.handleOpenDialog}
                 >
                     {this.handleAlertText()}
                 </Dialog>
@@ -325,19 +332,19 @@ class ReservationStateTestView extends Component {
                                 this.setState({
                                     putDataShow: false,
                                 });
-        
+
                             }}
                         />,
                     ]}
                     modal={false}
                     open={this.state.putDataShow}
                 >
-                예약 데이터 변경 완료되었습니다.
+                    예약 데이터 변경 완료되었습니다.
                 </Dialog>
 
             </div>
         )
-     
+
         // const reserveStateConfirmView1 = (
         //     <div>
         //         <SweetAlert
@@ -381,7 +388,7 @@ class ReservationStateTestView extends Component {
         //         />
         //     </div>
         // );
-      
+
         return (
             <div>
                 <div>
