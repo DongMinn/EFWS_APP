@@ -35,7 +35,7 @@ class ReservationInformView extends Component {
                         title={'['+this.props.plantCode+' 종합 정보]'}
                         actAsExpander={true}
                         titleStyle={styles.infoCardHeader}
-                        titleColor={'#FF80AB'}
+                        titleColor={'#3F51B5'}
                         subtitle={this.handleSubTitle()}
                         subtitleStyle={styles.infoCardHeaderSub}
                     />
@@ -84,7 +84,7 @@ class ReservationInformView extends Component {
                         title={'[이전 호출 리스트]'}
                         actAsExpander={true}
                         titleStyle={styles.infoCardHeader}
-                        titleColor={'#FF80AB'}
+                        titleColor={'#3F51B5'}
                     />
                     <CardActions>
                         <Card>
