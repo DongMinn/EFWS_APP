@@ -9,7 +9,6 @@ export const styles = {
     title: {
         cursor: 'pointer',
     },
-
     paper: {
         display: 'inline-block',
         margin: '16px 32px 16px 0',
@@ -18,7 +17,7 @@ export const styles = {
     reserveState: {
         //width: '150px',
         color: 'black',
-        fontFamily: '휴먼엽서체',
+        fontFamily: 'Arial Black',
         fontSize: 20
     },
     beforeList:{
@@ -60,15 +59,19 @@ export const styles = {
     },
     cardHeader: {
         fontSize: 18,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'Arial Black',
     },
     infoCardHeader:{
         fontSize: 25,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'Arial Black'
+
     },
     infoCardHeaderSub:{
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'Arial Black',
     },
     card: {
         width: '600px'
@@ -85,7 +88,9 @@ export const styles = {
     reserveinfoDataButton:{
         color: 'black',
         fontSize: '25px',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'Arial Black',
+
     },
     sweetAlert: {
         textAlign: 'center',
@@ -98,13 +103,14 @@ export const labelStyles = {
         color: '#10ccd1'
     },
     reservationInfoButton:{
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'Arial Black',
     }
 };
 export const plantSettingStyles = {
     plantSetting: {
         color: 'black',
-        fontFamily: '휴먼엽서체',
+        fontFamily: 'Arial Black',
         fontSize: 20
     },
     cardHeader: {

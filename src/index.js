@@ -14,6 +14,8 @@ import logger from 'redux-logger';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
+// import './css/fonts.scss';
+
 injectTapEventPlugin();
 
 // let middleware = [thunk , logger];
