@@ -68,7 +68,7 @@ class ChangeInformation extends Component {
     
     handleChangeInform(id, plantName , plantTelNo, description) {
         
-        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][ChangeInformation Button Click Event: Save Click' ); 
+        logSaveRequest('DEBUG' , '['+id+'][ChangeInformation Button Click Event: Save Click' ); 
 
         return this.props.changeStoreInformRequest(id, plantName , plantTelNo , description).then(
             (response)=>{
