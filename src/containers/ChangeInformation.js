@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import { ChangeInformationView } from '../components';
 import { connect } from 'react-redux';
-import { changeStoreInformationRequest , getStoreInformationRequest , getStatusRequest ,setCurrentInform , loginRequest  } from '../actions/authentication';
+import { changeStoreInformationRequest , getStoreInformationRequest ,setCurrentInform , loginRequest  } from '../actions/authentication';
 import { getCookie } from '../common/common';
 import axios from 'axios';
 
@@ -15,25 +15,25 @@ class ChangeInformation extends Component {
         this.handleGetInform = this.handleGetInform.bind(this);
         this.handleChangeInform = this.handleChangeInform.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
-        this.checkJWT = this.checkJWT.bind(this);
+        // this.checkJWT = this.checkJWT.bind(this);
     }
-    checkJWT() {
-        let loginData = getCookie('key');
+    // checkJWT() {
+    //     let loginData = getCookie('key');
         
         
-        if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
-        axios.defaults.headers.common['authorization'] = loginData.token;
-        this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);
-        this.props.getStatusRequest().then(
-            response => {
-                if (!response) {
-                    this.handleLogin(loginData.id, loginData.password)
-                }else{
-                    this.handleGetInform(this.props.value.currentId);
-                }
-            }
-        )
-    }
+    //     if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
+    //     axios.defaults.headers.common['authorization'] = loginData.token;
+    //     this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);
+    //     this.props.getStatusRequest().then(
+    //         response => {
+    //             if (!response) {
+    //                 this.handleLogin(loginData.id, loginData.password)
+    //             }else{
+    //                 this.handleGetInform(this.props.value.currentId);
+    //             }
+    //         }
+    //     )
+    // }
     handleLogin(id, password) {
         return this.props.loginRequest(id, password).then(
             () => {
@@ -147,9 +147,9 @@ const mapDispatchToProps = (dispatch) => {
         getStoreInformRequest: (id) => {
             return dispatch(getStoreInformationRequest(id))
         },
-        getStatusRequest: () => {
-            return dispatch(getStatusRequest());
-        },
+        // getStatusRequest: () => {
+        //     return dispatch(getStatusRequest());
+        // },
         loginRequest: (id, password) => {
             return dispatch(loginRequest(id, password))
         },

@@ -10,7 +10,7 @@ import {
     plantSettingGetDataRequest, plantSettingUpdateDataRequest, plantSettingGetTimeDataRequest
     , plantSettingUpdateTimeDataRequest, plantSettingGetAlarmDataRequest, plantSettingUpdateAlarmDataRequest
 } from '../actions/plantSetting';
-import { getStatusRequest, setCurrentInform, loginRequest } from '../actions/authentication'
+import { getStatusRequest , setCurrentInform, loginRequest } from '../actions/authentication'
 import { plantSettingStyles } from '../common/styles';
 import { getCookie } from '../common/common';
 import axios from 'axios';
@@ -412,10 +412,10 @@ class PlantSettingTab extends Component {
         )
     }
     componentDidMount() {
-        // this.checkJWT();
-        this.handleGetPlantSetting();
-        this.handleGetPlantSettingTime();
-        this.handleGetPlantSettingAlarm();
+        this.checkJWT();
+        // this.handleGetPlantSetting();
+        // this.handleGetPlantSettingTime();
+        // this.handleGetPlantSettingAlarm();
     }
 
     render() {

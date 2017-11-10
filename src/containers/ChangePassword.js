@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import { ChangePasswordView } from '../components';
 import { connect } from 'react-redux';
-import { checkPasswordRequest, changePasswordRequest, logout, getStatusRequest, loginRequest , setCurrentInform } from '../actions/authentication';
+import { checkPasswordRequest, changePasswordRequest, logout,  loginRequest , setCurrentInform } from '../actions/authentication';
 import { getCookie } from '../common/common';
 import axios from 'axios';
 
@@ -14,23 +14,23 @@ class ChangePassword extends Component {
 
         this.handleChangePwd = this.handleChangePwd.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
-        this.checkJWT = this.checkJWT.bind(this);
+        // this.checkJWT = this.checkJWT.bind(this);
     }
-    checkJWT() {
-        let loginData = getCookie('key');
+    // checkJWT() {
+    //     let loginData = getCookie('key');
        
       
-        if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
-        axios.defaults.headers.common['authorization'] = loginData.token;
-        this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);
-        this.props.getStatusRequest().then(
-            response => {
-                if (!response) {
-                    this.handleLogin(loginData.id, loginData.password)
-                }
-            }
-        )
-    }
+    //     if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
+    //     axios.defaults.headers.common['authorization'] = loginData.token;
+    //     this.props.setCurrentInform(loginData.id, loginData.isLoggedIn, loginData.token);
+    //     this.props.getStatusRequest().then(
+    //         response => {
+    //             if (!response) {
+    //                 this.handleLogin(loginData.id, loginData.password)
+    //             }
+    //         }
+    //     )
+    // }
     handleLogin(id, password) {
         return this.props.loginRequest(id, password).then(
             () => {
@@ -151,9 +151,9 @@ const mapDispatchToProps = (dispatch) => {
         logoutRequest: () => {
             dispatch(logout())
         },
-        getStatusRequest: () => {
-            return dispatch(getStatusRequest());
-        },
+        // getStatusRequest: () => {
+        //     return dispatch(getStatusRequest());
+        // },
         loginRequest: (id, password) => {
             return dispatch(loginRequest(id, password))
         },
