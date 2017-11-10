@@ -16,6 +16,7 @@ class MenuBar extends Component {
             infoCheck: false,
             settingCheck: false,
             noshowCheck: false,
+            reportCheck:false,
 
         }
         this.handleLinkToReservation = this.handleLinkToReservation.bind(this);
@@ -58,7 +59,13 @@ class MenuBar extends Component {
             this.setState({
                 infoCheck: true,
             })
-        } else {
+        }
+        else if (state === 'report') {
+            this.setState({
+                reportCheck: true,
+            })
+        }
+        else {
             browserHistory.push('/change/setting')
             this.setState({
                 settingCheck: true,
@@ -76,7 +83,13 @@ class MenuBar extends Component {
                         <MenuItem primaryText="비밀번호변경" onClick={() => { this.handleLinkToChangeInform('password') }} checked={this.state.passwordCheck} />
                         <MenuItem primaryText="매장정보변경" onClick={() => { this.handleLinkToChangeInform('information') }} checked={this.state.infoCheck} />
                         <MenuItem primaryText="Settings" onClick={() => { this.handleLinkToChangeInform('setting') }} checked={this.state.settingCheck} />
-                        <Divider />
+                        <MenuItem primaryText="Reports" rightIcon={<ArrowDropRight />} checked={this.state.reportCheck}
+                            menuItems={[
+                                        <MenuItem primaryText="일별 레포트" onClick={() => { this.handleLinkToChangeInform('dailyreport') }}/>,
+                                        <MenuItem primaryText="월별 레포트" onClick={() => { this.handleLinkToChangeInform('monthlyreport') }}/>,
+                                        <MenuItem primaryText="빅데이터 시간 세팅" onClick={() => { this.handleLinkToChangeInform('bigdatasetting') }}/>,
+                            ]}
+                        />
                     </Menu>
                     : undefined
                 }
