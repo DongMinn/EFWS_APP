@@ -4,7 +4,7 @@ import { Header, MenuBar } from '../components'
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
-import { getStatusRequest, setCurrentInform, logout, getInformationRequest } from '../actions/authentication';
+import { setCurrentInform, logout, getInformationRequest } from '../actions/authentication';
 import { getCookie, getDefaultSettingValue } from '../common/common';
 
 import '../css/common.scss';
@@ -121,9 +121,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         //미들웨어 리덕스 텅크스? 디스패치 사용법 
-        getStatusRequest: () => {
-            return dispatch(getStatusRequest());
-        },
+        // getStatusRequest: () => {
+        //     return dispatch(getStatusRequest());
+        // },
         //일반 리덕스 디스패치 사용법
         logoutRequest: () => {
             dispatch(logout())
