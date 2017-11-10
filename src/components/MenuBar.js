@@ -83,13 +83,7 @@ class MenuBar extends Component {
                         <MenuItem primaryText="비밀번호변경" onClick={() => { this.handleLinkToChangeInform('password') }} checked={this.state.passwordCheck} />
                         <MenuItem primaryText="매장정보변경" onClick={() => { this.handleLinkToChangeInform('information') }} checked={this.state.infoCheck} />
                         <MenuItem primaryText="Settings" onClick={() => { this.handleLinkToChangeInform('setting') }} checked={this.state.settingCheck} />
-                        <MenuItem primaryText="Reports" rightIcon={<ArrowDropRight />} checked={this.state.reportCheck}
-                            menuItems={[
-                                        <MenuItem primaryText="일별 레포트" onClick={() => { this.handleLinkToChangeInform('dailyreport') }}/>,
-                                        <MenuItem primaryText="월별 레포트" onClick={() => { this.handleLinkToChangeInform('monthlyreport') }}/>,
-                                        <MenuItem primaryText="빅데이터 시간 세팅" onClick={() => { this.handleLinkToChangeInform('bigdatasetting') }}/>,
-                            ]}
-                        />
+                       
                     </Menu>
                     : undefined
                 }
@@ -99,3 +93,12 @@ class MenuBar extends Component {
 }
 
 export default MenuBar;
+
+
+// <MenuItem primaryText="Reports" rightIcon={<ArrowDropRight />} checked={this.state.reportCheck}
+// menuItems={[
+//             <MenuItem primaryText="일별 레포트" onClick={() => { this.handleLinkToChangeInform('dailyreport') }}/>,
+//             <MenuItem primaryText="월별 레포트" onClick={() => { this.handleLinkToChangeInform('monthlyreport') }}/>,
+//             <MenuItem primaryText="빅데이터 시간 세팅" onClick={() => { this.handleLinkToChangeInform('bigdatasetting') }}/>,
+// ]}
+// />
