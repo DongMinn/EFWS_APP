@@ -17,6 +17,10 @@ import Delete from 'material-ui/svg-icons/action/delete';
 import SweetAlert from 'sweetalert-react';
 import pm from '../../images/pm1.JPG';
 import al from '../../images/al1.JPG';
+import ss from '../../images/ss1.JPG';
+// import ru from '../../images/al1.JPG';
+import ee from '../../images/ee1.JPG';
+
 
 
 
@@ -50,6 +54,11 @@ class CustomerReservationStateView extends Component {
         else if(this.props.loginId.toUpperCase().indexOf("PM")!==-1){
             return pm
         }
+        else if(this.props.loginId.toUpperCase().indexOf("SS")!==-1){
+            return ss
+        }
+        else 
+            return ee
     }
     handleTitle() {
         if (this.props.customerData.waitingState === "WAIT") return '지금 입장하세요!'
