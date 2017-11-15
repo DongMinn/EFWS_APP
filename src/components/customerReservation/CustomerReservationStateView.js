@@ -18,7 +18,7 @@ import SweetAlert from 'sweetalert-react';
 import pm from '../../images/pm1.JPG';
 import al from '../../images/al1.JPG';
 import ss from '../../images/ss1.JPG';
-import ru from '../../images/ru1.JPG';
+import ru from '../../images/ru1.jpg';
 import ee from '../../images/ee1.JPG';
 
 
