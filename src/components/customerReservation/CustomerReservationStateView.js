@@ -16,17 +16,28 @@ import Delete from 'material-ui/svg-icons/action/delete';
 
 import SweetAlert from 'sweetalert-react';
 import pm from '../../images/pm1.JPG';
-import al from '../../images/al1.JPG';
+import al from '../../images/ru1.jpg';
 import ss from '../../images/ss1.JPG';
 import ru from '../../images/ru1.jpg';
 import ee from '../../images/ee1.JPG';
 
 
-
-
-
 import { styles, customerStyles, gridStyles, iconStyle } from '../../common/styles';
 import '../../css/customerReserve.scss';
+
+
+
+const style1 = {
+    img: {
+      maxWidth:'100%',
+      maxHeight: '100%'
+    },
+    ss:{
+        height:'100%', 
+        maxHeight:'200px'
+    }
+  };
+
 
 class CustomerReservationStateView extends Component {
     constructor(props) {
@@ -204,7 +215,9 @@ class CustomerReservationStateView extends Component {
                             subtitle={tile.subtitle}
                             subtitleStyle={tile.featured ? gridStyles.featuredSubtitleStyle : gridStyles.subtitleStyle}
                         >
-                            <img src={tile.img} alt=""/>
+                            
+                            <img src={tile.img} style={style1.img} alt=""/>
+                            
                         </GridTile>
                     ))}
                 </GridList>

@@ -58,7 +58,7 @@ class ChangePassword extends Component {
     //비밀번호 변경하는 부분 코드 수정할수 있다면 수정해야 할 듯
     handleChangePwd(id, password, newPassword) {
         
-        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][ChangePassWord Button Click Event: Save Click' ); 
+        logSaveRequest('DEBUG' , '['+id+'][ChangePassWord Button Click Event: Save Click' ); 
 
         return this.props.checkPasswordRequest(id, password).then(
             (response) => {
