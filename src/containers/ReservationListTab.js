@@ -1,28 +1,38 @@
 import React, { Component } from 'react';
-import { NoShowListView } from '../components'
+import { NoShowListView, CancelListView } from '../components'
 import { connect } from 'react-redux';
 import {
-    reservationGetNoShowDataRequest
-    ,reservationUpdateRequest
+    reservationGetStateDataRequest
+    , reservationUpdateRequest
 } from '../actions/reservation';
 import { setCurrentInform } from '../actions/authentication';
 import { getStatusRequest, loginRequest } from '../actions/authentication'
 import axios from 'axios';
 import { getCookie } from '../common/common';
-
 import { logSaveRequest } from '../common/log'
+import { Tabs, Tab } from 'material-ui/Tabs';
 
-class NoShowList extends Component {
+import { reservationstatelistStyle } from '../common/styles';
+import { debug } from 'util';
+
+class PlantSettingTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            noshowList: []
-        }
+            noshowList: [],
+            cancelList: [],
+
+        };
+
         this.checkJWT = this.checkJWT.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+
         this.handleGetNoshowData = this.handleGetNoshowData.bind(this);
         this.handleSetNoShowData = this.handleSetNoShowData.bind(this);
         this.handleUpdateData = this.handleUpdateData.bind(this);
+
+        this.handleGetCancelData = this.handleGetCancelData.bind(this);
+        this.handleSetCancelData = this.handleSetCancelData.bind(this);
     }
     checkJWT() {
 
@@ -62,7 +72,7 @@ class NoShowList extends Component {
         )
     }
     handleGetNoshowData() {
-        this.props.reservationGetNoShowDataRequest(this.props.authData.currentId).then(
+        this.props.reservationGetStateDataRequest(this.props.authData.currentId, 'NOSHOW').then(
             response => {
                 if (response === true) {
                     this.handleSetNoShowData();
@@ -70,7 +80,7 @@ class NoShowList extends Component {
                     let loginData = getCookie('key');
                     return this.handleLogin(loginData.id, loginData.password).then(
                         () => {
-                            return this.props.reservationGetNoShowDataRequest(this.props.authData.currentId).then(
+                            return this.props.reservationGetStateDataRequest(this.props.authData.currentId, 'NOSHOW').then(
                                 response => {
                                     if (response === true) {
                                         this.handleSetNoShowData();
@@ -100,15 +110,17 @@ class NoShowList extends Component {
                 noshowList: tmpnoshowList,
             })
         }
+
+
     }
 
-    handleUpdateData(reserveData, newState){
-        
-        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][NoShowlist Button Click Event: '+newState+' Click' ); 
+    handleUpdateData(reserveData, newState) {
+
+        logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][NoShowlist Button Click Event: ' + newState + ' Click');
 
         return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
             response => {
-                if (response === true) {    
+                if (response === true) {
                     this.handleGetNoshowData();
                     return true;
                 }
@@ -134,33 +146,92 @@ class NoShowList extends Component {
                 }
             })
     }
+    handleGetCancelData() {
+        
+        this.props.reservationGetStateDataRequest(this.props.authData.currentId, 'CANCEL').then(
+            response => {
+                
+                if (response === true) {
+                    this.handleSetCancelData();
+                } else if (response === -1) {
+                    let loginData = getCookie('key');
+                    return this.handleLogin(loginData.id, loginData.password).then(
+                        () => {
+                            return this.props.reservationGetStateDataRequest(this.props.authData.currentId, 'CANCEL').then(
+                                response => {
+                                    if (response === true) {
+                                        this.handleSetCancelData();
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            )
+                        }
+                    )
+                }
+                else {
+                    console.log('데이터불러오기 실패')
+                }
+            }
+        )
+    }
+    handleSetCancelData() {
+        let tmpcancelList = this.props.cancelList;
+
+        if (tmpcancelList === undefined) {
+            tmpcancelList = []
+        }
+        if (this.refs.myRef) { // setState가 render가 없으면서 시도 될때, 나오는 에러 방지를 위해 
+            this.setState({
+                cancelList: tmpcancelList,
+            })
+        }
+        
+    }
     componentDidMount() {
         this.checkJWT().then(
             response => {
                 if (response === true) {
                     this.handleGetNoshowData(this.props.authData.currentId);
+                    this.handleGetCancelData(this.props.authData.currentId);
                 }
             }
         )
     }
-
     render() {
+
         return (
             <div ref="myRef">
-                <NoShowListView
-                    noshowList={this.state.noshowList}
-                    onUpdateReserveState={this.handleUpdateData}
-                />
+                <br />
+                <Tabs style={reservationstatelistStyle.Tabs}>
+                    <Tab label="NOSHOW리스트" >
+                        <div >
+                            <NoShowListView
+                                noshowList={this.state.noshowList}
+                                onUpdateReserveState={this.handleUpdateData}
+                            />
+                        </div>
+                    </Tab>
+                    <Tab label="CANCEL리스트" >
+                        <CancelListView
+                            cancelList={this.state.cancelList}
+                        />
+                    </Tab>
+                </Tabs>
+
             </div>
         );
     }
 }
+
 
 const mapStateToProps = (state) => {
     return {
         noshowList: state.reservation.noshowList,
         loginStatus: state.authentication.login,
         authData: state.authentication.value,
+        cancelList:state.reservation.cancelList,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -174,12 +245,14 @@ const mapDispatchToProps = (dispatch) => {
         loginRequest: (id, password) => {
             return dispatch(loginRequest(id, password))
         },
-        reservationGetNoShowDataRequest: (id) => {
-            return dispatch(reservationGetNoShowDataRequest(id))
+        reservationGetStateDataRequest: (id, state) => {
+            return dispatch(reservationGetStateDataRequest(id, state))
         },
         reservationUpdateRequest: (plantCode, cellPhone, state) => {
             return dispatch(reservationUpdateRequest(plantCode, cellPhone, state))
         }
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(NoShowList);
+export default connect(mapStateToProps, mapDispatchToProps)(PlantSettingTab);
+
+

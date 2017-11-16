@@ -43,8 +43,8 @@ class MenuBar extends Component {
             settingCheck: false,
             noshowCheck: false,
         })
-        if (state === 'noshow') {
-            browserHistory.push('/change/noshow')
+        if (state === 'reservestatelist') {
+            browserHistory.push('/reservestatelist')
             this.setState({
                 noshowCheck: true,
             })
@@ -79,10 +79,11 @@ class MenuBar extends Component {
                     <Menu >
                         <MenuItem primaryText="예약확인" onClick={this.handleLinkToReservation} checked={this.state.reserveCheck} />
                         <Divider />
-                        <MenuItem primaryText="NOSHOW리스트" onClick={() => { this.handleLinkToChangeInform('noshow') }} checked={this.state.noshowCheck} />
+                        <MenuItem primaryText="대기상태 리스트 " onClick={() => { this.handleLinkToChangeInform('reservestatelist') }} checked={this.state.noshowCheck} />
                         <MenuItem primaryText="비밀번호변경" onClick={() => { this.handleLinkToChangeInform('password') }} checked={this.state.passwordCheck} />
                         <MenuItem primaryText="매장정보변경" onClick={() => { this.handleLinkToChangeInform('information') }} checked={this.state.infoCheck} />
                         <MenuItem primaryText="Settings" onClick={() => { this.handleLinkToChangeInform('setting') }} checked={this.state.settingCheck} />
+                        
                        
                     </Menu>
                     : undefined

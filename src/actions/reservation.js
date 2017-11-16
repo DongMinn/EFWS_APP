@@ -1,5 +1,6 @@
 import * as types from './ActionTypes';
 import axios from 'axios';
+import { debug } from 'util';
 
 
 
@@ -213,7 +214,8 @@ export const reservationGetByTableDataRequest = (id) => {
     }
 }
 
-export const reservationGetNoShowDataRequest = (id) => {
+export const reservationGetStateDataRequest = (id , state) => {
+    
     return (dispatch) => {
         let today = new Date();
         let dd = today.getDate();
@@ -228,7 +230,7 @@ export const reservationGetNoShowDataRequest = (id) => {
         let dates = yyyy + '-' + mm + '-' + dd
 
 
-        dispatch(reserveGetNoShowData())
+        dispatch(reserveGetStateData())
 
         return axios.post('/table/reservation/store/find', {
             loginId: id,
@@ -243,32 +245,42 @@ export const reservationGetNoShowDataRequest = (id) => {
             ],
             waitingStateList: [
                 {
-                    waitingState: "NOSHOW"
+                    waitingState: state
                 }],
             reservationOrderTimeBegin: dates,
             reservationOrderTimeEnd: dates
         }).then(
             response => {
+                
                 if (response.status === 200) {
                     if (response.data.status === 200) {
-
-                        dispatch(reserveGetNoShowDataSuccess(response.data.reservationList));
+                        console.log(state)
+                        
+                        if(state==='NOSHOW') {
+                            
+                            dispatch(reserveGetNOSHOWDataSuccess(response.data.reservationList));
+                        }
+                        else if(state==='CANCEL') {
+                            
+                            dispatch(reserveGetCANCELDataSuccess(response.data.reservationList));
+                        } 
+                        
                         return true;
                     }
                 } else {
-                    console.log('DEBUG: reservation.action 노쇼데이터조회실패');
+                    console.log('DEBUG: reservation.action 상태데이터조회실패');
                     return false;
                 }
             }
             ).catch(
             error => {
-                dispatch(reserveGetNoShowDataFailure());
+                dispatch(reserveGetStateDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
                         return -1;
                     }
                 }
-                console.log('DEBUG: reservation.action 노쇼데이터조회실패');
+                console.log('DEBUG: reservation.action 상태데이터조회실패');
                 return false;
             })
     }
@@ -326,13 +338,17 @@ export const reserveGetByTableDataSuccess = (tableDataList) => ({
 export const reserveGetByTableDataFailure = () => ({
     type: types.RESERVE_GET_BYTABLE_DATA_FAILURE
 })
-export const reserveGetNoShowData = () => ({
-    type: types.RESERVE_GET_NOSHOW_DATA
+export const reserveGetStateData = () => ({
+    type: types.RESERVE_GET_STATE_DATA
 })
-export const reserveGetNoShowDataSuccess = (tableDataList) => ({
+export const reserveGetNOSHOWDataSuccess = (tableDataList) => ({
     type: types.RESERVE_GET_NOSHOW_DATA_SUCCESS,
     tableDataList
 })
-export const reserveGetNoShowDataFailure = () => ({
-    type: types.RESERVE_GET_NOSHOW_DATA_FAILURE
+export const reserveGetCANCELDataSuccess = (tableDataList) => ({
+    type: types.RESERVE_GET_CANCEL_DATA_SUCCESS,
+    tableDataList
+})
+export const reserveGetStateDataFailure = () => ({
+    type: types.RESERVE_GET_STATE_DATA_FAILURE
 })

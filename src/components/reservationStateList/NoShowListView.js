@@ -8,7 +8,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
-import { NoshowListStyle } from '../common/styles'
+import { NoshowListStyle } from '../../common/styles'
 import SweetAlert from 'sweetalert-react';
 
 
@@ -106,7 +106,7 @@ class NoShowListView extends Component {
     )
     return (
       <div>
-        <br />
+        
         {noshowlist}
         {ConfirmView}
         {changeSuccessedView}

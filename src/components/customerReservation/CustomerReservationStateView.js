@@ -31,10 +31,6 @@ const style1 = {
     img: {
       maxWidth:'100%',
       maxHeight: '100%'
-    },
-    ss:{
-        height:'100%', 
-        maxHeight:'200px'
     }
   };
 

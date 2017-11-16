@@ -37,9 +37,10 @@ import PlantInformAlarmAddButtonView from './plantSetting/PlantInformAlarmAddBut
 import SearchBarView from './reservation/SearchBarView';
 
 /**
- * 노쇼 화면
+ * 리스트  화면
  */
-import NoShowListView from './NoShowListView';
+import NoShowListView from './reservationStateList/NoShowListView';
+import CancelListView from './reservationStateList/CancelListView';
 
 /**
  * 레포트 화면
@@ -51,5 +52,5 @@ import BigDataTimeSettingView from './report/BigDataTimeSettingView';
 
 export { Header , MenuBar,LoginView ,  ReservationStateView , CustomerReservationStateView,CustomerReservationPlantInfoView , ChangePasswordView , ChangeInformationView , PlantInformSettingView 
         , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingTimeSaveButtonView , PlantInformSettingTimeView , PlantInformSettingAlarmView 
-        , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView, EmptyReserveData , NoShowListView , DailyReportView , MonthlyReportView , BigDataTimeSettingView
+        , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView, EmptyReserveData , NoShowListView, CancelListView , DailyReportView , MonthlyReportView , BigDataTimeSettingView
     };

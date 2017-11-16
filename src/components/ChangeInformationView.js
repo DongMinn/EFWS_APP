@@ -72,7 +72,7 @@ class ChangeInformationView extends Component {
             <form style={styles.form} onSubmit={handleSubmit(this.handleChangeInform)}>
                 <br />
                 <div>
-                    <RaisedButton backgroundColor={'#00E676'} icon={<NoteAdd color="white" />} onClick={() => load(this.state.loginValue)}>정보불러오기</RaisedButton>
+                    <RaisedButton backgroundColor={'#00C853'}  icon={<NoteAdd color="white" />} onClick={() => load(this.state.loginValue)}>정보불러오기</RaisedButton>
                 </div>
 
                 <div>

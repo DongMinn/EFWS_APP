@@ -10,13 +10,14 @@ const initialState = {
         updateData:'',
         putData:'',
         getByTableData:'',
-        getNoShowData:''
+        getStateData:''
     },
     reservationNo:'',
     reserveValue: [],
     reserveTotalValue:[],
     beforeCallList:[],
-    noshowList:[]
+    noshowList:[],
+    cancelList:[]
     
 };
 export default function reservation(state = initialState, action) {
@@ -150,12 +151,12 @@ export default function reservation(state = initialState, action) {
                     getByTableData:'FAILURE'
                 }
             };
-            case types.RESERVE_GET_NOSHOW_DATA:
+            case types.RESERVE_GET_STATE_DATA:
             return{
                 ...state,
                 status:{
                     ...state.status,
-                    getNoShowData:'INIT'
+                    getStateData:'INIT'
                 }
             };
         case types.RESERVE_GET_NOSHOW_DATA_SUCCESS:
@@ -163,16 +164,25 @@ export default function reservation(state = initialState, action) {
                 ...state,
                 status:{
                     ...state.status,
-                    getNoShowData:'SUCCESS'
+                    getStateData:'SUCCESS'
                 },
                 noshowList:action.tableDataList
             };
-        case types.RESERVE_GET_NOSHOW_DATA_FAILURE:
+        case types.RESERVE_GET_CANCEL_DATA_SUCCESS:
             return{
                 ...state,
                 status:{
                     ...state.status,
-                    getNoShowData:'FAILURE'
+                    getStateData:'SUCCESS'
+                },
+                cancelList:action.tableDataList
+            };
+        case types.RESERVE_GET_STATE_DATA_FAILURE:
+            return{
+                ...state,
+                status:{
+                    ...state.status,
+                    getStateData:'FAILURE'
                 }
             };
         default:

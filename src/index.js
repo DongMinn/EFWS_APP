@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { App, Login, Change, ChangePassword, ChangeInformation
         , ReservationState, CustomerReservationState 
-         , PlantSettingTab , NoShowList} from './containers';
+         , PlantSettingTab  , ReservationListTab} from './containers';
 import { Router, Route, browserHistory, IndexRoute, Redirect } from 'react-router';
 import { Provider } from 'react-redux';
 import { createStore , applyMiddleware } from 'redux';
@@ -37,7 +37,9 @@ ReactDOM.render(
                         <Route path="password" component={ChangePassword} />
                         <Route path="information" component={ChangeInformation} />
                         <Route path="setting" component={PlantSettingTab} />
-                        <Route path="noshow" component={NoShowList} />
+                        
+                    </Route>
+                    <Route path="reservestatelist" component={ReservationListTab} >        
                     </Route>
                     <Route path="reservationstate" component={ReservationState} />
                 <Redirect from="/*" to="/" />

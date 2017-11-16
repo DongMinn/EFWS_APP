@@ -6,12 +6,11 @@ import ChangePassword from './ChangePassword';
 import ReservationState from './ReservationState';
 import CustomerReservationState from './CustomerReservationState';
 import PlantSettingTab from './PlantSettingTab'
-import NoShowList from './NoShowList';
+import ReservationListTab from './ReservationListTab';
 
 
 export { App, Login, Change  , ChangeInformation 
     , ChangePassword ,ReservationState
     , CustomerReservationState, PlantSettingTab 
-    , NoShowList
-    
+    , ReservationListTab
 };

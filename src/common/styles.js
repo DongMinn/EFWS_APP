@@ -118,11 +118,11 @@ export const plantSettingStyles = {
         fontWeight: 'bold'
     },
     Tabs: {
-        width: '600px',
+        width: 'auto',
         float: 'left'
     },
     Button: {
-        backgroundColor: 'rgba(221, 98, 253, 0.94)',
+        backgroundColor: '#00C853',
         width: '200px'
     },
     Paper: {
@@ -137,6 +137,17 @@ export const reservationInfoStyle={
         height:'250px',
         // width:'380p'
         // display:'inlineBlock'
+    },
+}
+
+export const reservationstatelistStyle={
+    Tabs:{
+        width: '800px',
+        float: 'left'
+    },
+    Button: {
+        backgroundColor: 'rgba(221, 98, 253, 0.94)',
+        width: '200px'
     },
 }
 
@@ -206,7 +217,7 @@ export const NoshowListStyle={
         // fontWeight: "bold"
     },
     headerBack:{
-        backgroundColor:"rgba(221, 98, 253, 0.94)"
+        backgroundColor:"#00C853"
     },
     rowStyle:{
         textAlign: 'center',

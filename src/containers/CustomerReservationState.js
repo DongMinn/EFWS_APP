@@ -11,6 +11,7 @@ import axios from 'axios';
 import { browserHistory } from 'react-router';
 import base64 from 'base-64';
 
+import { logSaveRequest } from '../common/log'
 
 class CustomerReservationState extends Component {
     constructor(props) {
@@ -37,6 +38,7 @@ class CustomerReservationState extends Component {
         this.handleSetData = this.handleSetData.bind(this);
     };
     handleDeleteCustomerReserveData(customerData, newState) {
+        logSaveRequest('DEBUG' , '['+this.state.loginId+':'+this.state.reservationNo+'][Delete Reserve Button Click Event: Delete Click' ); 
         return this.handleLoginRequest(this.state.loginId, this.state.reservationNo).then(
             response => {
 
@@ -88,6 +90,7 @@ class CustomerReservationState extends Component {
         )
     }
     handleUpdateCustomerReserveData(customerData, newState) {
+        logSaveRequest('DEBUG' , '['+this.state.loginId+':'+this.state.reservationNo+'][Update Reserve Button Click Event: Update Click' ); 
         return this.handleLoginRequest(this.state.loginId, this.state.reservationNo).then(
             response => {
                 if (response) {
