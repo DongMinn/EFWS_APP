@@ -14,6 +14,8 @@ import logger from 'redux-logger';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
+import registerServiceWorker from './registerServiceWorker';
+
 // import './css/fonts.scss';
 
 injectTapEventPlugin();
@@ -49,4 +51,4 @@ ReactDOM.render(
         </MuiThemeProvider>
     </Provider>, document.getElementById('root')
 );
-
+registerServiceWorker();
