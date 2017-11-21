@@ -15,7 +15,6 @@ export const reservationGetDataRequest = (plantCode) => {
             loginId: plantCode
         }).then((response) => {
 
-
             if (response.status === 200) {
                 if (response.data.status === 200) {
 

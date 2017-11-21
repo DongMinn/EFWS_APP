@@ -105,6 +105,11 @@ export const labelStyles = {
     reservationInfoButton:{
         fontWeight: 'bold',
         fontFamily: 'Arial Black',
+    },
+    reservationInfoButtonRed:{
+        fontWeight: 'bold',
+        fontFamily: 'Arial Black',
+        color:'red'
     }
 };
 export const plantSettingStyles = {

@@ -23,7 +23,8 @@ class ReservationStateTestView extends Component {
             dialogOpen: false,
             reserve: {},
             reserveState: '',
-            putDataShow: false
+            putDataShow: false,
+            labelColor:''
         }
         this.handleConfirmState = this.handleConfirmState.bind(this);
         this.handleColorChange = this.handleColorChange.bind(this);
@@ -36,7 +37,26 @@ class ReservationStateTestView extends Component {
         this.handleWaitingTime = this.handleWaitingTime.bind(this);
         this.handleTitleColor = this.handleTitleColor.bind(this);
         this.handleOrderTime = this.handleOrderTime.bind(this);
+        this.handleGuideTime = this.handleGuideTime.bind(this);
+        this.handleChangeTimeLabel = this.handleChangeTimeLabel.bind(this);
+        this.gap_time='';
 
+    }
+    handleChangeTimeLabel() {
+        if(this.props.reserveData.guidedWaitingTime === '-1')
+            return labelStyles.reservationInfoButton
+        else if(this.props.reserveData.guidedWaitingTime<this.gap_time){
+            return labelStyles.reservationInfoButtonRed
+        }
+    }
+    handleGuideTime() {
+
+        let g_time = this.props.reserveData.guidedWaitingTime;
+
+        if (this.props.reserveData.guidedWaitingTime === '-1') {
+            g_time = ''
+        }
+        return '가이드 시간: ' + g_time + ' 분'
     }
     handleOrderTime() {
         let orderTime = this.props.reserveData.reservationOrderTime.split(' ');
@@ -63,8 +83,8 @@ class ReservationStateTestView extends Component {
         let minutes = 1000 * 60;
 
         let gap_m = Math.floor(gap / minutes);
-
-        return '대기시간: ' + gap_m + ' 분';
+        this.gap_time = gap_m;
+        return gap_m + ' 분 경과';
     }
     handleReservationNo() {
         let no = this.props.reserveData.reservationNo;
@@ -220,7 +240,9 @@ class ReservationStateTestView extends Component {
 
                         <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.handleLabel(this.props.reserveData.waitingState)} labelStyle={labelStyles.reservationInfoButton} style={styles.reserveState} disabled={true}></FlatButton>
                         <FlatButton backgroundColor={'##FAFAFA'} label={this.handleOrderTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
-                        <FlatButton backgroundColor={'##FAFAFA'} label={this.handleWaitingTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
+                        <FlatButton backgroundColor={'##FAFAFA'} label={this.handleGuideTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
+                        <FlatButton backgroundColor={'##FAFAFA'} label={this.handleWaitingTime()} style={styles.reserveState} labelStyle={this.handleChangeTimeLabel()} disabled={true}></FlatButton>
+
 
                     </CardActions>
                     <CardActions>
@@ -230,7 +252,6 @@ class ReservationStateTestView extends Component {
                     </CardActions>
 
                     <CardText expandable={true}>
-
                         <span> </span>
                         <RaisedButton style={styles.reserveButtonUpdate} onClick={() => { this.handleConfirmState(this.props.reserveData, 'MODI') }}>수정</RaisedButton>
                         <span> </span>
