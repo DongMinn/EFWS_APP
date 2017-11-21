@@ -235,7 +235,7 @@ class ReservationStateTestView extends Component {
                             <NotificationsIcon />
                         </Badge>
                     </CardHeader>
-
+ 
                     <CardActions>
 
                         <Card>
