@@ -24,7 +24,7 @@ class ReservationStateTestView extends Component {
             reserve: {},
             reserveState: '',
             putDataShow: false,
-            labelColor:''
+            labelColor: ''
         }
         this.handleConfirmState = this.handleConfirmState.bind(this);
         this.handleColorChange = this.handleColorChange.bind(this);
@@ -39,13 +39,13 @@ class ReservationStateTestView extends Component {
         this.handleOrderTime = this.handleOrderTime.bind(this);
         this.handleGuideTime = this.handleGuideTime.bind(this);
         this.handleChangeTimeLabel = this.handleChangeTimeLabel.bind(this);
-        this.gap_time='';
+        this.gap_time = '';
 
     }
     handleChangeTimeLabel() {
-        if(this.props.reserveData.guidedWaitingTime === '-1')
+        if (this.props.reserveData.guidedWaitingTime === '-1')
             return labelStyles.reservationInfoButton
-        else if(this.props.reserveData.guidedWaitingTime<this.gap_time){
+        else if (this.props.reserveData.guidedWaitingTime < this.gap_time) {
             return labelStyles.reservationInfoButtonRed
         }
     }
@@ -236,19 +236,21 @@ class ReservationStateTestView extends Component {
                         </Badge>
                     </CardHeader>
 
-                    <CardActions> 
+                    <CardActions>
 
-                        <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.handleLabel(this.props.reserveData.waitingState)} labelStyle={labelStyles.reservationInfoButton} style={styles.reserveState} disabled={true}></FlatButton>
-                        <FlatButton backgroundColor={'##FAFAFA'} label={this.handleOrderTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
-                        <FlatButton backgroundColor={'##FAFAFA'} label={this.handleGuideTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
-                        <FlatButton backgroundColor={'##FAFAFA'} label={this.handleWaitingTime()} style={styles.reserveState} labelStyle={this.handleChangeTimeLabel()} disabled={true}></FlatButton>
+                        <Card>
+                            <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.handleLabel(this.props.reserveData.waitingState)} labelStyle={labelStyles.reservationInfoButton} style={styles.reserveState} disabled={true}></FlatButton>
 
+                            <FlatButton backgroundColor={'##FAFAFA'} label={this.handleOrderTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
+                            <FlatButton backgroundColor={'##FAFAFA'} label={this.handleGuideTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
+                            <FlatButton backgroundColor={'##FAFAFA'} label={this.handleWaitingTime()} style={styles.reserveState} labelStyle={this.handleChangeTimeLabel()} disabled={true}></FlatButton>
 
+                        </Card>
                     </CardActions>
                     <CardActions>
-                        <RaisedButton style={styles.callButton} onClick={() => { this.handleConfirmState(this.props.reserveData, 'CALL') }}>CALL</RaisedButton>
-                        <RaisedButton style={styles.enterButton} onClick={() => { this.handleConfirmState(this.props.reserveData, 'ENTRANCE') }}>입장</RaisedButton>
-                        <RaisedButton style={styles.noshowButton} onClick={() => { this.handleConfirmState(this.props.reserveData, 'NOSHOW') }}>NO-SHOW</RaisedButton>
+                        <RaisedButton backgroundColor={'#8C9EFF'} onClick={() => { this.handleConfirmState(this.props.reserveData, 'CALL') }}>CALL</RaisedButton>
+                        <RaisedButton backgroundColor={'#B9F6CA'} onClick={() => { this.handleConfirmState(this.props.reserveData, 'ENTRANCE') }}>입장</RaisedButton>
+                        <RaisedButton backgroundColor={'#FFD180'} onClick={() => { this.handleConfirmState(this.props.reserveData, 'NOSHOW') }}>NO-SHOW</RaisedButton>
                     </CardActions>
 
                     <CardText expandable={true}>

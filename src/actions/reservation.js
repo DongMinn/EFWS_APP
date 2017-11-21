@@ -1,15 +1,10 @@
 import * as types from './ActionTypes';
 import axios from 'axios';
-import { debug } from 'util';
-
-
 
 
 export const reservationGetDataRequest = (plantCode) => {
     return (dispatch) => {
         //login api  시작
-
-
         dispatch(reserveGetData());
         return axios.post('/table/reservation/store/remaining-list/find', {
             loginId: plantCode
@@ -285,6 +280,42 @@ export const reservationGetStateDataRequest = (id , state) => {
     }
 }
 
+export const reservationHistoryGetDataRequest = (plantCode) => {
+    return (dispatch) => {
+        //login api  시작
+        dispatch(reserveGetData());
+        return axios.post('/table/reservation/store/remaining-list/find', {
+            loginId: plantCode
+        }).then((response) => {
+
+            if (response.status === 200) {
+                if (response.data.status === 200) {
+
+                    if (response.data.remainingList === undefined) {
+                        dispatch(reserveGetDataSuccess([]));
+                        return false;
+                    } else {
+                        dispatch(reserveGetDataSuccess(response.data.remainingList));
+                        // console.log('예약 데이터 불러오기 성공')
+                        return true;
+                    }
+                }
+            }
+
+        }).catch((error) => {
+
+            dispatch(reserveGetDataFailure());
+            console.log('DEBUG: Reserve request failed!');
+            if (error.response.data.status === 500) {
+
+                if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
+                    return -1;
+                }
+            }
+            return false;
+        });
+    }
+}
 
 export const reserveGetData = () => ({
     type: types.RESERVE_GET_DATA

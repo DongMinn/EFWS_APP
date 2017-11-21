@@ -43,9 +43,7 @@ export const styles = {
         width: 20
     },
     callButton: {
-        border: '2px solid #3F51B5',
-        color: 'red'
-
+      
     },
     waitButton: {
         border: '2px solid #2196F3'
@@ -74,7 +72,7 @@ export const styles = {
         fontFamily: 'Arial Black',
     },
     card: {
-        width: '600px'
+        width: 'auto'
     },
     reserveinfoCard: {
         height: '250px',
