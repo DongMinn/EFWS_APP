@@ -35,6 +35,15 @@ class PlantSettingSaveButtonView extends Component {
             show: true
         })
     }
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.state.failStatus !== nextState.failStatus) return true;
+        if (this.state.show !== nextState.show) return true;
+        if (this.state.successStatus !== nextState.successStatus) return true;
+
+        return false;
+
+    }
+
     render() {
         const plantSettingConfirmView = (
             <div>

@@ -299,7 +299,7 @@ class PlantSettingTab extends Component {
                     return false;
                 }
             }
-        )
+        )       
     }
     handleChangeNoshowTime(value) {
 

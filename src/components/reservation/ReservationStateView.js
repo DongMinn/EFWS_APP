@@ -8,10 +8,19 @@ import MenuItem from 'material-ui/MenuItem';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import Badge from 'material-ui/Badge';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
-
+import IconButton from 'material-ui/IconButton';
+import {
+    Table,
+    TableBody,
+    TableHeader,
+    TableHeaderColumn,
+    TableRow,
+    TableRowColumn,
+} from 'material-ui/Table';
 // import SweetAlert from 'sweetalert-react';
 import '../../css/reserve.scss';
-import { styles, labelStyles, dialogStyle } from '../../common/styles';
+import { styles, labelStyles, dialogStyle, NoshowListStyle } from '../../common/styles';
+
 
 
 
@@ -24,7 +33,8 @@ class ReservationStateTestView extends Component {
             reserve: {},
             reserveState: '',
             putDataShow: false,
-            labelColor: ''
+            labelColor: '',
+            historyOpen: false,
         }
         this.handleConfirmState = this.handleConfirmState.bind(this);
         this.handleColorChange = this.handleColorChange.bind(this);
@@ -39,7 +49,31 @@ class ReservationStateTestView extends Component {
         this.handleOrderTime = this.handleOrderTime.bind(this);
         this.handleGuideTime = this.handleGuideTime.bind(this);
         this.handleChangeTimeLabel = this.handleChangeTimeLabel.bind(this);
+        this.handleGetHistoryList = this.handleGetHistoryList.bind(this);
+        this.handleChangeHistoryState = this.handleChangeHistoryState.bind(this);
         this.gap_time = '';
+
+    }
+    handleChangeHistoryState(state) {
+
+       if(state==='State:RESERVATION') {return '상태: 예약'}
+       else if(state==='AlarmTalk:RESERVATION'){return '톡 발송: 접수'}
+       else if(state==='State:CALL'){return '상태: 자동알림'}
+       else if(state==='AlarmTalk:AutoCALL'){return '톡 발송: 자동알림'}
+       else if(state==='State:NOSHOW'){return '상태: NOSHOW'}
+       else if(state==='State:WAIT'){return '상태: 입장대기'}
+       else return state
+    }
+    handleGetHistoryList(reservationNo) {
+
+        this.props.onGetHistoryList(reservationNo).then(
+            response => {
+                console.log(this.props.historyList)
+                if (response) {
+                    this.setState({ historyOpen: true })
+                }
+            }
+        )
 
     }
     handleChangeTimeLabel() {
@@ -197,8 +231,10 @@ class ReservationStateTestView extends Component {
         if (this.state.reserve !== nextState.reserve) return true;
         if (this.state.dialogOpen !== nextState.dialogOpen) return true;
         if (this.state.show !== nextState.show) return true;
+        if (this.state.historyOpen !== nextState.historyOpen) return true;
         if (this.state.reserveState !== nextState.reserveState) return true;
         if (this.state.putDataShow !== nextState.putDataShow) return true;
+        if (this.props.historyList !== nextProps.historyList) return true;
 
         return false;
 
@@ -228,19 +264,21 @@ class ReservationStateTestView extends Component {
                         showExpandableButton={true}
                     >
                         <Badge
-                            badgeStyle={styles.badge}
+
                             badgeContent={this.props.reserveData.alarmtalkCount}
                             primary={true}
+                            badgeStyle={{ top: 12, right: 12 }}
                         >
-                            <NotificationsIcon />
+                            <IconButton tooltip="알림톡발송개수">
+                                <NotificationsIcon />
+                            </IconButton>
                         </Badge>
-                    </CardHeader>
- 
+                    </CardHeader>t
+
                     <CardActions>
 
                         <Card>
                             <FlatButton backgroundColor={this.handleColorChange(this.props.reserveData.waitingState)} label={this.handleLabel(this.props.reserveData.waitingState)} labelStyle={labelStyles.reservationInfoButton} style={styles.reserveState} disabled={true}></FlatButton>
-
                             <FlatButton backgroundColor={'##FAFAFA'} label={this.handleOrderTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
                             <FlatButton backgroundColor={'##FAFAFA'} label={this.handleGuideTime()} style={styles.reserveState} labelStyle={labelStyles.reservationInfoButton} disabled={true}></FlatButton>
                             <FlatButton backgroundColor={'##FAFAFA'} label={this.handleWaitingTime()} style={styles.reserveState} labelStyle={this.handleChangeTimeLabel()} disabled={true}></FlatButton>
@@ -251,6 +289,7 @@ class ReservationStateTestView extends Component {
                         <RaisedButton backgroundColor={'#8C9EFF'} onClick={() => { this.handleConfirmState(this.props.reserveData, 'CALL') }}>CALL</RaisedButton>
                         <RaisedButton backgroundColor={'#B9F6CA'} onClick={() => { this.handleConfirmState(this.props.reserveData, 'ENTRANCE') }}>입장</RaisedButton>
                         <RaisedButton backgroundColor={'#FFD180'} onClick={() => { this.handleConfirmState(this.props.reserveData, 'NOSHOW') }}>NO-SHOW</RaisedButton>
+                        <RaisedButton backgroundColor={'#FFFF8D'} onClick={() => { this.handleGetHistoryList(this.props.reserveData.reservationNo) }}>HISTORY</RaisedButton>
                     </CardActions>
 
                     <CardText expandable={true}>
@@ -367,51 +406,66 @@ class ReservationStateTestView extends Component {
 
             </div>
         )
+        const historyList =(
+            <Table>
+            <TableHeader
+                displaySelectAll={false}
+                adjustForCheckbox={false}
+                style={NoshowListStyle.headerBack}
+            >
+                <TableRow>
+                    <TableHeaderColumn style={NoshowListStyle.headerStyle}>이벤트명</TableHeaderColumn>
+                    <TableHeaderColumn style={NoshowListStyle.headerStyle}>이벤트발생시간</TableHeaderColumn>
 
-        // const reserveStateConfirmView1 = (
-        //     <div>
-        //         <SweetAlert
-        //             show={this.state.show}
-        //             title="예약 상태 변경"
-        //             text={this.handleAlertText()}
-        //             showCancelButton
-        //             onConfirm={() => {
-        //                 this.props.onUpdateReserveState(this.state.reserve, this.state.reserveState)
-        //                 this.setState({
-        //                     show: false,
-        //                     reserve: {},
-        //                     reserveState: ''
-        //                 });
-        //             }}
-        //             onCancel={() => {
-        //                 this.setState({
-        //                     show: false,
-        //                     reserve: {},
-        //                     reserveState: ''
-        //                 });
-        //             }}
-        //             onClose={() => console.log('close')} // eslint-disable-line no-console
-        //         />
-        //     </div>
-        // );
-        // const reservePutConfrimView1 = (
-        //     <div>
-        //         <SweetAlert
-        //             show={this.state.putDataShow}
-        //             title='예약 변경 완료'
-        //             text='예약 데이터 변경 완료되었습니다.'
-        //             showCancelButton
-        //             onConfirm={() => {
-        //                 this.setState({
-        //                     putDataShow: false,
-        //                 });
+                </TableRow>
+            </TableHeader>
+            <TableBody
+                displayRowCheckbox={false}
+            >
+                {
+                    this.props.historyList.map((data, i) => (
+                        <TableRow key={i}>
+                            <TableRowColumn style={NoshowListStyle.rowStyle}>{this.handleChangeHistoryState(data.action)}</TableRowColumn>
+                            <TableRowColumn style={NoshowListStyle.rowStyle}>{data.eventTime}</TableRowColumn>
+                        </TableRow>
+                    ))
+                }
+            </TableBody>
+        </Table>
+        )
+        const historyListView = (
+            <div>
+                <Dialog
+                    autoScrollBodyContent={true}
+                    style={styles.sweetAlert}
+                    title="예약데이터 History"
+                    titleStyle={dialogStyle.titleStyle}
+                    actions={[
 
-        //             }}
-        //             onClose={() => console.log('close')} // eslint-disable-line no-console
-        //         />
-        //     </div>
-        // );
+                        <FlatButton
+                            primary={true}
+                            // backgroundColor='#8CD4F5'
+                            label="Ok"
+                            onTouchTap={() => {
 
+                                this.setState({
+                                    historyOpen: false,
+
+                                });
+                            }}
+                        />,
+                    ]}
+                    modal={false}
+                    open={this.state.historyOpen}
+                // onRequestClose={this.handleOpenDialog}
+                >
+                    {historyList}
+                </Dialog>
+
+            </div>
+        )
+        
+      
         return (
             <div>
                 <div>
@@ -423,7 +477,7 @@ class ReservationStateTestView extends Component {
                         {DialogView}
                         {reserveStateConfirmView}
                         {reservePutConfrimView}
-
+                        {historyListView}
                     </div>
                 </div>
             </div>

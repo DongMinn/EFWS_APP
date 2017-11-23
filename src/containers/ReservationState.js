@@ -4,7 +4,7 @@ import { ReservationStateView, ReservationInformView, SearchBarView, EmptyReserv
 import Stomp from 'stompjs';
 import {
     reservationGetDataRequest, reservationUpdateRequest, reservationPutRequest
-    , reservationGetTotalDataRequest, reservationGetByTableDataRequest
+    , reservationGetTotalDataRequest, reservationGetByTableDataRequest, reservationGetHistoryDataRequest
 } from '../actions/reservation';
 import { plantSettingGetDataRequest } from '../actions/plantSetting'
 import { getStatusRequest, loginRequest } from '../actions/authentication'
@@ -16,6 +16,7 @@ import '../css/common.scss'
 import axios from 'axios';
 
 import { logSaveRequest } from '../common/log'
+
 
 let checkF = 1;
 
@@ -62,11 +63,40 @@ class ReservationState extends Component {
         // this.handleAddPlantData = this.handleAddPlantData.bind(this);
         this.handleWebSocket = this.handleWebSocket.bind(this);
 
+
+        this.handleGetHistoryData = this.handleGetHistoryData.bind(this);
+
     }
-    handleGetTotalDatas(){
+    handleGetHistoryData(reservationNo) {
+        
+       return this.props.reservationGetHistoryDataRequest(this.props.authData.currentId , reservationNo).then(
+            response=>{
+                if(response===true){
+                    
+                    return true;
+                }else if (response === -1) {
+                    let loginData = getCookie('key');
+                    return this.handleLogin(loginData.id, loginData.password).then(
+                        () => {
+                            return this.props.reservationGetHistoryDataRequest(this.props.authData.currentId , reservationNo).then(
+                                response => {
+                                    if (response === true) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            )
+                        }
+                    )
+                }
+            }
+        )
+    }
+    handleGetTotalDatas() {
 
         checkF++;
-        
+
         this.props.reservationGetDataRequest(this.props.authData.currentId).then(
             response => {
                 if (response === true) {
@@ -98,7 +128,7 @@ class ReservationState extends Component {
         )
         this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
             response => {
-                
+
                 if (response === true) {
                     checkF = 1;
                     this.handleSetTotalData();
@@ -127,7 +157,7 @@ class ReservationState extends Component {
         )
     }
     handleGetReserveList() {
-       
+
         this.props.reservationGetDataRequest(this.props.authData.currentId).then(
             response => {
                 if (response === true) {
@@ -158,9 +188,9 @@ class ReservationState extends Component {
             }
         )
     }
-  
+
     handleGetTotalData() {
-    
+
         this.props.reservationGetTotalDataRequest(this.props.authData.currentId).then(
             response => {
                 if (response === true) {
@@ -191,7 +221,7 @@ class ReservationState extends Component {
         )
     }
     handleSetTotalData() {
-        
+
         let getReserveTotalData = this.props.reserveTotalData;
         let tmpTotalTime = 0;
         let tmpTotalTeam = 0;
@@ -218,8 +248,8 @@ class ReservationState extends Component {
         let tmpBeforeCallList = this.props.beforeCallList
 
         if (tmpBeforeCallList === undefined) tmpBeforeCallList = [];
-        if(tmpBeforeCallList.length>5){
-            tmpBeforeCallList.splice(5,tmpBeforeCallList.length-5);
+        if (tmpBeforeCallList.length > 5) {
+            tmpBeforeCallList.splice(5, tmpBeforeCallList.length - 5);
         }
         if (this.refs.myRef) {
             this.setState({
@@ -243,7 +273,7 @@ class ReservationState extends Component {
             })
         }
     }
- 
+
     handleGetPlantSettingInfo(id) {
         this.props.plantSettingGetDataRequest(id).then(
             response => {
@@ -302,7 +332,7 @@ class ReservationState extends Component {
     handlePutData(reserveData) {
         checkF = 1;
         // this.setState({ checkFlag: 1 });
-        
+
         return this.props.reservationPutRequest(this.props.authData.currentId, reserveData).then(
             response => {
                 if (response === true) {
@@ -322,18 +352,18 @@ class ReservationState extends Component {
                 return response;
             }
         )
-    } 
+    }
 
     handleUpdateData(reserveData, newState) {
-        
-        logSaveRequest('DEBUG' , '['+this.props.authData.currentId+'][ReservationState Button Click Event: '+newState+' Click' ); 
+
+        logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][ReservationState Button Click Event: ' + newState + ' Click');
 
         checkF = 1;
         // this.setState({ checkFlag: 1 });
-       
+
         return this.props.reservationUpdateRequest(this.props.authData.currentId, reserveData.reservationNo, newState).then(
             response => {
-                if (response === true) {    
+                if (response === true) {
                     this.handleGetBeforeCallList(this.props.authData.currentId);
                     return true;
                 }
@@ -361,7 +391,7 @@ class ReservationState extends Component {
             })
     }
     checkJWT() {
-        
+
         let loginData = getCookie('key');
         if (typeof loginData === "undefined" || !loginData.isLoggedIn) return;
         axios.defaults.headers.common['authorization'] = loginData.token;
@@ -414,7 +444,7 @@ class ReservationState extends Component {
 
 
                 console.log(checkF)
-                
+
 
                 if (checkF === 1) {
 
@@ -468,9 +498,9 @@ class ReservationState extends Component {
                 // });
             }
             // else {
-                realReserveData.sort((a, b) => {
-                    return a.reservationOrderTime < b.reservationOrderTime ? -1 : a.reservationOrderTime > b.reservationOrderTime ? 1 : 0;
-                });
+            realReserveData.sort((a, b) => {
+                return a.reservationOrderTime < b.reservationOrderTime ? -1 : a.reservationOrderTime > b.reservationOrderTime ? 1 : 0;
+            });
             // }
             realReserveData = this.handleFilteredData(realReserveData);
             return realReserveData.map(
@@ -479,13 +509,16 @@ class ReservationState extends Component {
                     let tmpRightPhoneNumber = Right(reserve.customerCellphone, 4);
                     let tmpLeftPhoneNumber = Left(reserve.customerCellphone, 3);
                     tmpCellPhone = tmpLeftPhoneNumber + '-****-' + tmpRightPhoneNumber;
-                    if (reserve.customerCellphone === '000') tmpCellPhone = '프린터출력고객'
+                    if (reserve.customerCellphone === '000') { tmpCellPhone = '프린터출력고객' }
+                    else if (reserve.customerCellphone !== '000' && reserve.customerCellphone.length > 12) { tmpCellPhone = 'NOSHOW복구고객' }
                     return (<ReservationStateView reserveData={reserve} key={i}
                         onUpdateReserveState={this.handleUpdateData}
                         onPutReserveData={this.handlePutData}
                         CellPhone={tmpCellPhone}
                         loginId={this.props.authData.currentId}
                         plantSettingList={this.props.plantSettingData}
+                        historyList = {this.props.historyList}
+                        onGetHistoryList = {this.handleGetHistoryData}
                     />)
                 }
             )
@@ -538,6 +571,7 @@ const mapStateToProps = (state) => {
         authData: state.authentication.value,
         loginStatus: state.authentication.login,
         plantSettingData: state.plantSetting.value.plantSettingList,
+        historyList: state.reservation.historyList,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -569,6 +603,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         reservationGetByTableDataRequest: (id) => {
             return dispatch(reservationGetByTableDataRequest(id));
+        },
+        reservationGetHistoryDataRequest: (plantCode, reservationNo) => {
+            return dispatch(reservationGetHistoryDataRequest(plantCode, reservationNo));
         }
     };
 };

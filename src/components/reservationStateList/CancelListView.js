@@ -8,7 +8,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import { NoshowListStyle } from '../../common/styles'
-import SweetAlert from 'sweetalert-react';
+
 
 
 class CancelListView extends Component {

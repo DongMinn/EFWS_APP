@@ -5,7 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 // import Autonew from 'material-ui/svg-icons/action/autorenew';
 // import IconButton from 'material-ui/IconButton';
 
-import { reservationInfoStyle, styles, iconStyle } from '../../common/styles';
+import { reservationInfoStyle, styles } from '../../common/styles';
 
 class ReservationInformView extends Component {
     constructor(props){
@@ -56,27 +56,27 @@ class ReservationInformView extends Component {
                 </Card>
             </div>
         )
-        const totalDataCenterView = (
-            <div>
-                <Card style={reservationInfoStyle.reserveinfoCard}>
-                    <CardHeader
-                        title={'상세 정보'}
-                        actAsExpander={true}
-                        titleStyle={styles.infoCardHeader}
-                        titleColor={'#FF5722'}
-                    />
-                    <CardActions>
-                        {this.props.reserveTotalData.map((reserve, i) => (
-                            <div key={i}>
-                                <FlatButton label={reserve.tableType + '인 테이블 대기 팀: ' + reserve.remainingWaitingTeamCount + ' 팀'} style={styles.reserveState} disabled={true}></FlatButton>
-                                <br />
-                            </div>
-                        ))
-                        }
-                    </CardActions>
-                </Card>
-            </div>
-        )
+        // const totalDataCenterView = (
+        //     <div>
+        //         <Card style={reservationInfoStyle.reserveinfoCard}>
+        //             <CardHeader
+        //                 title={'상세 정보'}
+        //                 actAsExpander={true}
+        //                 titleStyle={styles.infoCardHeader}
+        //                 titleColor={'#FF5722'}
+        //             />
+        //             <CardActions>
+        //                 {this.props.reserveTotalData.map((reserve, i) => (
+        //                     <div key={i}>
+        //                         <FlatButton label={reserve.tableType + '인 테이블 대기 팀: ' + reserve.remainingWaitingTeamCount + ' 팀'} style={styles.reserveState} disabled={true}></FlatButton>
+        //                         <br />
+        //                     </div>
+        //                 ))
+        //                 }
+        //             </CardActions>
+        //         </Card>
+        //     </div>
+        // )
         const beforeCallListView = (
             <div>
                 <Card style={reservationInfoStyle.reserveinfoCard}>

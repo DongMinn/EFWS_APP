@@ -6,19 +6,21 @@ const initialState = {
     },
     status: {
         getData: '',
-        getTotalData:'',
-        updateData:'',
-        putData:'',
-        getByTableData:'',
-        getStateData:''
+        getTotalData: '',
+        updateData: '',
+        putData: '',
+        getByTableData: '',
+        getStateData: '',
+        getHistoryData:''
     },
-    reservationNo:'',
+    reservationNo: '',
     reserveValue: [],
-    reserveTotalValue:[],
-    beforeCallList:[],
-    noshowList:[],
-    cancelList:[]
-    
+    reserveTotalValue: [],
+    beforeCallList: [],
+    noshowList: [],
+    cancelList: [],
+    historyList:[]
+
 };
 export default function reservation(state = initialState, action) {
     switch (action.type) {
@@ -35,154 +37,179 @@ export default function reservation(state = initialState, action) {
                 }
             };
         case types.RESERVE_GET_DATA_SUCCESS:
-            return {
+            return {                                                                                                                                                                     
                 ...state,
                 status: {
                     ...state.status,
                     getData: 'SUCCESS'
                 },
                 // value:[...state ,action.reserveData]
-                reserveValue:action.reserveData
+                reserveValue: action.reserveData
             };
         case types.RESERVE_GET_DATA_FAILURE:
             return {
                 ...state,
                 status: {
                     ...state.status,
-                    getData:'FAILURE'
+                    getData: 'FAILURE'
                 }
             };
         case types.RESERVE_UPDATE_DATA:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    updateData:'INIT'
+                    updateData: 'INIT'
                 }
             };
         case types.RESERVE_UPDATE_DATA_SUCCESS:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    updateData:'SUCCESS'
+                    updateData: 'SUCCESS'
                 }
             };
         case types.RESERVE_UPDATE_DATA_FAILURE:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    updateData:'FAILURE'
+                    updateData: 'FAILURE'
                 }
             }
         case types.RESERVE_PUT_DATA:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    putData:'INIT'
+                    putData: 'INIT'
                 }
             };
         case types.RESERVE_PUT_DATA_SUCCESS:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    putData:'SUCCESS'
+                    putData: 'SUCCESS'
                 },
-                reservationNo:action.reservationNo
+                reservationNo: action.reservationNo
             };
         case types.RESERVE_PUT_DATA_FAILURE:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    putData:'FAILURE'
+                    putData: 'FAILURE'
                 }
             };
         case types.RESERVE_GET_TOTAL_DATA:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    getTotalData:'INIT'
+                    getTotalData: 'INIT'
                 }
             };
         case types.RESERVE_GET_TOTAL_DATA_SUCCESS:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    getTotalData:'SUCCESS'
+                    getTotalData: 'SUCCESS'
                 },
-                reserveTotalValue:action.reserveTotalData
+                reserveTotalValue: action.reserveTotalData
             };
         case types.RESERVE_GET_TOTAL_DATA_FAILURE:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    getTotalData:'FAILURE'
+                    getTotalData: 'FAILURE'
                 }
             };
         case types.RESERVE_GET_BYTABLE_DATA:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    getByTableData:'INIT'
+                    getByTableData: 'INIT'
                 }
             };
         case types.RESERVE_GET_BYTABLE_DATA_SUCCESS:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    getByTableData:'SUCCESS'
+                    getByTableData: 'SUCCESS'
                 },
-                beforeCallList:action.tableDataList
+                beforeCallList: action.tableDataList
             };
         case types.RESERVE_GET_BYTABLE_DATA_FAILURE:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    getByTableData:'FAILURE'
+                    getByTableData: 'FAILURE'
                 }
             };
-            case types.RESERVE_GET_STATE_DATA:
-            return{
+        case types.RESERVE_GET_STATE_DATA:
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    getStateData:'INIT'
+                    getStateData: 'INIT'
                 }
             };
         case types.RESERVE_GET_NOSHOW_DATA_SUCCESS:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    getStateData:'SUCCESS'
+                    getStateData: 'SUCCESS'
                 },
-                noshowList:action.tableDataList
+                noshowList: action.tableDataList
             };
         case types.RESERVE_GET_CANCEL_DATA_SUCCESS:
-            return{
+            return {
                 ...state,
-                status:{
+                status: {
                     ...state.status,
-                    getStateData:'SUCCESS'
+                    getStateData: 'SUCCESS'
                 },
-                cancelList:action.tableDataList
+                cancelList: action.tableDataList
             };
         case types.RESERVE_GET_STATE_DATA_FAILURE:
+            return {
+                ...state,
+                status: {
+                    ...state.status,
+                    getStateData: 'FAILURE'
+                }
+            };
+            case types.RESERVE_GET_HISTORY_DATA:
             return{
                 ...state,
                 status:{
                     ...state.status,
-                    getStateData:'FAILURE'
+                    getHistoryData:'INIT'
+                }
+            };
+        case types.RESERVE_GET_HISTORY_DATA_SUCCESS:
+            return{
+                ...state,
+                status:{
+                    ...state.status,
+                    getHistoryData:'SUCCESS'
+                },
+                historyList:action.historyList
+            };
+        case types.RESERVE_GET_HISTORY_DATA_FAILURE:
+            return{
+                ...state,
+                status:{
+                    ...state.status,
+                    getHistoryData:'FAILURE'
                 }
             };
         default:

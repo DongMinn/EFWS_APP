@@ -25,7 +25,7 @@ import ee from '../../images/ee1.JPG';
 import { styles, customerStyles, gridStyles, iconStyle } from '../../common/styles';
 import '../../css/customerReserve.scss';
 
-
+ 
 
 const style1 = {
     img: {

@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { Card, CardActions, CardHeader } from 'material-ui/Card';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import SweetAlert from 'sweetalert-react';
+
 
 import { plantSettingStyles } from '../../common/styles';
 import '../../css/plantSetting.scss'

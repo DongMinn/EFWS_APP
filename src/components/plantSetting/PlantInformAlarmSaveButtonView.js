@@ -24,7 +24,10 @@ class PlantInformAlarmSaveButtonView extends Component {
             response => {
 
                 if (response === true) {
-                    this.setState({ show: false, successStatus: true })
+                    this.setState({ 
+                        show: false, 
+                        successStatus: true 
+                    })
                 } else {
                     this.setState({
                         show: false,
@@ -33,6 +36,15 @@ class PlantInformAlarmSaveButtonView extends Component {
                 }
             }
         )
+
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.state.newStatus !== nextState.newStatus) return true;
+        if (this.state.show !== nextState.show) return true;
+        if (this.state.successStatus !== nextState.successStatus) return true;
+
+        return false;
 
     }
 
@@ -71,7 +83,7 @@ class PlantInformAlarmSaveButtonView extends Component {
                 <SweetAlert
                     show={this.state.newStatus}
                     title="알림톡세팅 변경 실패"
-                    text={this.props.alarmReturnMessage===undefined?'예약건이 존재합니다.':this.props.alarmReturnMessage}
+                    text={this.props.alarmReturnMessage === undefined ? '예약건이 존재합니다.' : this.props.alarmReturnMessage}
                     onConfirm={() => {
                         this.setState({ newStatus: false });
                         this.props.onGetAlarmData();

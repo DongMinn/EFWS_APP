@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
 import RaisedButton from 'material-ui/RaisedButton';
@@ -8,7 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { LoginField } from '../common/model';
 import { renderTextField } from '../common/common';
 import { required, maxLength15 } from '../common/validation';
-import { browserHistory } from 'react-router';
+
 import SweetAlert from 'sweetalert-react';
 import '../css/sweetalert.scss';
 import '../css/login.scss';

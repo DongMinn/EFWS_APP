@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
+
 
 import { browserHistory } from 'react-router';
 import Divider from 'material-ui/Divider';

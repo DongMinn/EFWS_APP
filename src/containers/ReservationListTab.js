@@ -13,7 +13,7 @@ import { logSaveRequest } from '../common/log'
 import { Tabs, Tab } from 'material-ui/Tabs';
 
 import { reservationstatelistStyle } from '../common/styles';
-import { debug } from 'util';
+
 
 class PlantSettingTab extends Component {
     constructor(props) {

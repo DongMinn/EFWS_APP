@@ -2,6 +2,7 @@ import * as types from './ActionTypes';
 import axios from 'axios';
 
 
+
 export const reservationGetDataRequest = (plantCode) => {
     return (dispatch) => {
         //login api  시작
@@ -57,7 +58,7 @@ export const reservationUpdateRequest = (id, reservationNo, state) => {
                 }
             }).catch(error => {
 
-               
+
                 dispatch(reserveUpdateDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
@@ -179,8 +180,6 @@ export const reservationGetByTableDataRequest = (id) => {
             reservationOrderTimeEnd: dates
         }).then(
             response => {
-
-
                 if (response.status === 200) {
                     if (response.data.status === 200) {
 
@@ -208,8 +207,8 @@ export const reservationGetByTableDataRequest = (id) => {
     }
 }
 
-export const reservationGetStateDataRequest = (id , state) => {
-    
+export const reservationGetStateDataRequest = (id, state) => {
+
     return (dispatch) => {
         let today = new Date();
         let dd = today.getDate();
@@ -245,20 +244,20 @@ export const reservationGetStateDataRequest = (id , state) => {
             reservationOrderTimeEnd: dates
         }).then(
             response => {
-                
+
                 if (response.status === 200) {
                     if (response.data.status === 200) {
                         console.log(state)
-                        
-                        if(state==='NOSHOW') {
-                            
+
+                        if (state === 'NOSHOW') {
+
                             dispatch(reserveGetNOSHOWDataSuccess(response.data.reservationList));
                         }
-                        else if(state==='CANCEL') {
-                            
+                        else if (state === 'CANCEL') {
+
                             dispatch(reserveGetCANCELDataSuccess(response.data.reservationList));
-                        } 
-                        
+                        }
+
                         return true;
                     }
                 } else {
@@ -280,40 +279,38 @@ export const reservationGetStateDataRequest = (id , state) => {
     }
 }
 
-export const reservationHistoryGetDataRequest = (plantCode) => {
+export const reservationGetHistoryDataRequest = (plantCode, reservationNo) => {
+
     return (dispatch) => {
         //login api  시작
-        dispatch(reserveGetData());
-        return axios.post('/table/reservation/store/remaining-list/find', {
-            loginId: plantCode
-        }).then((response) => {
-
-            if (response.status === 200) {
-                if (response.data.status === 200) {
-
-                    if (response.data.remainingList === undefined) {
-                        dispatch(reserveGetDataSuccess([]));
-                        return false;
-                    } else {
-                        dispatch(reserveGetDataSuccess(response.data.remainingList));
+        dispatch(reserveGetHistoryData());
+        return axios.post('/history/find', {
+            plantCode: plantCode,
+            reservationNo: reservationNo
+        }).then(
+            response => {
+                
+                if (response.status === 200) {
+                    if (response.data.status === 200) {
+                        dispatch(reserveGetHistoryDataSuccess(response.data.historyList));
                         // console.log('예약 데이터 불러오기 성공')
                         return true;
+
                     }
                 }
-            }
 
-        }).catch((error) => {
+            }).catch((error) => {
 
-            dispatch(reserveGetDataFailure());
-            console.log('DEBUG: Reserve request failed!');
-            if (error.response.data.status === 500) {
+                dispatch(reserveGetHistoryDataFailure());
+                console.log('DEBUG: Reserve history request failed!');
+                if (error.response.data.status === 500) {
 
-                if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
-                    return -1;
+                    if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
+                        return -1;
+                    }
                 }
-            }
-            return false;
-        });
+                return false;
+            });
     }
 }
 
@@ -381,4 +378,14 @@ export const reserveGetCANCELDataSuccess = (tableDataList) => ({
 })
 export const reserveGetStateDataFailure = () => ({
     type: types.RESERVE_GET_STATE_DATA_FAILURE
+})
+export const reserveGetHistoryData = () => ({
+    type: types.RESERVE_GET_HISTORY_DATA
+})
+export const reserveGetHistoryDataSuccess = (historyList) => ({
+    type: types.RESERVE_GET_HISTORY_DATA_SUCCESS,
+    historyList
+})
+export const reserveGetHistoryDataFailure = () => ({
+    type: types.RESERVE_GET_HISTORY_DATA_FAILURE
 })
