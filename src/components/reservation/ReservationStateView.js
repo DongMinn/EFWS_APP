@@ -62,6 +62,8 @@ class ReservationStateTestView extends Component {
        else if(state==='AlarmTalk:AutoCALL'){return '톡 발송: 자동알림'}
        else if(state==='State:NOSHOW'){return '상태: NOSHOW'}
        else if(state==='State:WAIT'){return '상태: 입장대기'}
+       else if(state==='AlarmTalk:CALL'){return '톡 발송: 입장알림'}
+       else if(state==='DID:CALL'){return 'DID: 입장알림'}
        else return state
     }
     handleGetHistoryList(reservationNo) {
@@ -263,6 +265,7 @@ class ReservationStateTestView extends Component {
                         actAsExpander={true}
                         showExpandableButton={true}
                     >
+                     
                         <Badge
 
                             badgeContent={this.props.reserveData.alarmtalkCount}
