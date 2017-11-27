@@ -28,7 +28,7 @@ import ChangeInformationView from './ChangeInformationView';
  * 매장세팅 화면
  */
 import PlantInformSettingView from './plantSetting/PlantInformSettingView';
-import PlantInformSettingTimeView from './plantSetting/PlantInformSettingTimeView';
+import PlantInformSettingCommonView from './plantSetting/PlantInformSettingCommonView';
 import PlantInformSettingTimeSaveButtonView from './plantSetting/PlantInformSettingTimeSaveButtonView';
 import PlantSettingSaveButtonView from './plantSetting/PlantSettingSaveButtonView';
 import PlantInformSettingAlarmView from './plantSetting/PlantInformSettingAlarmView';
@@ -51,6 +51,6 @@ import BigDataTimeSettingView from './report/BigDataTimeSettingView';
 
 
 export { Header , MenuBar,LoginView ,  ReservationStateView , CustomerReservationStateView,CustomerReservationPlantInfoView , ChangePasswordView , ChangeInformationView , PlantInformSettingView 
-        , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingTimeSaveButtonView , PlantInformSettingTimeView , PlantInformSettingAlarmView 
+        , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingTimeSaveButtonView , PlantInformSettingCommonView , PlantInformSettingAlarmView 
         , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView, EmptyReserveData , NoShowListView, CancelListView , DailyReportView , MonthlyReportView , BigDataTimeSettingView
     };

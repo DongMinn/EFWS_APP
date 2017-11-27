@@ -17,6 +17,7 @@ const initialState = {
         tableReturnMessage:'',
         updateNoshowTime:'',
         updateMaxTime:'',
+        didCheck:'',
         alarmTalkList:[],
         alarmReturnMessage:''
     }
@@ -113,7 +114,8 @@ export default function plantSetting(state = initialState, action) {
                 value:{
                     ...state.value,
                     updateNoshowTime:action.noshowtime,
-                    updateMaxTime:action.maxtime
+                    updateMaxTime:action.maxtime,
+                    didCheck:action.didCheck
                 }
             }
         case types.PLANTSETTING_GET_NOSHOW_DATA_FAILURE:

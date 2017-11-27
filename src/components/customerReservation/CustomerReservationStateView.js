@@ -20,6 +20,7 @@ import al from '../../images/ru1.jpg';
 import ss from '../../images/ss1.JPG';
 import ru from '../../images/ru1.jpg';
 import ee from '../../images/ee1.JPG';
+import ld from '../../images/ld1.JPG';
 
 
 import { styles, customerStyles, gridStyles, iconStyle } from '../../common/styles';
@@ -66,6 +67,9 @@ class CustomerReservationStateView extends Component {
         }
         else if(this.props.loginId.toUpperCase().indexOf("RU")!==-1){
             return ru
+        }
+        else if(this.props.loginId.toUpperCase().indexOf("LD")!==-1){
+            return ld
         }
         else 
             return ee

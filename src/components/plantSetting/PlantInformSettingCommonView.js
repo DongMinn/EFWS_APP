@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { Card, CardActions, CardHeader } from 'material-ui/Card';
+import Checkbox from 'material-ui/Checkbox';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -13,17 +14,28 @@ class PlantInformSettingTimeView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            maxTimeShow:false,
+            maxTimeShow: false,
             value: 10,
-            maxTimeValue:60,
+            maxTimeValue: 60,
             failStatus: false,
             successStatus: false,
+            didChecked: false
         }
         this.handleChangeTableTime = this.handleChangeTableTime.bind(this);
-        this.handleChangeTableMaxTime = this.handleChangeTableMaxTime.bind(this);       
+        this.handleChangeTableMaxTime = this.handleChangeTableMaxTime.bind(this);
+        this.handleChangeDidCheckBox = this.handleChangeDidCheckBox.bind(this);
     }
-  
-   
+    handleChangeDidCheckBox() {
+
+        if (this.props.onChangeDidCheck()) {
+
+            this.setState({
+                didChecked: this.props.didCheck === 'Y' ? true : false,
+            })
+
+        }
+    }
+
     handleChangeTableTime(event, index, value) {
         if (this.props.onChangeNoshowTime(value)) {
             this.setState({ value: parseInt(this.props.noshowTime, 10) })
@@ -38,21 +50,24 @@ class PlantInformSettingTimeView extends Component {
 
         this.setState({
             value: parseInt(nextProps.noshowTime, 10),
-            maxTimeValue: parseInt(nextProps.maxTime, 10)
+            maxTimeValue: parseInt(nextProps.maxTime, 10),
+            didChecked:nextProps.didCheck === 'Y' ? true : false,
         })
     }
 
     componentWillMount() {
         this.setState({
             value: parseInt(this.props.noshowTime, 10),
-            maxTimeValue: parseInt(this.props.maxTime, 10)
+            maxTimeValue: parseInt(this.props.maxTime, 10),
+            didChecked:this.props.didCheck === 'Y' ? true : false,
         })
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        
-        if(this.props.noshowTime!==nextProps.noshowTime) return true;
-        if(this.props.maxTime!==nextProps.maxTime) return true;
+
+        if (this.props.noshowTime !== nextProps.noshowTime) return true;
+        if (this.props.maxTime !== nextProps.maxTime) return true;
+        if (this.props.didCheck !== nextProps.didCheck) return true;
 
 
         return false;
@@ -68,7 +83,7 @@ class PlantInformSettingTimeView extends Component {
         for (let i = 30; i <= 120; i++) {
             maxtime_items.push(<MenuItem value={i} key={i} primaryText={`${i} 분`} />);
         }
-      
+
         const settingNoshowView = (
             <Card>
                 <CardHeader
@@ -108,12 +123,36 @@ class PlantInformSettingTimeView extends Component {
             </Card>
 
         )
+        const settingDidView = (
+            <Card>
+                <CardHeader
+                    title={'DID 사용 설정'}
+                    subtitle="DID 사용여부 설정"
+                    actAsExpander={true}
+                    titleStyle={plantSettingStyles.cardHeader}
+                    showExpandableButton={false}
+                />
+                <CardActions>
+
+                    <Checkbox
+                        label="DID 사용"
+                        checked={this.state.didChecked}
+                        onCheck={this.handleChangeDidCheckBox}
+                    />
+
+                </CardActions>
+
+            </Card>
+
+        )
         return (
             <div>
                 <br />
                 {settingNoshowView}
                 <br />
                 {settingMaxTimeView}
+                <br />
+                {settingDidView}
             </div>
         );
     }

@@ -85,7 +85,7 @@ export const plantSettingGetTimeDataRequest = (loginId) => {
             response => {
                 
                 if (response.status === 200 && response.data.status === 200) {
-                    dispatch(plantSettingGetTimeDataSuccess(response.data.updateNoshowTime, response.data.maxTotalWaitTime));
+                    dispatch(plantSettingGetTimeDataSuccess(response.data.updateNoshowTime, response.data.maxTotalWaitTime, response.data.didBluetoothUse));
                     return true;
                 } else {
                     return false;
@@ -105,13 +105,14 @@ export const plantSettingGetTimeDataRequest = (loginId) => {
             )
     }
 }
-export const plantSettingUpdateTimeDataRequest = (loginId, updateNoshowTime , maxTime) => {
+export const plantSettingUpdateTimeDataRequest = (loginId, updateNoshowTime , maxTime, didCheck) => {
     return (dispatch) => {
         dispatch(plantSettingUpdateTimeData());
         return axios.post('/plant/setting/common/update', {
             loginId: loginId,
             updateNoshowTime: updateNoshowTime,
-            maxTotalWaitTime: maxTime
+            maxTotalWaitTime: maxTime,
+            didBluetoothUse: didCheck
         }).then(
             response => {
                 if (response.status === 200 && response.data.status === 200) {
@@ -228,10 +229,11 @@ export const plantSettingUpdateDataFailureByReserveData = (returnMessage) => ({
 export const plantSettingGetTimeData = () => ({
     type: types.PLANTSETTING_GET_NOSHOW_DATA
 })
-export const plantSettingGetTimeDataSuccess = (noshowtime , maxtime) => ({
+export const plantSettingGetTimeDataSuccess = (noshowtime , maxtime , didCheck) => ({
     type: types.PLANTSETTING_GET_NOSHOW_DATA_SUCCESS,
     noshowtime,
-    maxtime
+    maxtime,
+    didCheck
 })
 export const plantSettingGetTimeDataFailure = () => ({
     type: types.PLANTSETTING_GET_NOSHOW_DATA_FAILURE
