@@ -43,6 +43,8 @@ ReactDOM.render(
                     </Route>
                     <Route path="reservestatelist" component={ReservationListTab} >        
                     </Route>
+                    <Route path="statistics" component={ReservationListTab} >        
+                    </Route>
                     <Route path="reservationstate" component={ReservationState} />
                 <Redirect from="/*" to="/" />
                 </Route>

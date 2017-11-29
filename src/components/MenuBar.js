@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 
-
+import { Tabs, Tab } from 'material-ui/Tabs';
 import { browserHistory } from 'react-router';
 import Divider from 'material-ui/Divider';
 
+import { NoshowListStyle } from '../common/styles'
 
 class MenuBar extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class MenuBar extends Component {
             infoCheck: false,
             settingCheck: false,
             noshowCheck: false,
-            reportCheck:false,
+            reportCheck: false,
 
         }
         this.handleLinkToReservation = this.handleLinkToReservation.bind(this);
@@ -64,6 +65,8 @@ class MenuBar extends Component {
             this.setState({
                 reportCheck: true,
             })
+        }else if (state === 'statistics') {
+            browserHistory.push('/statistics')
         }
         else {
             browserHistory.push('/change/setting')
@@ -74,21 +77,25 @@ class MenuBar extends Component {
     }
     render() {
         return (
-            <div className="common_header">
+            <div >
+            <br/>
                 {this.props.isLoggedIn ?
-                    <Menu >
-                        <MenuItem primaryText="예약확인" onClick={this.handleLinkToReservation} checked={this.state.reserveCheck} />
-                        <Divider />
-                        <MenuItem primaryText="대기상태 리스트 " onClick={() => { this.handleLinkToChangeInform('reservestatelist') }} checked={this.state.noshowCheck} />
-                        <MenuItem primaryText="비밀번호변경" onClick={() => { this.handleLinkToChangeInform('password') }} checked={this.state.passwordCheck} />
-                        <MenuItem primaryText="매장정보변경" onClick={() => { this.handleLinkToChangeInform('information') }} checked={this.state.infoCheck} />
-                        <MenuItem primaryText="Settings" onClick={() => { this.handleLinkToChangeInform('setting') }} checked={this.state.settingCheck} />
-                        
-                       
-                    </Menu>
+
+                    <Tabs style={NoshowListStyle.headerStyle}>
+                        <Tab label="예약확인" onClick={this.handleLinkToReservation}> </Tab>
+                        <Tab label="대기상태 리스트" onClick={() => { this.handleLinkToChangeInform('reservestatelist') }}> </Tab>
+                        <Tab label="비밀번호변경" onClick={() => { this.handleLinkToChangeInform('password') }}> </Tab>
+                        <Tab label="매장정보변경" onClick={() => { this.handleLinkToChangeInform('information') }}> </Tab>
+                        <Tab label="통계데이터" onClick={() => { this.handleLinkToChangeInform('statistics') }}> </Tab>
+                        <Tab label="Settings" onClick={() => { this.handleLinkToChangeInform('setting') }}> </Tab>
+
+                    </Tabs>
                     : undefined
                 }
             </div>
+
+
+
         );
     }
 }

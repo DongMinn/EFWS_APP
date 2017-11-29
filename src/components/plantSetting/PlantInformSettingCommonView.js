@@ -126,8 +126,8 @@ class PlantInformSettingTimeView extends Component {
         const settingDidView = (
             <Card>
                 <CardHeader
-                    title={'DID 사용 설정'}
-                    subtitle="DID 사용여부 설정"
+                    title={'블루투스프린터 사용 설정'}
+                    subtitle="블루투스프린터 사용 설정"
                     actAsExpander={true}
                     titleStyle={plantSettingStyles.cardHeader}
                     showExpandableButton={false}
@@ -135,7 +135,7 @@ class PlantInformSettingTimeView extends Component {
                 <CardActions>
 
                     <Checkbox
-                        label="DID 사용"
+                        label="사용여부"
                         checked={this.state.didChecked}
                         onCheck={this.handleChangeDidCheckBox}
                     />
