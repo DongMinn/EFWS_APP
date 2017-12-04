@@ -83,11 +83,11 @@ class MenuBar extends Component {
 
                     <Tabs style={NoshowListStyle.headerStyle}>
                         <Tab label="예약확인" onClick={this.handleLinkToReservation}> </Tab>
-                        <Tab label="대기상태 리스트" onClick={() => { this.handleLinkToChangeInform('reservestatelist') }}> </Tab>
-                        <Tab label="비밀번호변경" onClick={() => { this.handleLinkToChangeInform('password') }}> </Tab>
-                        <Tab label="매장정보변경" onClick={() => { this.handleLinkToChangeInform('information') }}> </Tab>
-                        <Tab label="통계데이터" onClick={() => { this.handleLinkToChangeInform('statistics') }}> </Tab>
-                        <Tab label="Settings" onClick={() => { this.handleLinkToChangeInform('setting') }}> </Tab>
+                        <Tab label="상태리스트" onClick={() => { this.handleLinkToChangeInform('reservestatelist') }}> </Tab>
+                        <Tab label="비번변경" onClick={() => { this.handleLinkToChangeInform('password') }}> </Tab>
+                        <Tab label="매장정보" onClick={() => { this.handleLinkToChangeInform('information') }}> </Tab>
+                        
+                        <Tab label="설정" onClick={() => { this.handleLinkToChangeInform('setting') }}> </Tab>
 
                     </Tabs>
                     : undefined
@@ -110,3 +110,5 @@ export default MenuBar;
 //             <MenuItem primaryText="빅데이터 시간 세팅" onClick={() => { this.handleLinkToChangeInform('bigdatasetting') }}/>,
 // ]}
 // />
+
+//<Tab label="통계" onClick={() => { this.handleLinkToChangeInform('statistics') }}> </Tab>

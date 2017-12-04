@@ -80,7 +80,7 @@ class PlantInformSettingTimeView extends Component {
             items.push(<MenuItem value={i} key={i} primaryText={`${i} 분`} />);
         }
         const maxtime_items = [];
-        for (let i = 30; i <= 120; i++) {
+        for (let i = 10; i <= 120; i++) {
             maxtime_items.push(<MenuItem value={i} key={i} primaryText={`${i} 분`} />);
         }
 
