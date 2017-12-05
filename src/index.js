@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { App, Login, Change, ChangePassword, ChangeInformation
         , ReservationState, CustomerReservationState 
-         , PlantSettingTab  , ReservationListTab} from './containers';
+         , PlantSettingTab  , ReservationListTab , StatisticsTap} from './containers';
 import { Router, Route, browserHistory, IndexRoute, Redirect } from 'react-router';
 import { Provider } from 'react-redux';
 import { createStore , applyMiddleware } from 'redux';
@@ -43,7 +43,7 @@ ReactDOM.render(
                     </Route>
                     <Route path="reservestatelist" component={ReservationListTab} >        
                     </Route>
-                    <Route path="statistics" component={ReservationListTab} >        
+                    <Route path="statistics" component={StatisticsTap} >        
                     </Route>
                     <Route path="reservationstate" component={ReservationState} />
                 <Redirect from="/*" to="/" />

@@ -78,7 +78,7 @@ class MenuBar extends Component {
     render() {
         return (
             <div >
-            <br/>
+            
                 {this.props.isLoggedIn ?
 
                     <Tabs style={NoshowListStyle.headerStyle}>
@@ -86,7 +86,7 @@ class MenuBar extends Component {
                         <Tab label="상태리스트" onClick={() => { this.handleLinkToChangeInform('reservestatelist') }}> </Tab>
                         <Tab label="비번변경" onClick={() => { this.handleLinkToChangeInform('password') }}> </Tab>
                         <Tab label="매장정보" onClick={() => { this.handleLinkToChangeInform('information') }}> </Tab>
-                        
+                        <Tab label="통계" onClick={() => { this.handleLinkToChangeInform('statistics') }}> </Tab>
                         <Tab label="설정" onClick={() => { this.handleLinkToChangeInform('setting') }}> </Tab>
 
                     </Tabs>

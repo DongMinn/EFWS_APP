@@ -3,9 +3,10 @@ import axios from 'axios';
 
 
 
-export const DailyPlantstatisticGetDataRequest = (plantCode , startDate , endDate) => {
+export const dailyPlantstatisticGetDataRequest = (plantCode , startDate , endDate) => {
     return (dispatch) => {
         //login api  시작
+      
         dispatch(dailyPlantstatisticGetData());
         return axios.post('/daily/statistic/plant', {
             plantCode: plantCode,
@@ -16,11 +17,11 @@ export const DailyPlantstatisticGetDataRequest = (plantCode , startDate , endDat
             if (response.status === 200) {
                 if (response.data.status === 200) {
 
-                    if (response.data.remainingList === undefined) {
-                        dispatch(plantSettingGetDataSuccess([]));
+                    if (response.data.statisticList === undefined) {
+                        dispatch(dailyPlantstatisticGetDataSuccess([]));
                         return false;
                     } else {
-                        dispatch(plantSettingGetDataFailure(response.data.remainingList));
+                        dispatch(dailyPlantstatisticGetDataSuccess(response.data.statisticList));
                         // console.log('예약 데이터 불러오기 성공')
                         return true;
                     }
@@ -29,7 +30,7 @@ export const DailyPlantstatisticGetDataRequest = (plantCode , startDate , endDat
 
         }).catch((error) => {
 
-            dispatch(plantSettingGetDataFailure());
+            dispatch(dailyPlantstatisticGetDataFailure());
             console.log('DEBUG: Reserve request failed!');
             if (error.response.data.status === 500) {
 
@@ -48,11 +49,11 @@ export const dailyPlantstatisticGetData = () => ({
     type: types.STATISTIC_DAILY_PLANT_GET_DATA
 })
 
-export const plantSettingGetDataSuccess = (plantSettingList) => ({
+export const dailyPlantstatisticGetDataSuccess = (statisticList) => ({
     type: types.STATISTIC_DAILY_PLANT_GET_DATA_SUCCESS,
-    plantSettingList
+    statisticList
 })
 
-export const plantSettingGetDataFailure = () => ({
+export const dailyPlantstatisticGetDataFailure = () => ({
     type: types.STATISTIC_DAILY_PLANT_GET_DATA_FAILURE
 })

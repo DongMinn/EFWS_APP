@@ -224,5 +224,9 @@ export const NoshowListStyle={
     },
     rowStyle:{
         textAlign: 'center',
+    },
+    statisticRowStyle:{
+        textAlign: 'center',
+        fontSize:10
     }
 }
