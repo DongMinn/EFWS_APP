@@ -20,13 +20,15 @@ class StatisticsTap extends Component {
         this.state = {
             statisticList: [],
             dailyStartDate:null,
-            dailyEndDate:null
+            dailyEndDate:null,
+            failStatus:false
 
         };
 
         this.checkJWT = this.checkJWT.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
         
+        this.handleFailStatus = this.handleFailStatus.bind(this);
 
         this.handleGetDailyStatistics = this.handleGetDailyStatistics.bind(this);
         this.handleUpdateDailyDate = this.handleUpdateDailyDate.bind(this);
@@ -72,26 +74,29 @@ class StatisticsTap extends Component {
     }
     handleUpdateDailyDate(type , dates){
 
+      
         
         if(type==="start"){
             this.setState({
-                dailyStartDate:dates.replace("-","")
+                dailyStartDate:dates.replace("-","").replace("-","")
             })
         }else{
             this.setState({
-                dailyEndDate:dates.replace("-","")
+                dailyEndDate:dates.replace("-","").replace("-","")
             })
         }
+        
 
         
     }
     handleGetDailyStatistics(){
         logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][Statistic Button Click Event: Daily Click');
 
-        this.props.dailyPlantstatisticGetDataRequest(this.props.authData.currentId , this.state.dailyStartDate , this.state.dailyEndDate).then(
+        return this.props.dailyPlantstatisticGetDataRequest(this.props.authData.currentId , this.state.dailyStartDate , this.state.dailyEndDate).then(
             response => {
                 if (response === true) {
                     this.handleSetDailyStatisticList();
+                    return true;
                 }else if (response === -1) {
                     let loginData = getCookie('key');
                     return this.handleLogin(loginData.id, loginData.password).then(
@@ -112,6 +117,8 @@ class StatisticsTap extends Component {
                 }
                 else {
                     console.log('통계데이터불러오기 실패')
+                    this.setState({failStatus:true})
+                    return false;
                 }
             }
         )
@@ -132,6 +139,9 @@ class StatisticsTap extends Component {
         }
         
     }
+    handleFailStatus(){
+        this.setState({failStatus:false})
+    }
     componentDidMount() {
         this.checkJWT().then(
             response => {
@@ -146,17 +156,20 @@ class StatisticsTap extends Component {
         return (
             <div ref="myRef">
                 <br />
-                <Tabs style={reservationstatelistStyle.Tabs}>
+                <Tabs >
                     <Tab label="일별 통계" >
                         <div>
                             <DailyReportSearchView        
                                 onGetStatisticList = {this.handleGetDailyStatistics}
                                 onSetDailyDate = {this.handleUpdateDailyDate}
+                                failStatus={this.state.failStatus}
+                                onFailStatus = {this.handleFailStatus}
                             />
                         </div>
                         <div >
                             <DailyReportView
                                 statisticList={this.state.statisticList}
+
                             />
                         </div>
                     </Tab>

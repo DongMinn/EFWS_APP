@@ -7,16 +7,17 @@ import {
 	TableRow,
 	TableRowColumn,
 } from 'material-ui/Table';
-import RaisedButton from 'material-ui/RaisedButton';
+
 import { NoshowListStyle } from '../../common/styles'
-import SweetAlert from 'sweetalert-react';
+
+import { styles,  dialogStyle,  } from '../../common/styles';
 
 
 class DailyReportView extends Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-
+		this.state = {	
+			
 		}
 		this.handleleaveRate = this.handleleaveRate.bind(this);
 		this.handleMaxMinWait = this.handleMaxMinWait.bind(this);
@@ -29,8 +30,9 @@ class DailyReportView extends Component {
 		return saleDate.substr(4,2)+'/'+saleDate.substr(6,2);
 	}
 	handleleaveRate(rate) {
-
-		return rate * 100 + '%';
+		
+		
+		return Math.round(rate * 100) + '%';
 	}
 	handleMaxMinWait(minute, orderTime) {
 		if (orderTime !== null)
@@ -47,11 +49,15 @@ class DailyReportView extends Component {
 			return '';
 		}
 	}
+	
+	
 
 	render() {
 
 		const statisticList = (
-			<Table>
+			<Table
+				height="1000px"
+			>
 				<TableHeader
 					displaySelectAll={false}
 					adjustForCheckbox={false}
@@ -96,10 +102,13 @@ class DailyReportView extends Component {
 				</TableBody>
 			</Table>
 		)
+
+		
 		return (
 			<div>
 
 				{statisticList}
+			
 
 			</div>
 		);
