@@ -48,10 +48,12 @@ import CancelListView from './reservationStateList/CancelListView';
 import DailyReportView from './report/DailyReportView';
 import DailyReportSearchView from './report/DailyReportSearchView';
 import MonthlyReportView from './report/MonthlyReportView';
+import MonthlyReportSearchView from './report/MonthlyReportSearchView';
 import BigDataTimeSettingView from './report/BigDataTimeSettingView';
 
 
 export { Header , MenuBar,LoginView ,  ReservationStateView , CustomerReservationStateView,CustomerReservationPlantInfoView , ChangePasswordView , ChangeInformationView , PlantInformSettingView 
         , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingTimeSaveButtonView , PlantInformSettingCommonView , PlantInformSettingAlarmView 
         , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView, EmptyReserveData , NoShowListView, CancelListView , DailyReportView ,DailyReportSearchView , MonthlyReportView , BigDataTimeSettingView
+        ,MonthlyReportSearchView
     };

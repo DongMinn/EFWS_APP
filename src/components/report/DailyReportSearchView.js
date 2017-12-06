@@ -54,7 +54,7 @@ class DailyReportSearchView extends Component {
                 num = num + '';
                 return num.length < 2 ? '0' + num : num;
             }
-            return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+            return date.getFullYear() + pad(date.getMonth() + 1) + pad(date.getDate());
         }
 
         this.selectEndDate = dateToYYYYMMDD(date);
@@ -99,7 +99,7 @@ class DailyReportSearchView extends Component {
         return (
             <div>
                 {searchFailedView}
-                <div>
+                <div>전 일까지 데이터가 조회 됩니다.
                     <DatePicker hintText="조회 시작일" mode="landscape" onChange={(event, date) => this.setStartDate(event, date)} autoOk={true} shouldDisableDate={this.handleDisableStartDate} />
                     <DatePicker hintText="조회 종료일" mode="landscape" onChange={(event, date) => this.setEndDate(event, date)} autoOk={true} shouldDisableDate={this.handleDisableEndDate} />
                     <RaisedButton primary={true} onClick={this.handleSearchList}>조회</RaisedButton>

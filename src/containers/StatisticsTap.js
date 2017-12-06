@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {  DailyReportView  , DailyReportSearchView} from '../components'
+import {  DailyReportView  , DailyReportSearchView , MonthlyReportView , MonthlyReportSearchView} from '../components'
 import { connect } from 'react-redux';
 import {
-    dailyPlantstatisticGetDataRequest
+    dailyPlantstatisticGetDataRequest , monthlyPlantstatisticGetDataRequest
 } from '../actions/statistic';
 import { setCurrentInform } from '../actions/authentication';
 import { getStatusRequest, loginRequest } from '../actions/authentication'
@@ -11,7 +11,7 @@ import { getCookie } from '../common/common';
 import { logSaveRequest } from '../common/log'
 import { Tabs, Tab } from 'material-ui/Tabs';
 
-import { reservationstatelistStyle } from '../common/styles';
+
 
 
 class StatisticsTap extends Component {
@@ -19,9 +19,12 @@ class StatisticsTap extends Component {
         super(props);
         this.state = {
             statisticList: [],
+            monthlyStatisticList:[],
             dailyStartDate:null,
             dailyEndDate:null,
-            failStatus:false
+            failStatus:false,
+            saleYear:null,
+            monthFailStatus:false,
 
         };
 
@@ -29,10 +32,16 @@ class StatisticsTap extends Component {
         this.handleLogin = this.handleLogin.bind(this);
         
         this.handleFailStatus = this.handleFailStatus.bind(this);
+        this.handleMonthFailStatus = this.handleMonthFailStatus.bind(this);
 
         this.handleGetDailyStatistics = this.handleGetDailyStatistics.bind(this);
         this.handleUpdateDailyDate = this.handleUpdateDailyDate.bind(this);
         this.handleSetDailyStatisticList = this.handleSetDailyStatisticList.bind(this);
+
+        this.handleGetMonthlyStatistics = this.handleGetMonthlyStatistics.bind(this);
+        this.handleUpdateMonthlyDate = this.handleUpdateMonthlyDate.bind(this);
+        this.handleSetMonthlyStatisticList = this.handleSetMonthlyStatisticList.bind(this);
+
  
     }
     checkJWT() {
@@ -78,16 +87,18 @@ class StatisticsTap extends Component {
         
         if(type==="start"){
             this.setState({
-                dailyStartDate:dates.replace("-","").replace("-","")
+                dailyStartDate:dates
             })
         }else{
             this.setState({
-                dailyEndDate:dates.replace("-","").replace("-","")
+                dailyEndDate:dates
             })
         }
-        
-
-        
+    }
+    handleUpdateMonthlyDate(dates){
+        this.setState({
+            saleYear:dates
+        })
     }
     handleGetDailyStatistics(){
         logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][Statistic Button Click Event: Daily Click');
@@ -123,6 +134,41 @@ class StatisticsTap extends Component {
             }
         )
     }
+
+    handleGetMonthlyStatistics(){
+        logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][Statistic Button Click Event: Monthly Click');
+
+        return this.props.monthlyPlantstatisticGetDataRequest(this.props.authData.currentId , this.state.saleYear ).then(
+            response => {
+                if (response === true) {
+                    this.handleSetMonthlyStatisticList();
+                    return true;
+                }else if (response === -1) {
+                    let loginData = getCookie('key');
+                    return this.handleLogin(loginData.id, loginData.password).then(
+                        () => {
+                            this.props.monthlyPlantstatisticGetDataRequest(this.props.authData.currentId , this.state.saleYear ).then(
+                                response => {
+                                    if (response === true) {
+                                        
+                                        this.handleSetMonthlyStatisticList();
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            )
+                        }
+                    )
+                }
+                else {
+                    console.log('통계데이터불러오기 실패')
+                    this.setState({monthFailStatus:true})
+                    return false;
+                }
+            }
+        )
+    }
     handleSetDailyStatisticList(){
 
         
@@ -139,8 +185,24 @@ class StatisticsTap extends Component {
         }
         
     }
+    handleSetMonthlyStatisticList(){
+        let getMonthlyStatisticData = this.props.monthlyStatisticList;
+        
+
+        if (getMonthlyStatisticData === undefined) {
+            getMonthlyStatisticData = []
+        }
+        if (this.refs.myRef) { // setState가 render가 없으면서 시도 될때, 나오는 에러 방지를 위해 
+            this.setState({
+                monthlyStatisticList: getMonthlyStatisticData,
+            })
+        }
+    }
     handleFailStatus(){
         this.setState({failStatus:false})
+    }
+    handleMonthFailStatus(){
+        this.setState({monthFailStatus:false})
     }
     componentDidMount() {
         this.checkJWT().then(
@@ -173,6 +235,22 @@ class StatisticsTap extends Component {
                             />
                         </div>
                     </Tab>
+                    <Tab label="월별 통계" >
+                    <div>
+                        <MonthlyReportSearchView        
+                            onGetStatisticList = {this.handleGetMonthlyStatistics}
+                            onSetMonthlyDate = {this.handleUpdateMonthlyDate}
+                            failStatus={this.state.monthFailStatus}
+                            onFailStatus = {this.handleMonthFailStatus}
+                        />
+                    </div>
+                    <div >
+                        <MonthlyReportView
+                            statisticList={this.state.monthlyStatisticList}
+
+                        />
+                    </div>
+                </Tab>
                   
                 </Tabs>
 
@@ -187,7 +265,7 @@ const mapStateToProps = (state) => {
         dailyStatisticList: state.statistic.dailyStatisticList,
         authData: state.authentication.value,
         loginStatus: state.authentication.login,
-        
+        monthlyStatisticList: state.statistic.monthlyStatisticList,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -203,6 +281,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         dailyPlantstatisticGetDataRequest: (id, startDate , endDate) => {
             return dispatch(dailyPlantstatisticGetDataRequest(id, startDate , endDate))
+        },
+        monthlyPlantstatisticGetDataRequest: (id, saleMonth ) => {
+            return dispatch(monthlyPlantstatisticGetDataRequest(id, saleMonth ))
         },
       
     };
