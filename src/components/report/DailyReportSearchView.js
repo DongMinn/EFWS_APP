@@ -41,7 +41,7 @@ class DailyReportSearchView extends Component {
                 num = num + '';
                 return num.length < 2 ? '0' + num : num;
             }
-            return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+            return date.getFullYear()  + pad(date.getMonth() + 1)  + pad(date.getDate());
         }
 
         this.selectStartDate = dateToYYYYMMDD(date);

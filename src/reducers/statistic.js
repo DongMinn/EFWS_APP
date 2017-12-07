@@ -38,7 +38,7 @@ export default function reservation(state = initialState, action) {
                     ...state.status,
                     getDailyStatistic:'SUCCESS'
                 },
-                dailyStatisticList:action.statisticList
+                dailyStatisticList:action.dailystatisticList
             };
             case types.STATISTIC_DAILY_PLANT_GET_DATA_FAILURE:
             return{
@@ -67,7 +67,7 @@ export default function reservation(state = initialState, action) {
                     ...state.status,
                     getMonthlyStatistic:'SUCCESS'
                 },
-                monthlyStatisticList:action.statisticList
+                monthlyStatisticList:action.monthlystatisticList
             };
             case types.STATISTIC_MONTHLY_PLANT_GET_DATA_FAILURE:
             return{

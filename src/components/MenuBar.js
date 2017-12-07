@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
 
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { browserHistory } from 'react-router';
-import Divider from 'material-ui/Divider';
+
 
 import { NoshowListStyle } from '../common/styles'
 
@@ -19,11 +17,15 @@ class MenuBar extends Component {
             noshowCheck: false,
             reportCheck: false,
 
+            isLoggedIn:'',
+            loginId:'',
+
+            pageCheck:true
+
         }
         this.handleLinkToReservation = this.handleLinkToReservation.bind(this);
         this.handleLinkToChangeInform = this.handleLinkToChangeInform.bind(this);
-
-
+        this.handleLoginRole = this.handleLoginRole.bind(this);
     }
 
     handleLinkToReservation() {
@@ -75,22 +77,63 @@ class MenuBar extends Component {
             })
         }
     }
+    handleLoginRole(){
+        
+        if(this.state.loginId.indexOf("ADMIN")!==-1){
+            if(this.state.isLoggedIn===true){
+                this.setState({
+                    pageCheck:false
+                })
+            }
+        }else{
+            this.setState({
+                pageCheck:true
+            })
+        }
+        
+    }
+    componentDidMount() {
+        this.setState({
+            isLoggedIn:this.props.isLoggedIn,
+            loginId:this.props.loginId
+        })
+        
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            isLoggedIn: nextProps.isLoggedIn,
+            loginId: nextProps.loginId
+        })
+        this.handleLoginRole();
+    };
+    
     render() {
+        const menuList = (
+            <Tabs style={NoshowListStyle.headerStyle}>
+                <Tab label="예약확인" onClick={this.handleLinkToReservation}> </Tab>
+                <Tab label="상태리스트" onClick={() => { this.handleLinkToChangeInform('reservestatelist') }}> </Tab>
+                <Tab label="비번변경" onClick={() => { this.handleLinkToChangeInform('password') }}> </Tab>
+                <Tab label="매장정보" onClick={() => { this.handleLinkToChangeInform('information') }}> </Tab>
+                <Tab label="통계" onClick={() => { this.handleLinkToChangeInform('statistics') }}> </Tab>
+                <Tab label="설정" onClick={() => { this.handleLinkToChangeInform('setting') }}> </Tab>
+
+            </Tabs>
+        )
+        const adminMenuList = (
+            <Tabs style={NoshowListStyle.headerStyle}>
+              
+                <Tab label="비번변경" onClick={() => { this.handleLinkToChangeInform('password') }}> </Tab>
+                <Tab label="통계" onClick={() => { this.handleLinkToChangeInform('statistics') }}> </Tab>
+                
+
+            </Tabs>
+        )
         return (
             <div >
             
-                {this.props.isLoggedIn ?
-
-                    <Tabs style={NoshowListStyle.headerStyle}>
-                        <Tab label="예약확인" onClick={this.handleLinkToReservation}> </Tab>
-                        <Tab label="상태리스트" onClick={() => { this.handleLinkToChangeInform('reservestatelist') }}> </Tab>
-                        <Tab label="비번변경" onClick={() => { this.handleLinkToChangeInform('password') }}> </Tab>
-                        <Tab label="매장정보" onClick={() => { this.handleLinkToChangeInform('information') }}> </Tab>
-                        <Tab label="통계" onClick={() => { this.handleLinkToChangeInform('statistics') }}> </Tab>
-                        <Tab label="설정" onClick={() => { this.handleLinkToChangeInform('setting') }}> </Tab>
-
-                    </Tabs>
-                    : undefined
+                {this.state.pageCheck ?
+                    menuList
+                    : adminMenuList
                 }
             </div>
 
@@ -102,13 +145,7 @@ class MenuBar extends Component {
 
 export default MenuBar;
 
-
-// <MenuItem primaryText="Reports" rightIcon={<ArrowDropRight />} checked={this.state.reportCheck}
-// menuItems={[
-//             <MenuItem primaryText="일별 레포트" onClick={() => { this.handleLinkToChangeInform('dailyreport') }}/>,
-//             <MenuItem primaryText="월별 레포트" onClick={() => { this.handleLinkToChangeInform('monthlyreport') }}/>,
-//             <MenuItem primaryText="빅데이터 시간 세팅" onClick={() => { this.handleLinkToChangeInform('bigdatasetting') }}/>,
-// ]}
-// />
-
-//<Tab label="통계" onClick={() => { this.handleLinkToChangeInform('statistics') }}> </Tab>
+// {this.state.isLoggedIn ?
+//     menuList
+//     : undefined
+// }

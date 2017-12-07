@@ -39,12 +39,12 @@ class MonthlyReportView extends Component {
 					style={NoshowListStyle.headerBack}
 				>
 					<TableRow>
-
+						<TableHeaderColumn style={NoshowListStyle.headerStyle}>매장코드</TableHeaderColumn>
 						<TableHeaderColumn style={NoshowListStyle.headerStyle}>날짜</TableHeaderColumn>
 						<TableHeaderColumn style={NoshowListStyle.headerStyle}>총사용</TableHeaderColumn>
 						<TableHeaderColumn style={NoshowListStyle.headerStyle}>총입장</TableHeaderColumn>
 						<TableHeaderColumn style={NoshowListStyle.headerStyle}>총노쇼</TableHeaderColumn>
-						<TableHeaderColumn style={NoshowListStyle.headerStyle}>이탈률</TableHeaderColumn>
+						<TableHeaderColumn style={NoshowListStyle.headerStyle}>평균이탈률</TableHeaderColumn>
 						<TableHeaderColumn style={NoshowListStyle.headerStyle}>평균대기</TableHeaderColumn>
 					
 
@@ -57,7 +57,7 @@ class MonthlyReportView extends Component {
 					{
 						this.props.statisticList.map((data, i) => (
 							<TableRow key={i}>
-
+								<TableRowColumn style={NoshowListStyle.statisticRowStyle}>{data.plantCode}</TableRowColumn>
 								<TableRowColumn style={NoshowListStyle.statisticRowStyle}>{data.saleMonth}</TableRowColumn>
 								<TableRowColumn style={NoshowListStyle.statisticRowStyle}>{data.totalCustomer}</TableRowColumn>
 								<TableRowColumn style={NoshowListStyle.statisticRowStyle}>{data.totalEntrance}</TableRowColumn>

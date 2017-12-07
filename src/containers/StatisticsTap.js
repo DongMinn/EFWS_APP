@@ -102,6 +102,7 @@ class StatisticsTap extends Component {
     }
     handleGetDailyStatistics(){
         logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][Statistic Button Click Event: Daily Click');
+       
 
         return this.props.dailyPlantstatisticGetDataRequest(this.props.authData.currentId , this.state.dailyStartDate , this.state.dailyEndDate).then(
             response => {

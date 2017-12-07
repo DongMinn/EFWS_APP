@@ -523,41 +523,49 @@ class ReservationState extends Component {
                 }
             )
         }
-        return (
+        const mainView=(
             <div id="reserve-total">
-                <div id="reserve-info-view">
+            <div id="reserve-info-view">
 
-                    <div ref="myRef">
-                        <ReservationInformView
-                            reserveTotalData={this.state.reserveTotalData}
-                            reserveTotalTime={this.state.reserveTotalTime}
-                            reserveTotalTeam={this.state.reserveTotalTeam}
-                            beforeCallList={this.state.beforeCallList}
-                            plantCode={this.props.authData.currentId}
-                        />
-                    </div>
+                <div ref="myRef">
+                    <ReservationInformView
+                        reserveTotalData={this.state.reserveTotalData}
+                        reserveTotalTime={this.state.reserveTotalTime}
+                        reserveTotalTeam={this.state.reserveTotalTeam}
+                        beforeCallList={this.state.beforeCallList}
+                        plantCode={this.props.authData.currentId}
+                    />
+                </div>
+
+            </div>
+            <div>
+                <div id="reserve-info-serch-bar" ref="myRef">
+                    <SearchBarView
+                        onChangeSearchData={this.handleChange}
+                        onChangeSearchType={this.handleSearchTypeChange}
+                        onClearData={this.handleClear}
+                        searchType={this.state.searchType}
+                        plantSettingList={this.props.plantSettingData}
+                        onChangeRadioButton={this.handleGetByTableData}
+                    />
 
                 </div>
-                <div>
-                    <div id="reserve-info-serch-bar" ref="myRef">
-                        <SearchBarView
-                            onChangeSearchData={this.handleChange}
-                            onChangeSearchType={this.handleSearchTypeChange}
-                            onClearData={this.handleClear}
-                            searchType={this.state.searchType}
-                            plantSettingList={this.props.plantSettingData}
-                            onChangeRadioButton={this.handleGetByTableData}
-                        />
+                <br /><br />
 
-                    </div>
-                    <br /><br />
-
-                    <div id="reserve-info" ref="myRef">
-                        <div>
-                            {mapToReserveData(this.props.reserveData, this.state.searchTable)}
-                        </div>
+                <div id="reserve-info" ref="myRef">
+                    <div>
+                        {mapToReserveData(this.props.reserveData, this.state.searchTable)}
                     </div>
                 </div>
+            </div>
+        </div>
+        );
+        return (
+            <div>
+            { 
+                this.props.authData.currentId.indexOf("ADMIN")!==-1?'ADMIN페이지':
+                mainView
+            }
             </div>
         );
     }

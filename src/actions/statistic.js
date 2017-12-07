@@ -6,7 +6,7 @@ import axios from 'axios';
 export const dailyPlantstatisticGetDataRequest = (plantCode , startDate , endDate) => {
     return (dispatch) => {
         //login api  시작
-   
+
 
         dispatch(dailyPlantstatisticGetData());
         return axios.post('/statistic/plant/daily', {
@@ -92,9 +92,9 @@ export const dailyPlantstatisticGetData = () => ({
     type: types.STATISTIC_DAILY_PLANT_GET_DATA
 })
 
-export const dailyPlantstatisticGetDataSuccess = (statisticList) => ({
+export const dailyPlantstatisticGetDataSuccess = (dailystatisticList) => ({
     type: types.STATISTIC_DAILY_PLANT_GET_DATA_SUCCESS,
-    statisticList
+    dailystatisticList
 })
 
 export const dailyPlantstatisticGetDataFailure = () => ({
@@ -106,9 +106,9 @@ export const monthlyPlantstatisticGetData = () => ({
     type: types.STATISTIC_MONTHLY_PLANT_GET_DATA
 })
 
-export const monthlyPlantstatisticGetDataSuccess = (statisticList) => ({
+export const monthlyPlantstatisticGetDataSuccess = (monthlystatisticList) => ({
     type: types.STATISTIC_MONTHLY_PLANT_GET_DATA_SUCCESS,
-    statisticList
+    monthlystatisticList
 })
 
 export const monthlyPlantstatisticGetDataFailure = () => ({

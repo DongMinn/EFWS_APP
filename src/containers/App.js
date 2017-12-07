@@ -100,6 +100,7 @@ class App extends Component {
                 <div id="commonMenu">
                     <MenuBar
                         isLoggedIn={this.state.loginStatus}
+                        loginId = {this.props.value.currentId}
                     />
                 </div>
                 <div id="commonChild">
