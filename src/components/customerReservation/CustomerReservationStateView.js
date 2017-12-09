@@ -16,7 +16,7 @@ import Delete from 'material-ui/svg-icons/action/delete';
 
 import SweetAlert from 'sweetalert-react';
 import pm from '../../images/pm1.JPG';
-import al from '../../images/ru1.jpg';
+import al from '../../images/ee1.jpg';
 import ss from '../../images/ss1.JPG';
 import ru from '../../images/ru1.jpg';
 import ee from '../../images/ee1.JPG';
