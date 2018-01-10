@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {
     PlantInformSettingView, PlantSettingSaveButtonView, PlantInformSettingCommonView, PlantInformSettingAlarmView
-    , PlantInformAlarmSaveButtonView, PlantInformAlarmAddButtonView, PlantInformSettingTimeSaveButtonView
+    , PlantInformAlarmSaveButtonView, PlantInformAlarmAddButtonView, PlantInformSettingCommonSaveButtonView
 } from '../components';
 
 import { connect } from 'react-redux';
@@ -28,9 +28,10 @@ class PlantSettingTab extends Component {
             noshowTime: '',
             maxTime: '',
             didCheck: '',
+            alaCheck: '',
             alarmTalkList: [],
-            alarmCheckSuccessStatus: false
-
+            alarmCheckSuccessStatus: false,
+            emptyCheckFlag:false
         };
 
         this.handleGetPlantSetting = this.handleGetPlantSetting.bind(this);
@@ -53,6 +54,7 @@ class PlantSettingTab extends Component {
         this.handleChangeMaxTime = this.handleChangeMaxTime.bind(this);
 
         this.handleChangeDidCheckFlag = this.handleChangeDidCheckFlag.bind(this);
+        this.handleChangeAlaCheckFlag = this.handleChangeAlaCheckFlag.bind(this);
 
         this.handleLogin = this.handleLogin.bind(this);
         this.checkJWT = this.checkJWT.bind(this);
@@ -101,10 +103,25 @@ class PlantSettingTab extends Component {
     }
     handleChangeDidCheckFlag() {
 
+
+      
         if(this.state.didCheck==='Y')
             this.setState({didCheck:'N'})
         else 
             this.setState({didCheck:'Y'})
+            
+        
+        return true;
+    }
+    handleChangeAlaCheckFlag() {
+
+        
+        if(this.state.alaCheck==='Y')
+            this.setState({alaCheck:'N'})
+        else 
+            this.setState({alaCheck:'Y'})
+
+        
             
         return true;
     }
@@ -201,18 +218,7 @@ class PlantSettingTab extends Component {
         })
         return true;
 
-        // let tmpSequence = tmpAlarmTalkData.sequence;
-
-        // for (let i = 1; i < tmpAlarmTalkList.length; i++) {
-        //     if (tmpSequence === tmpAlarmTalkList[i].sequence) {
-        //         tmpAlarmTalkList[i] = tmpAlarmTalkData;
-        //         this.setState({
-        //             alarmTalkList: tmpAlarmTalkList
-        //         })
-        //         return true;
-        //     }
-        // }
-        // return false;
+       
     }
 
     handleUpdateAlarm() {
@@ -284,6 +290,10 @@ class PlantSettingTab extends Component {
         if (tmpDidcheck === undefined) {
             tmpDidcheck = ''
         }
+        let tmpAlacheck = this.props.alaCheck;
+        if (tmpAlacheck === undefined) {
+            tmpAlacheck = ''
+        }
 
 
        
@@ -291,38 +301,47 @@ class PlantSettingTab extends Component {
         this.setState({
             noshowTime: tmpNoshowTime,
             maxTime: tmpMaxTime,
-            didCheck:tmpDidcheck
+            didCheck:tmpDidcheck,
+            alaCheck:tmpAlacheck
         })
     }
 
     handleUpdateTime() {
 
-        logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][PlantSettingTab NOSHOWSetting Button Click Event: Save Click');
+        logSaveRequest('DEBUG', '[' + this.props.authData.currentId + '][PlantSettingTab Common Button Click Event: Save Click');
 
-        return this.props.plantSettingUpdateTimeRequest(this.props.authData.currentId, this.state.noshowTime, this.state.maxTime , this.state.didCheck).then(
-            response => {
-                if (response === true) {
-                    this.handleGetPlantSettingTime();
-                    return true;
-                } else if (response === -1) {
-                    let loginData = getCookie('key');
-                    return this.handleLogin(loginData.id, loginData.password).then(
-                        (reseponse) => {
-                            if (reseponse) {
-                                return this.props.plantSettingUpdateTimeRequest(this.props.authData.currentId, this.state.noshowTime, this.state.didCheck).then(
-                                    response => {
-                                        if (response === true) { this.handleGetPlantSettingTime(); return true; }
-                                    }
-                                )
+        if(this.state.didCheck ==='N' && this.state.alaCheck==='N'){
+           this.setState({emptyCheckFlag:true})
+           debugger;
+            return;// 둘다 N 이면 저장 안됨.
+        }
+        else{
+            return this.props.plantSettingUpdateTimeRequest(this.props.authData.currentId, this.state.noshowTime, this.state.maxTime , this.state.didCheck , this.state.alaCheck).then(
+                response => {
+                    if (response === true) {
+                        this.handleGetPlantSettingTime();
+                        return true;
+                    } else if (response === -1) {
+                        let loginData = getCookie('key');
+                        return this.handleLogin(loginData.id, loginData.password).then(
+                            (reseponse) => {
+                                if (reseponse) {
+                                    return this.props.plantSettingUpdateTimeRequest(this.props.authData.currentId, this.state.noshowTime, this.state.didCheck, this.state.alaCheck).then(
+                                        response => {
+                                            if (response === true) { this.handleGetPlantSettingTime(); return true; }
+                                        }
+                                    )
+                                }
                             }
-                        }
-                    )
-                } else {
-                    console.log('DEBUG:nosh 업데이트 실패');
-                    return false;
+                        )
+                    } else {
+                        console.log('DEBUG:nosh 업데이트 실패');
+                        return false;
+                    }
                 }
-            }
-        )
+            )
+        }
+        
     }
     handleChangeNoshowTime(value) {
 
@@ -496,8 +515,9 @@ class PlantSettingTab extends Component {
                         <div>
                             <div>
                                 <br />
-                                <PlantInformSettingTimeSaveButtonView
+                                <PlantInformSettingCommonSaveButtonView
                                     onUpdateTime={this.handleUpdateTime}
+                                    emptyCheckFlag = {this.state.emptyCheckFlag}
                                 />
                             </div>
                             <div>
@@ -505,10 +525,12 @@ class PlantSettingTab extends Component {
                                     noshowTime={this.state.noshowTime}
                                     maxTime={this.state.maxTime}
                                     didCheck={this.state.didCheck}
+                                    alaCheck={this.state.alaCheck}
                                     onChangeNoshowTime={this.handleChangeNoshowTime}
                                     onChangeMaxTime={this.handleChangeMaxTime}
-                                    onUpdateTime={this.handleUpdateTime}
+                                    // onUpdateTime={this.handleUpdateTime}
                                     onChangeDidCheck={this.handleChangeDidCheckFlag}
+                                    onChangeAlaCheck={this.handleChangeAlaCheckFlag}
                                 />
                             </div>
                         </div>
@@ -551,6 +573,7 @@ const mapStateToProps = (state) => {
         loginStatus: state.authentication.login,
         noShowTime: state.plantSetting.value.updateNoshowTime,
         didCheck: state.plantSetting.value.didCheck,
+        alaCheck:state.plantSetting.value.alaCheck,
         maxTime: state.plantSetting.value.updateMaxTime
 
     };
@@ -567,8 +590,8 @@ const mapDispatchToProps = (dispatch) => {
         plantSettingGetTimeRequest: (id) => {
             return dispatch(plantSettingGetTimeDataRequest(id))
         },
-        plantSettingUpdateTimeRequest: (id, noshowtime, maxtime, didCheck) => {
-            return dispatch(plantSettingUpdateTimeDataRequest(id, noshowtime, maxtime , didCheck))
+        plantSettingUpdateTimeRequest: (id, noshowtime, maxtime, didCheck , alaCheck) => {
+            return dispatch(plantSettingUpdateTimeDataRequest(id, noshowtime, maxtime , didCheck, alaCheck))
         },
         getStatusRequest: () => {
             return dispatch(getStatusRequest());

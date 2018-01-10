@@ -77,7 +77,7 @@ export const plantSettingUpdateDataRequest = (id, plantSettingList) => {
 }
 export const plantSettingGetTimeDataRequest = (loginId) => {
     return (dispatch) => {
-        
+     
         dispatch(plantSettingGetTimeData());
         return axios.post('/plant/setting/common/find', {
             loginId: loginId
@@ -85,7 +85,7 @@ export const plantSettingGetTimeDataRequest = (loginId) => {
             response => {
                 
                 if (response.status === 200 && response.data.status === 200) {
-                    dispatch(plantSettingGetTimeDataSuccess(response.data.updateNoshowTime, response.data.maxTotalWaitTime, response.data.didBluetoothUse));
+                    dispatch(plantSettingGetTimeDataSuccess(response.data.updateNoshowTime, response.data.maxTotalWaitTime, response.data.didBluetoothUse , response.data.alarmtalkUse));
                     return true;
                 } else {
                     return false;
@@ -105,16 +105,21 @@ export const plantSettingGetTimeDataRequest = (loginId) => {
             )
     }
 }
-export const plantSettingUpdateTimeDataRequest = (loginId, updateNoshowTime , maxTime, didCheck) => {
+export const plantSettingUpdateTimeDataRequest = (loginId, updateNoshowTime , maxTime, didCheck , alaCheck) => {
     return (dispatch) => {
         dispatch(plantSettingUpdateTimeData());
+
+     
         return axios.post('/plant/setting/common/update', {
             loginId: loginId,
             updateNoshowTime: updateNoshowTime,
             maxTotalWaitTime: maxTime,
-            didBluetoothUse: didCheck
+            didBluetoothUse: didCheck,
+            alarmtalkUse:alaCheck
         }).then(
             response => {
+
+              
                 if (response.status === 200 && response.data.status === 200) {
                     dispatch(plantSettingUpdateTimeDataSuccess());
                     return true;
@@ -124,6 +129,7 @@ export const plantSettingUpdateTimeDataRequest = (loginId, updateNoshowTime , ma
             }
             ).catch(
             error => {
+           
                 dispatch(plantSettingUpdateTimeDataFailure());
                 if (error.response.data.status === 500) {
                     if ((error.response.data.message.indexOf('JWT') >= 0) && (error.response.data.message.indexOf('expired') >= 0)) {
@@ -229,11 +235,12 @@ export const plantSettingUpdateDataFailureByReserveData = (returnMessage) => ({
 export const plantSettingGetTimeData = () => ({
     type: types.PLANTSETTING_GET_NOSHOW_DATA
 })
-export const plantSettingGetTimeDataSuccess = (noshowtime , maxtime , didCheck) => ({
+export const plantSettingGetTimeDataSuccess = (noshowtime , maxtime , didCheck, alaCheck) => ({
     type: types.PLANTSETTING_GET_NOSHOW_DATA_SUCCESS,
     noshowtime,
     maxtime,
-    didCheck
+    didCheck,
+    alaCheck
 })
 export const plantSettingGetTimeDataFailure = () => ({
     type: types.PLANTSETTING_GET_NOSHOW_DATA_FAILURE

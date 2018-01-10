@@ -4,7 +4,7 @@ import { Card, CardActions, CardHeader } from 'material-ui/Card';
 import Checkbox from 'material-ui/Checkbox';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-
+import SweetAlert from 'sweetalert-react';
 
 import { plantSettingStyles } from '../../common/styles';
 import '../../css/plantSetting.scss'
@@ -17,13 +17,16 @@ class PlantInformSettingTimeView extends Component {
             maxTimeShow: false,
             value: 10,
             maxTimeValue: 60,
-            failStatus: false,
+           
             successStatus: false,
-            didChecked: false
+            didChecked: false,
+            alaChecked:false,
+            
         }
         this.handleChangeTableTime = this.handleChangeTableTime.bind(this);
         this.handleChangeTableMaxTime = this.handleChangeTableMaxTime.bind(this);
         this.handleChangeDidCheckBox = this.handleChangeDidCheckBox.bind(this);
+        this.handleChangeAlaCheckBox = this.handleChangeAlaCheckBox.bind(this);
     }
     handleChangeDidCheckBox() {
 
@@ -31,9 +34,22 @@ class PlantInformSettingTimeView extends Component {
 
             this.setState({
                 didChecked: this.props.didCheck === 'Y' ? true : false,
+            
             })
 
         }
+    }
+    handleChangeAlaCheckBox() {
+
+        if (this.props.onChangeAlaCheck()) {
+
+            this.setState({
+               
+                alaChecked: this.props.alaCheck === 'Y' ? true : false,
+            })
+
+        }
+        
     }
 
     handleChangeTableTime(event, index, value) {
@@ -52,6 +68,7 @@ class PlantInformSettingTimeView extends Component {
             value: parseInt(nextProps.noshowTime, 10),
             maxTimeValue: parseInt(nextProps.maxTime, 10),
             didChecked:nextProps.didCheck === 'Y' ? true : false,
+            alaChecked:nextProps.alaCheck === 'Y' ? true : false,
         })
     }
 
@@ -60,6 +77,7 @@ class PlantInformSettingTimeView extends Component {
             value: parseInt(this.props.noshowTime, 10),
             maxTimeValue: parseInt(this.props.maxTime, 10),
             didChecked:this.props.didCheck === 'Y' ? true : false,
+            alaChecked:this.props.alaCheck === 'Y' ? true : false,
         })
     }
 
@@ -68,6 +86,7 @@ class PlantInformSettingTimeView extends Component {
         if (this.props.noshowTime !== nextProps.noshowTime) return true;
         if (this.props.maxTime !== nextProps.maxTime) return true;
         if (this.props.didCheck !== nextProps.didCheck) return true;
+        if (this.props.alaCheck !== nextProps.alaCheck) return true;
 
 
         return false;
@@ -113,11 +132,27 @@ class PlantInformSettingTimeView extends Component {
                     showExpandableButton={false}
                 />
                 <CardActions>
-
                     <DropDownMenu maxHeight={200} value={this.state.maxTimeValue} onChange={this.handleChangeTableMaxTime}>
                         {maxtime_items}
                     </DropDownMenu>
-
+                </CardActions>
+            </Card>
+        )
+        const settingAlarmView = (
+            <Card>
+                <CardHeader
+                    title={'알림톡 사용 설정'}
+                    subtitle="카카오 알림톡 사용 설정"
+                    actAsExpander={true}
+                    titleStyle={plantSettingStyles.cardHeader}
+                    showExpandableButton={false}
+                />
+                <CardActions>
+                    <Checkbox
+                        label="사용여부"
+                        checked={this.state.alaChecked}
+                        onCheck={this.handleChangeAlaCheckBox}
+                    />
                 </CardActions>
 
             </Card>
@@ -145,6 +180,8 @@ class PlantInformSettingTimeView extends Component {
             </Card>
 
         )
+        
+       
         return (
             <div>
                 <br />
@@ -152,7 +189,11 @@ class PlantInformSettingTimeView extends Component {
                 <br />
                 {settingMaxTimeView}
                 <br />
+                {settingAlarmView}
+                <br />
                 {settingDidView}
+              
+                
             </div>
         );
     }

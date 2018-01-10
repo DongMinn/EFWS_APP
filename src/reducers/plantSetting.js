@@ -18,6 +18,7 @@ const initialState = {
         updateNoshowTime:'',
         updateMaxTime:'',
         didCheck:'',
+        alaCheck:'',
         alarmTalkList:[],
         alarmReturnMessage:''
     }
@@ -115,7 +116,8 @@ export default function plantSetting(state = initialState, action) {
                     ...state.value,
                     updateNoshowTime:action.noshowtime,
                     updateMaxTime:action.maxtime,
-                    didCheck:action.didCheck
+                    didCheck:action.didCheck,
+                    alaCheck:action.alaCheck
                 }
             }
         case types.PLANTSETTING_GET_NOSHOW_DATA_FAILURE:

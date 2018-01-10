@@ -29,7 +29,7 @@ import ChangeInformationView from './ChangeInformationView';
  */
 import PlantInformSettingView from './plantSetting/PlantInformSettingView';
 import PlantInformSettingCommonView from './plantSetting/PlantInformSettingCommonView';
-import PlantInformSettingTimeSaveButtonView from './plantSetting/PlantInformSettingTimeSaveButtonView';
+import PlantInformSettingCommonSaveButtonView from './plantSetting/PlantInformSettingCommonSaveButtonView';
 import PlantSettingSaveButtonView from './plantSetting/PlantSettingSaveButtonView';
 import PlantInformSettingAlarmView from './plantSetting/PlantInformSettingAlarmView';
 import PlantInformAlarmSaveButtonView from './plantSetting/PlantInformAlarmSaveButtonView';
@@ -53,7 +53,7 @@ import BigDataTimeSettingView from './report/BigDataTimeSettingView';
 
 
 export { Header , MenuBar,LoginView ,  ReservationStateView , CustomerReservationStateView,CustomerReservationPlantInfoView , ChangePasswordView , ChangeInformationView , PlantInformSettingView 
-        , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingTimeSaveButtonView , PlantInformSettingCommonView , PlantInformSettingAlarmView 
+        , ReservationInformView, SearchBarView , PlantSettingSaveButtonView, PlantInformSettingCommonSaveButtonView , PlantInformSettingCommonView , PlantInformSettingAlarmView 
         , PlantInformAlarmSaveButtonView , PlantInformAlarmAddButtonView, EmptyReserveData , NoShowListView, CancelListView , DailyReportView ,DailyReportSearchView , MonthlyReportView , BigDataTimeSettingView
         ,MonthlyReportSearchView
     };

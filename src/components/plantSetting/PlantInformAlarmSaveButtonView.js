@@ -15,6 +15,7 @@ class PlantInformAlarmSaveButtonView extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
     handleClick() {
+    
         this.setState({
             show: true
         })
@@ -24,13 +25,11 @@ class PlantInformAlarmSaveButtonView extends Component {
             response => {
 
                 if (response === true) {
-                    this.setState({ 
-                        show: false, 
+                    this.setState({                        
                         successStatus: true 
                     })
                 } else {
                     this.setState({
-                        show: false,
                         newStatus: true,
                     })
                 }
@@ -40,9 +39,14 @@ class PlantInformAlarmSaveButtonView extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.state.newStatus !== nextState.newStatus) return true;
+        
+        if (this.state.newStatus !== nextState.newStatus){
+          
+            return true;
+        }
         if (this.state.show !== nextState.show) return true;
         if (this.state.successStatus !== nextState.successStatus) return true;
+        if (this.props.alarmReturnMessage !== nextProps.alarmReturnMessage) return true;
 
         return false;
 

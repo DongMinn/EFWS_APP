@@ -9,7 +9,9 @@ class PlantInformSettingTimeSaveButtonView extends Component {
         this.state = {
             show: false,
             successStatus: false,
-            failStatus: false
+            failStatus: false,
+            emptyCheck:false,
+            
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleUpdateSetting = this.handleUpdateSetting.bind(this);
@@ -20,17 +22,25 @@ class PlantInformSettingTimeSaveButtonView extends Component {
         this.setState({
             show: false,
         });
-        this.props.onUpdateTime().then(
-            response => {
-                
-                if(response===true){
-                    this.setState({ successStatus: true })
-                }else{
-                    this.setState({ failStatus: true })
+      
+        this.props.onUpdateTime();
+      
+      
+        // this.props.onUpdateTime().then(
+            
+        //     response => {
+        //     debugger;    
+        //         if(response===true){
+        //             this.setState({ successStatus: true })
+        //         }else if(response===-1){
+        //             this.setState({ emptyCheck: true })
+        //         }
+        //         else {
+        //             this.setState({ failStatus: true })
                     
-                }
-            }
-        )
+        //         }
+        //     }
+        // )
     }
     handleClick() {
         this.setState({
@@ -44,6 +54,13 @@ class PlantInformSettingTimeSaveButtonView extends Component {
 
         return false;
 
+    }
+    componentWillReceiveProps(nextProps) {
+    
+        this.setState({
+            emptyCheck: nextProps.emptyCheckFlag,
+          
+        })
     }
     render() {
         const plantSettingConfirmView = (
@@ -87,11 +104,25 @@ class PlantInformSettingTimeSaveButtonView extends Component {
                 />
             </div>
         );
+        const doNotEmptyCheckView = (
+            <div>
+                <SweetAlert
+                    show={this.state.emptyCheck}
+                    title="매장세팅 변경 실패!"
+                    text={'알림톡과 프린터 둘 중 한가지는 사용하셔야 합니다!'}
+                    onConfirm={() => {
+                        this.setState({ emptyCheck: false });
+                        
+                    }}
+                />
+            </div>
+        );
         return (
             <div>
                 {plantSettingConfirmView}
                 {changeSuccessedView}
                 {changeFailedView}
+                {doNotEmptyCheckView}
                 <RaisedButton primary={true} onClick={this.handleClick}>저장</RaisedButton>
             </div>
         );
