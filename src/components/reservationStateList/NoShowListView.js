@@ -24,9 +24,8 @@ class NoShowListView extends Component {
   }
   handleUpdateState(data, state) {
     
-    if (state === 'WAIT') {
       this.props.onUpdateReserveState(data, state)
-    } 
+   
   }
   render() {
     const ConfirmView = (
@@ -83,7 +82,8 @@ class NoShowListView extends Component {
             <TableHeaderColumn style={NoshowListStyle.headerStyle}>예약번호</TableHeaderColumn>
             <TableHeaderColumn style={NoshowListStyle.headerStyle}>예약상태</TableHeaderColumn>
             <TableHeaderColumn style={NoshowListStyle.headerStyle}>예약시간</TableHeaderColumn>
-            <TableHeaderColumn style={NoshowListStyle.headerStyle}>UPDATE</TableHeaderColumn>
+            <TableHeaderColumn style={NoshowListStyle.headerStyle}>복구하기</TableHeaderColumn>
+            <TableHeaderColumn style={NoshowListStyle.headerStyle}>입장하기</TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody
@@ -96,7 +96,10 @@ class NoShowListView extends Component {
                 <TableRowColumn style={NoshowListStyle.rowStyle}>{data.waitingState}</TableRowColumn>
                 <TableRowColumn style={NoshowListStyle.rowStyle}>{data.reservationOrderTime}</TableRowColumn>
                 <TableRowColumn style={NoshowListStyle.rowStyle}>
-                  <RaisedButton onClick={() => { this.handleUpdateState(data, 'WAIT') }}>변경하기</RaisedButton>
+                  <RaisedButton onClick={() => { this.handleUpdateState(data, 'WAIT') }}>변경</RaisedButton>
+                </TableRowColumn>
+                <TableRowColumn style={NoshowListStyle.rowStyle}>
+                  <RaisedButton onClick={() => { this.handleUpdateState(data, 'ENTRANCE') }}>입장</RaisedButton>
                 </TableRowColumn>
               </TableRow>
             ))
