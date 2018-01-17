@@ -53,6 +53,7 @@ class CustomerReservationStateView extends Component {
         this.handleRefreshClick = this.handleRefreshClick.bind(this);
         this.handleTitle = this.handleTitle.bind(this);
         this.handleImage = this.handleImage.bind(this);
+        this.realTableType;
     }
     handleImage(){
         
@@ -103,6 +104,7 @@ class CustomerReservationStateView extends Component {
             tableType: value
         }
         this.setState({ customerData: newState });
+        
     }
     handleChangeData() {
 
@@ -133,10 +135,12 @@ class CustomerReservationStateView extends Component {
         this.setState({
             customerData: nextProps.customerData
         })
+
+        this.realTableType = nextProps.customerData.tableType;
     }
 
     handleRefreshClick() {
-        console.log('onRefreshClick');
+      
         this.props.onGetReserveData(this.props.loginId, this.props.reservationNo)
     }
 
@@ -235,7 +239,7 @@ class CustomerReservationStateView extends Component {
         const items = [];
         for (let i = 0; i < this.props.plantSettingList.length; i++) {
             
-            if(this.props.plantSettingList[i].tableUseChk==='Y'){
+            if(this.props.plantSettingList[i].tableUseChk==='Y'&&this.props.plantSettingList[i].tableType!==this.realTableType){
                 items.push(<MenuItem value={this.props.plantSettingList[i].tableType} key={i} primaryText={`${this.props.plantSettingList[i].tableType} 인석`} />);
             }
         }
@@ -267,10 +271,13 @@ class CustomerReservationStateView extends Component {
                 >
                     <h4 id="dialogText">수정시 대기순번은 </h4>
                     <h4 id="dialogText">마지막으로 변경 됩니다.</h4>
-                    <h3>대기예약 구분</h3><br/>
-                    <DropDownMenu value={this.state.customerData.tableType} onChange={this.handleChangeReserve}>
-                        {items}
-                    </DropDownMenu>
+                    
+                    <h4>현재예약 테이블 : {this.realTableType}인석</h4>
+                    <h3>테이블 구분 선택:
+                        <DropDownMenu value={this.state.customerData.tableType} onChange={this.handleChangeReserve}>
+                            {items}
+                        </DropDownMenu>
+                    </h3>
                 </Dialog>
 
             </div>
